@@ -139,13 +139,13 @@ void Player::Shoot()
 
 void Player::Update(double deltaTime)
 {
-	bool g_end = false;
+	bool end = false;
 	if (m_inTransition)
-		m_model->Advance(m_animation, deltaTime * 3, &g_end);		
+		m_model->Advance(m_animation, deltaTime * 3, &end);		
 	else
-		m_model->Advance(m_animation, deltaTime, &g_end);
+		m_model->Advance(m_animation, deltaTime, &end);
 
-	if (g_end)
+	if (end)
 	{	
 		switch (m_state)
 		{
@@ -173,7 +173,6 @@ void Player::Update(double deltaTime)
 		case PLAYER_SRIGHTAIMING:
 			ChangeState(PLAYER_STRAFERIGHT);	break;
 		}
-		g_end = false;
 	}
 
 

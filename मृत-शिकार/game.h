@@ -26,9 +26,6 @@ Unit2d g_cross;
 Model g_groundmodel(&g_renderer);
 Ground g_ground;
 
-//Model g_testmodel(&g_renderer);
-//Ground g_test;
-
 void Initialize()
 {
 	g_renderer.Initialize();
@@ -47,14 +44,6 @@ void Initialize()
 	g_groundmodel.SetTexture(0, "diffuse_1.jpg");
 	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
 
-	/*
-	Mesh tmesh(&g_renderer);
-	Mesh::CreateBox(&tmesh, glm::vec3(g_zombie.GetBoundVolume().m_parent.Extents()));
-	g_testmodel.AddMesh(tmesh);
-	g_testmodel.SetTexture(0, "diffuse_1.jpg");
-	g_test.Initialize(&g_testmodel, glm::vec3(5.0f, -45.0f, -150.0f) + g_zombie.GetBoundVolume().m_parent.Center);
-	*/
-
 	g_crossspr.LoadSprite("cross.png", 32.0f, 32.0f);//, 5.0f, 5.0f);
 	g_cross.Initialize(&g_crossspr, glm::vec2(g_width/2.0f, g_height/2.0f));
 
@@ -63,12 +52,13 @@ void Initialize()
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
 
-	//g_scene.AddUnit(&g_test);
-
 	g_camera.SetParameters(&g_player, 70.0f);
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
+
+	// test
+	g_zombie.Walk();
 }
 
 void CleanUp()
@@ -83,9 +73,6 @@ void CleanUp()
 
 	g_crossspr.CleanUp();
 	g_cross.CleanUp();
-
-	//g_testmodel.CleanUp();
-	//g_test.CleanUp();
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();

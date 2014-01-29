@@ -10,5 +10,10 @@ public:
 	Zombie();
 	void Update(double timeDelta);
 	void Draw();
+
+	void Walk();
+	void Idle();
+	void Attack();
+
 };
 
