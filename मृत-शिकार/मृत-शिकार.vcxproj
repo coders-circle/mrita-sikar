@@ -94,6 +94,7 @@
     <ClInclude Include="scene\Zombie.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="collision\Collision.cpp" />
     <ClCompile Include="graphics\glew\glew.c" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\Model.cpp" />

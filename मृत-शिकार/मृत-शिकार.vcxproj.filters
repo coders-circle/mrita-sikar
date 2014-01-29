@@ -161,6 +161,9 @@
     <ClCompile Include="scene\Unit2d.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
+    <ClCompile Include="collision\Collision.cpp">
+      <Filter>Source Files\collision</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fs_normal3d.glsl">

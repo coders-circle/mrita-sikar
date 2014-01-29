@@ -29,5 +29,6 @@ public:
 	int GetTag() { return m_tag; }
 	void SetScene(Scene * scene) { m_scene = scene; };
 
-	BoundVolume& GetBoundVolume() { return m_model->GetBoundVolume(); }
+	const BoundVolume& GetBoundVolume() const 
+	{ return m_model->GetBoundVolume(); }
 };

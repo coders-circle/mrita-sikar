@@ -59,7 +59,8 @@ public:
 	void Advance(ModelAnimation &modelAnimation, double deltaTime, bool * animationEnded = NULL);
 	void Animate(ModelAnimation &modelAnimation, bool loop = true);
 
-	BoundVolume& GetBoundVolume() { return m_boundvolume; }
+	const BoundVolume& GetBoundVolume() const 
+	{ return m_boundvolume; }
 
 /*	void Translate(const glm::vec3 &translation);
 	void TranslateAbs(const glm::vec3 &translation);
