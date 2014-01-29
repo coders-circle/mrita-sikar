@@ -41,7 +41,8 @@ inline void Player::ChangeState(int x)
 
 Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_totalYRot(0.0f)
 {
-	m_orient = m_orient_xonly = glm::mat3(glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f)));
+	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_orient_xonly = glm::mat3(m_orient);
 	RotateY(10.0f);
 	m_tag = 1;
 }

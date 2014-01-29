@@ -10,7 +10,7 @@ void LiveUnit::Draw()
 {
 	if (m_model)
 	{
-		m_model->SetTransform(glm::translate(glm::mat4(), m_position) * glm::mat4(m_orient));
+		m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient);
 		m_model->Draw();
 	}
 }

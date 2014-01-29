@@ -5,7 +5,7 @@ class LiveUnit : public Unit
 {
 protected:
 	glm::vec3 m_velocity;
-	glm::mat3 m_orient;			// the 3x3 matrix is used for collision detection for object oriented bounding box
+	glm::mat4 m_orient;	
 public:
 	LiveUnit();
 	LiveUnit(const glm::vec3 &position);
@@ -17,7 +17,7 @@ public:
 	virtual void SetPosition(const glm::vec3& position) { m_position = position; }
 	const glm::vec3 &GetPosition() { return m_position; }
 
-	const glm::mat3 &GetOrient() { return m_orient; }
+	const glm::mat4 &GetOrient() { return m_orient; }
 
 	virtual void Draw();
 
