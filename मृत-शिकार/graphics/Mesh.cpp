@@ -177,9 +177,9 @@ void Mesh::CreateBox(Mesh * mesh, glm::vec3 extents)
 {
 	using namespace glm;
 
-	float halfSizeX = extents[0] / 2.0f;
-	float halfSizeY = extents[1] / 2.0f;
-	float halfSizeZ = extents[2] / 2.0f;
+	float halfSizeX = extents[0];// / 2.0f;
+	float halfSizeY = extents[1];// / 2.0f;
+	float halfSizeZ = extents[2];// / 2.0f;
 	std::vector<Vertex> vertices = {
 		// front
 		{ vec3(-halfSizeX, -halfSizeY, halfSizeZ), vec3(0.0, 0.0, 1.0), vec2(0.0, 0.0) },
