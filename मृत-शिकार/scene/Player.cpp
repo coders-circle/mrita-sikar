@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Scene.h"
 
 enum PlayerStates { 
 	PLAYER_IDLE = 0, PLAYER_RUN, PLAYER_SHOOT, 
@@ -39,11 +40,9 @@ inline void Player::ChangeState(int x)
 		m_inTransition = false;
 }
 
-Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_totalYRot(0.0f)
+Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	m_orient_xonly = glm::mat3(m_orient);
-	RotateY(10.0f);
 	m_tag = 1;
 }
 
@@ -176,32 +175,44 @@ void Player::Update(double deltaTime)
 		}
 	}
 
-
+	glm::mat3 orient3x3(m_orient);
 	switch (m_state)
 	{
 	case PLAYER_STRAFELEFT:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SLEFTSHOOTING:
-		m_position += m_orient_xonly[0] * (float)deltaTime * 90.0f;
+		m_position += orient3x3[0] * (float)deltaTime * 90.0f;
 		break;
 
 	case PLAYER_STRAFERIGHT:
 	case PLAYER_SRIGHTAIMING:
 	case PLAYER_SRIGHTSHOOTING:
-		m_position -= m_orient_xonly[0] * (float)deltaTime * 90.0f;
+		m_position -= orient3x3[0] * (float)deltaTime * 90.0f;
 		break;
 	}
 
 	if (m_run)
-		m_position += m_orient_xonly[2] * (float)deltaTime * 90.0f;
+		m_position += orient3x3[2] * (float)deltaTime * 90.0f;
 	else if (m_backrun)
-		m_position -= m_orient_xonly[2] * (float)deltaTime * 90.0f;
+		m_position -= orient3x3[2] * (float)deltaTime * 90.0f;
+
+	glm::vec3 out;
+	for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)
+	{
+		const Unit* other = m_scene->GetUnits()[i];
+		if (other->GetTag() == 2)
+		if (m_scene->CheckPotentialCollision(this, other, NULL))
+		{
+			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+				m_position += out;
+		}
+	}
 }
 
 static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));
 void Player::Draw()
 {
-	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * glm::mat4(m_orient_xonly) * g_globaltransform
+	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient * g_globaltransform
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
 	m_model->Animate(m_animation);
 	m_model->Draw();	

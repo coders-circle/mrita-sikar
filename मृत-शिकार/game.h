@@ -52,7 +52,7 @@ void Initialize()
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
 
-	g_camera.SetParameters(&g_player, 70.0f);
+	g_camera.Initialize(&g_player, 70.0f);
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
@@ -73,6 +73,7 @@ void CleanUp()
 
 	g_crossspr.CleanUp();
 	g_cross.CleanUp();
+
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
@@ -106,8 +107,9 @@ void Update(double totalTime, double deltaTime)
 
 	int newx, newy;
 	g_window.GetMousePos(newx, newy);
-	g_player.RotateX((float)deltaTime * (newx - g_width/2) * 2.8f);
-	g_player.RotateY((float)deltaTime * (newy - g_height/2) * 2.8f);
+	g_player.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
+	g_camera.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
+	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);
 	
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 

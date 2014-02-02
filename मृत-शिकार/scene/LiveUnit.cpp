@@ -1,10 +1,14 @@
 #include "LiveUnit.h"
 
 LiveUnit::LiveUnit()
-{}
+{
+	m_liveUnit = true;
+}
 
 LiveUnit::LiveUnit(const glm::vec3 &position) : Unit(position)
-{}
+{
+	m_liveUnit = true;
+}
 
 void LiveUnit::Draw()
 {

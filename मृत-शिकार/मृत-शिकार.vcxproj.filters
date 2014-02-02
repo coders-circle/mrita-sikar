@@ -134,9 +134,6 @@
     <ClCompile Include="scene\Zombie.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
-    <ClCompile Include="scene\Camera.cpp">
-      <Filter>Source Files\scene</Filter>
-    </ClCompile>
     <ClCompile Include="scene\Ground.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
@@ -154,9 +151,6 @@
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="scene\TPCamera.cpp">
-      <Filter>Source Files\scene</Filter>
     </ClCompile>
     <ClCompile Include="scene\Unit2d.cpp">
       <Filter>Source Files\scene</Filter>

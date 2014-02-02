@@ -1,6 +1,6 @@
 #include "Collision.h"
 
-bool Box::IntersectBox(const Box &box2, glm::vec3 * out)
+bool Box::IntersectBox(const Box &box2, glm::vec3 * out) const
 {
 	float d[3]; int i = 0;
 	d[0] = (m_extents[0] + box2.m_extents[0]) - fabs(m_center.x - box2.m_center.x);
@@ -20,7 +20,7 @@ bool Box::IntersectBox(const Box &box2, glm::vec3 * out)
 	return true;
 }
 
-bool Ray::IntersectBox(const Box &box, float &tmin)
+bool Ray::IntersectBox(const Box &box, float &tmin) const
 {
 	tmin = 0.0f; float tmax = FLT_MAX;
 	for (int i = 0; i < 3; i++) {
@@ -46,7 +46,7 @@ bool Ray::IntersectBox(const Box &box, float &tmin)
 	return true;
 }
 
-bool Box::IntersectBox(const glm::mat3 &orient1, const Box &box2, const glm::mat3 &orient2, glm::vec3 * out)
+bool Box::IntersectBox(const glm::mat3 &orient1, const Box &box2, const glm::mat3 &orient2, glm::vec3 * out) const
 {
 	float ra, rb;   // projected radii
 	glm::mat3 R, AbsR;

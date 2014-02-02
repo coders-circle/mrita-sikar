@@ -103,12 +103,10 @@
     <ClCompile Include="graphics\utils.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="scene\Camera.cpp" />
     <ClCompile Include="scene\Ground.cpp" />
     <ClCompile Include="scene\LiveUnit.cpp" />
     <ClCompile Include="scene\Player.cpp" />
     <ClCompile Include="scene\Scene.cpp" />
-    <ClCompile Include="scene\TPCamera.cpp" />
     <ClCompile Include="scene\Unit.cpp" />
     <ClCompile Include="scene\Unit2d.cpp" />
     <ClCompile Include="scene\Zombie.cpp" />
