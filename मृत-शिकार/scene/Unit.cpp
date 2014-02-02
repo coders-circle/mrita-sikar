@@ -1,6 +1,6 @@
 #include "Unit.h"
 
-Unit::Unit() : m_model(NULL), m_dead(false), m_tag(0)
+Unit::Unit() : m_model(NULL), m_dead(false), m_tag(0), m_liveUnit(false)
 {}
 
 Unit::Unit(const glm::vec3 &position) : m_model(NULL), m_position(position), m_dead(false), m_tag(0)

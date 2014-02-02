@@ -129,9 +129,9 @@ void Model::LoadModel(std::string filename)
 		}
 	}
 
-	READ_FILE(m_boundvolume.m_parent);
-	READ_SZ_FILE(m_boundvolume.m_children);
-	if (data > 0) READ_FILE_EX(&m_boundvolume.m_children[0], m_boundvolume.m_children.size() * sizeof(BoundVolume));
+	READ_FILE(m_boundvolume.parent); 
+	READ_SZ_FILE(m_boundvolume.children);
+	if (data > 0) READ_FILE_EX(&m_boundvolume.children[0], m_boundvolume.children.size() * sizeof(Box));
 
 	file.close();
 }
