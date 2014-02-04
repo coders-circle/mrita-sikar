@@ -42,7 +42,9 @@ void Zombie::Update(double deltaTime)
 		if (m_scene->CheckPotentialCollision(this, other))
 		{
 			if (GetBoundParent().IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), (glm::mat3)((LiveUnit*)other)->GetOrient(), &out))
-				m_position += out;
+			{
+				m_position += out; UpdateBoundVolume();
+			}
 		}
 	}
 }

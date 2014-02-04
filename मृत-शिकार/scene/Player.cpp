@@ -209,7 +209,9 @@ void Player::Update(double deltaTime)
 		if (m_scene->CheckPotentialCollision(this, other))
 		{
 			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
-				m_position += out;
+			{
+				m_position += out; UpdateBoundVolume();
+			}
 		}
 	}
 }
