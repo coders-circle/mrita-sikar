@@ -26,7 +26,7 @@ public:
 	void AddUnit(Unit * unit) { m_units.push_back(unit); unit->SetScene(this); }
 	void AddUnit(Unit2d * unit) { m_unit2ds.push_back(unit); }//unit->SetScene(this); }
 
-	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2, glm::vec3 * out = NULL);
+	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2);
 	const std::vector<Unit*> &GetUnits() { return m_units; }
 	const std::vector<Unit2d*> &GetUnit2ds() { return m_unit2ds; }
 };

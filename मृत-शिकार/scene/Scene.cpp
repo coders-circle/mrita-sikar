@@ -47,7 +47,7 @@ void Scene::CleanUp()
 	m_units.clear();
 }
 
-bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2, glm::vec3 * out)
+bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
 {
 	const Box &bx1 = unit1->GetBoundParent();
 	const Box &bx2 = unit2->GetBoundParent();
@@ -55,15 +55,15 @@ bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2, glm:
 	{
 		Box bx11(bx1.GetCenter(), glm::vec3(glm::length(bx1.GetExtents())));
 		if (unit2->IsLiveUnit())
-			return bx11.IntersectBox(Box(bx2.GetCenter(), glm::vec3(glm::length(bx2.GetExtents()))), out);
+			return bx11.IntersectBox(Box(bx2.GetCenter(), glm::vec3(glm::length(bx2.GetExtents()))));
 		else
-			return bx11.IntersectBox(bx2, out);
+			return bx11.IntersectBox(bx2);
 	}
 	else
 	{
 		if (unit2->IsLiveUnit())
-			return bx1.IntersectBox(Box(bx2.GetCenter(), glm::vec3(glm::length(bx2.GetExtents()))), out);
+			return bx1.IntersectBox(Box(bx2.GetCenter(), glm::vec3(glm::length(bx2.GetExtents()))));
 		else
-			return bx1.IntersectBox(bx2, out);
+			return bx1.IntersectBox(bx2);
 	}
 }

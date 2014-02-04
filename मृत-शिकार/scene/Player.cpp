@@ -32,7 +32,10 @@ inline void Player::ChangeState(int x)
 		m_offsetorient = glm::mat4();	m_offset = glm::vec3();
 	}
 
-	m_model->Transition(m_animation, x, 0.0);
+	if (x == PLAYER_STRAFELEFT || x == PLAYER_STRAFERIGHT)
+		m_model->Transition(m_animation, x, 0.15);
+	else
+		m_model->Transition(m_animation, x, 0.0);
 
 	if (x == PLAYER_RUNIDLE || x == PLAYER_IDLERUN || x == PLAYER_AIMIDLE || x == PLAYER_IDLEAIM)
 		m_inTransition = true;
@@ -196,12 +199,14 @@ void Player::Update(double deltaTime)
 	else if (m_backrun)
 		m_position -= orient3x3[2] * (float)deltaTime * 90.0f;
 
+	UpdateBoundVolume();
+
 	glm::vec3 out;
 	for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)
 	{
 		const Unit* other = m_scene->GetUnits()[i];
 		if (other->GetTag() == 2)
-		if (m_scene->CheckPotentialCollision(this, other, NULL))
+		if (m_scene->CheckPotentialCollision(this, other))
 		{
 			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 				m_position += out;
