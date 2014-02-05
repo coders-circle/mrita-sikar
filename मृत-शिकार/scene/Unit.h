@@ -10,17 +10,19 @@ protected:
 
 	glm::vec3 m_position;
 
-	bool m_dead;		// Is dead? Meaning, whether should be updated and drawn by scene or not?
-	int m_tag;			// A number to denote the type of unit (e.g: player: 1, zombie: 2, obstacles: 3)
-	bool m_liveUnit;	// Is a live unit?
+	bool m_dead;		 // Is dead? Meaning, whether should be updated and drawn by scene or not?
+	unsigned char m_tag; // A number to denote the type of unit (e.g: player: 1, zombie: 2, obstacles: 3)
+	bool m_liveUnit;	 // Is a live unit?
 
 	BoundVolume m_boundVolume;	//Copy of bound volume, to be updated according to position of unit
+	Rect m_rect;
 
 	void UpdateBoundVolume()
 	{
 		m_boundVolume.parent.SetCenter(m_model->GetBoundVolume().parent.GetCenter() + m_position);
 		for (unsigned int i = 0; i < m_boundVolume.children.size(); ++i)
 			m_boundVolume.children[i].SetCenter(m_model->GetBoundVolume().children[i].GetCenter() + m_position);
+		m_rect = m_boundVolume.parent.GetRect();
 	}
 
 public:
@@ -28,7 +30,7 @@ public:
 	//Unit();
 	virtual ~Unit() {}
 
-	void Initialize(Model * model, glm::vec3 position = glm::vec3())
+	virtual void Initialize(Model * model, glm::vec3 position = glm::vec3())
 	{
 		m_model = model; m_position = position;
 		m_boundVolume.parent = m_model->GetBoundVolume().parent;
@@ -63,6 +65,11 @@ public:
 	{
 		return m_boundVolume.children[i];
 		//return Box(m_model->GetBoundVolume().children[i].GetCenter() + m_position, m_model->GetBoundVolume().children[i].GetExtents());
+	}
+
+	const Rect &GetRect() const
+	{
+		return m_rect;
 	}
 
 	bool IsLiveUnit() const { return m_liveUnit; }

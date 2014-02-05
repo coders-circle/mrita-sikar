@@ -25,14 +25,14 @@ void Zombie::Update(double deltaTime)
 		// To do anything when animation reached the end, do it here
 	}
 
-
+	bool posChanged = false;
 	switch (m_state)
 	{
 	case ZOMBIE_WALK:
-		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f;
+		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f; posChanged = true;
 	}
 
-	UpdateBoundVolume();
+	if (posChanged) UpdateBoundVolume();
 
 	glm::vec3 out;
 	for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)

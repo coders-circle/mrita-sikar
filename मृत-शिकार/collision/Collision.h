@@ -6,6 +6,13 @@
 template <typename T>
 inline void Swap(T &x, T &y) { T temp; temp = x; x = y; y = temp; };
 
+struct Rect
+{
+	float x, y, width, height;
+	Rect(float x_, float y_, float w_, float h_) :x(x_), y(y_), width(w_), height(h_) {}
+	Rect(){}
+};
+
 class Box
 {
 private:
@@ -24,20 +31,11 @@ public:
 
 	bool IntersectBox(const Box &box2, glm::vec3 * out = NULL) const;
 	bool IntersectBox(const glm::mat3 &orient1, const Box &box2, const glm::mat3 &orient2, glm::vec3 * out = NULL) const;
-	/*
-	bool IntersectBox(const glm::vec3 &pos1, const Box &box2, const glm::vec3 &pos2, glm::vec3 * out = NULL) const
-	{
-		Box bx1(m_center + pos1, m_extents);
-		Box bx2(box2.m_center + pos2, box2.m_extents);
-		return bx1.IntersectBox(bx2, out);
-	}
 
-	bool IntersectBox(const glm::mat3 &orient1, const glm::vec3 &pos1, const Box &box2, const glm::mat3 &orient2, const glm::vec3 &pos2, glm::vec3 * out = NULL) const
+	Rect GetRect() const
 	{
-		Box bx1(m_center + pos1, m_extents);
-		Box bx2(box2.m_center + pos2, box2.m_extents);
-		return bx1.IntersectBox(bx2, out);
-	}*/
+		return Rect(m_center.x-m_extents.x, m_center.y-m_extents.y, m_extents.x*2.0f, m_extents.y*2.0f);
+	}
 };
 
 class Ray
@@ -66,3 +64,4 @@ struct BoundVolume
 	Box parent;
 	std::vector<Box> children;
 };
+

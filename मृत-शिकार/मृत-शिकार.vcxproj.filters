@@ -108,6 +108,9 @@
     <ClInclude Include="collision\Collision.h">
       <Filter>Header Files\collision</Filter>
     </ClInclude>
+    <ClInclude Include="collision\QuadTree.h">
+      <Filter>Header Files\collision</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Mesh.cpp">
