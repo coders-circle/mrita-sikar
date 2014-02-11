@@ -42,9 +42,9 @@ void Initialize()
 	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
 	{
 		g_zombies[i].Initialize(&g_zombiemodel, glm::vec3(x, -45.0f, z));
-		x += 1000.0f; 
+		x += 500.0f; 
 		if (x >= 8000.0f){
-			z += 1000.0f; x = -2000.0f;
+			z += 500.0f; x = -2000.0f;
 		}
 		g_scene.AddUnit(&g_zombies[i]);
 	}
@@ -53,6 +53,7 @@ void Initialize()
 	Mesh mesh(&g_renderer);
 	Mesh::CreateBox(&mesh, glm::vec3(10000.0f, 0.5f, 10000.0f));
 	g_groundmodel.AddMesh(mesh);
+	g_groundmodel.SetBoundBox(Box(glm::vec3(0.0f), glm::vec3(10000.0f, 0.5f, 10000.0f)));
 	g_groundmodel.SetTexture(0, "diffuse_1.jpg");
 	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
 

@@ -1,10 +1,12 @@
 #pragma once
 #include "../graphics/stdinc.h"
 #include "../scene/Unit.h"
+#include <unordered_set>
 
-typedef std::vector<const std::vector<const Unit*>*> UnitCollections;
+typedef std::vector<const std::unordered_set<const Unit*>*> UnitCollections;
+typedef std::unordered_set<const Unit*>::iterator UnitIterator;
 
-#define MAX_UNITS_PER_NODE 10
+#define MAX_UNITS_PER_NODE 5
 #define MAX_DEPTH_QUADTREE 5
 class QuadTree
 {
@@ -12,7 +14,7 @@ private:
 	QuadTree * m_nodes;
 	unsigned char m_depth;
 	Rect m_rect;
-	std::vector<const Unit*> m_units;
+	std::unordered_set<const Unit*> m_units;
 
 public:
 	QuadTree() { m_nodes = NULL; }
@@ -87,21 +89,18 @@ public:
 				return;
 			}
 		}
-		m_units.push_back(unit);
+		m_units.insert(unit);
 
 		if (m_units.size() > MAX_UNITS_PER_NODE && m_depth < MAX_DEPTH_QUADTREE) {
 			if (!m_nodes)
 				Split();
 
-			for (unsigned int i = 0; i < m_units.size(); ++i)
+			for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
 			{
-				int index = GetIndex(m_units[i]);
+				int index = GetIndex(*i);
 				if (index != -1) {
-					m_nodes[index].Insert(m_units[i]);
-					m_units.erase(m_units.begin() + i);
-				}
-				else {
-					i++;
+					m_nodes[index].Insert(*i);
+					m_units.erase(i);
 				}
 			}
 		}
@@ -118,11 +117,11 @@ public:
 				return;
 			}
 		}
-		for (unsigned i = 0; i < m_units.size(); ++i)
-		if (m_units[i] == unit) { m_units.erase(m_units.begin() + i); break; }
+		
+		m_units.erase(unit);
 	}
 
-	const std::vector<const Unit*> &GetUnits() const
+	const std::unordered_set<const Unit*> &GetUnits() const
 	{ return m_units; }
 
 	void GetPotentialCollisions(const Unit* unit, UnitCollections &unitCollections) const

@@ -207,20 +207,24 @@ void Player::Update(double deltaTime)
 	if (posChanged) UpdateBoundVolume();
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
-
+	
 	glm::vec3 out;
 	for (unsigned int i = 0; i < collisions.size(); ++i)
-	for (unsigned int j = 0; j < collisions[i]->size(); ++j)
+	//for (unsigned int j = 0; j < collisions[i]->size(); ++j)
+	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	//for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)
 	{
-		const Unit* other = collisions[i][0][j];
+		//const Unit* other = collisions[i][0].begin[j];
+		const Unit* other = *j;
 		//const Unit * other = m_scene->GetUnits()[i];
 		if (other->GetTag() == 2)
+		if (m_scene->CheckPotentialCollision(this, other))
 		if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 		{
 			m_position += out; UpdateBoundVolume();
 		}
 	}
+	
 }
 
 static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));

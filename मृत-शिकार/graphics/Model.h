@@ -62,6 +62,11 @@ public:
 	const BoundVolume& GetBoundVolume() const 
 	{ return m_boundvolume; }
 
+	void SetBoundBox(const Box &box)
+	{
+		m_boundvolume.parent = box;
+	}
+
 /*	void Translate(const glm::vec3 &translation);
 	void TranslateAbs(const glm::vec3 &translation);
 	void Rotate(const float angle, const glm::vec3 &axis);

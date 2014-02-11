@@ -15,7 +15,7 @@ public:
 	{
 		glm::vec3 tpos = m_target->GetPosition();
 		tpos = glm::vec3(tpos.x, tpos.y + 50.0f, tpos.z);
-		m_view = glm::lookAt(
+		m_view = LookAt(
 			tpos - (glm::vec3)m_orient[2] * m_distance,
 			tpos,						
 			(glm::vec3)m_orient[1]

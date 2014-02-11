@@ -35,7 +35,15 @@ void Scene::Draw()
 
 	for (unsigned i = 0; i < m_units.size(); ++i)
 	if (!m_units[i]->GetDead())
-		m_units[i]->Draw();
+	{
+		bool toDraw;
+		if (m_units[i]->IsLiveUnit())
+			toDraw = m_camera->GetBoundBox().IntersectBox(static_cast<LiveUnit*>(m_units[i])->GetAABB());
+		else
+			toDraw = m_camera->GetBoundBox().IntersectBox(m_units[i]->GetBoundParent());
+		if (toDraw)
+			m_units[i]->Draw();
+	}
 
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 	if (!m_unit2ds[i]->GetDead())
