@@ -18,7 +18,9 @@ Scene g_scene(&g_renderer);
 TPCamera g_camera;
 Model g_humanmodel(&g_renderer), g_zombiemodel(&g_renderer);
 Player g_player;
-Zombie g_zombie;
+//Zombie g_zombie;
+#define MAX_ZOMBIES 80
+Zombie g_zombies[MAX_ZOMBIES];
 
 Sprite g_crossspr(&g_renderer);
 Unit2d g_cross;
@@ -36,11 +38,22 @@ void Initialize()
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, -70.0f));
 
 	g_zombiemodel.LoadModel("zombie.mdl");
-	g_zombie.Initialize(&g_zombiemodel, glm::vec3(5.0f, -45.0f, -150.0f));
+	float x = -2000.0f, z= -2000.0f;
+	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
+	{
+		g_zombies[i].Initialize(&g_zombiemodel, glm::vec3(x, -45.0f, z));
+		x += 500.0f; 
+		if (x >= 8000.0f){
+			z += 500.0f; x = -2000.0f;
+		}
+		g_scene.AddUnit(&g_zombies[i]);
+	}
+	//g_zombie.Initialize(&g_zombiemodel, glm::vec3(5.0f, -45.0f, -150.0f));
 
 	Mesh mesh(&g_renderer);
 	Mesh::CreateBox(&mesh, glm::vec3(10000.0f, 0.5f, 10000.0f));
 	g_groundmodel.AddMesh(mesh);
+	g_groundmodel.SetBoundBox(Box(glm::vec3(0.0f), glm::vec3(10000.0f, 0.5f, 10000.0f)));
 	g_groundmodel.SetTexture(0, "diffuse_1.jpg");
 	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
 
@@ -48,7 +61,7 @@ void Initialize()
 	g_cross.Initialize(&g_crossspr, glm::vec2(g_width/2.0f, g_height/2.0f));
 
 	g_scene.AddUnit(&g_player);
-	g_scene.AddUnit(&g_zombie);
+	//g_scene.AddUnit(&g_zombie);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
 
@@ -58,7 +71,7 @@ void Initialize()
 	g_window.ShowMouseCursor(false);
 
 	// test
-	g_zombie.Walk();
+	//g_zombie.Walk();
 }
 
 void CleanUp()
@@ -68,7 +81,9 @@ void CleanUp()
 	g_groundmodel.CleanUp();
 
 	g_player.CleanUp();
-	g_zombie.CleanUp();
+	//g_zombie.CleanUp();
+	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
+		g_zombies[i].CleanUp();
 	g_ground.CleanUp();
 
 	g_crossspr.CleanUp();

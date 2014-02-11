@@ -25,22 +25,26 @@ void Zombie::Update(double deltaTime)
 		// To do anything when animation reached the end, do it here
 	}
 
-
+	bool posChanged = false;
 	switch (m_state)
 	{
 	case ZOMBIE_WALK:
-		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f;
+		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f; posChanged = true;
 	}
+
+	if (posChanged) UpdateBoundVolume();
 
 	glm::vec3 out;
 	for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)
 	{
 		const Unit* other = m_scene->GetUnits()[i];
 		if (other->GetTag() == 1)
-		if (m_scene->CheckPotentialCollision(this, other, NULL))
+		if (m_scene->CheckPotentialCollision(this, other))
 		{
 			if (GetBoundParent().IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), (glm::mat3)((LiveUnit*)other)->GetOrient(), &out))
-				m_position += out;
+			{
+				m_position += out; UpdateBoundVolume();
+			}
 		}
 	}
 }

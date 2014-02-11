@@ -139,7 +139,14 @@ int Window::MainLoop()
 		{
 			s_timer.Tick(m_update);
 			if (s_timer.GetFrameCount() != 0)
+			{
 				m_render();
+				//*
+				char str[20] = "FPS: ";
+				_itoa_s(s_timer.GetFramesPerSecond(), &str[5], 20 - 5, 10);
+				SetWindowTextA(m_hwnd, str);
+				//*/
+			}
 		}
 	}
 

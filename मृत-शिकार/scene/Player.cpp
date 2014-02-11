@@ -32,7 +32,10 @@ inline void Player::ChangeState(int x)
 		m_offsetorient = glm::mat4();	m_offset = glm::vec3();
 	}
 
-	m_model->Transition(m_animation, x, 0.0);
+	if (x == PLAYER_STRAFELEFT || x == PLAYER_STRAFERIGHT)
+		m_model->Transition(m_animation, x, 0.15);
+	else
+		m_model->Transition(m_animation, x, 0.0);
 
 	if (x == PLAYER_RUNIDLE || x == PLAYER_IDLERUN || x == PLAYER_AIMIDLE || x == PLAYER_IDLEAIM)
 		m_inTransition = true;
@@ -175,38 +178,53 @@ void Player::Update(double deltaTime)
 		}
 	}
 
+	bool posChanged = false;
 	glm::mat3 orient3x3(m_orient);
 	switch (m_state)
 	{
 	case PLAYER_STRAFELEFT:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SLEFTSHOOTING:
-		m_position += orient3x3[0] * (float)deltaTime * 90.0f;
+		m_position += orient3x3[0] * (float)deltaTime * 90.0f; posChanged = true;
 		break;
 
 	case PLAYER_STRAFERIGHT:
 	case PLAYER_SRIGHTAIMING:
 	case PLAYER_SRIGHTSHOOTING:
-		m_position -= orient3x3[0] * (float)deltaTime * 90.0f;
+		m_position -= orient3x3[0] * (float)deltaTime * 90.0f; posChanged = true;
 		break;
 	}
 
 	if (m_run)
-		m_position += orient3x3[2] * (float)deltaTime * 90.0f;
-	else if (m_backrun)
-		m_position -= orient3x3[2] * (float)deltaTime * 90.0f;
-
-	glm::vec3 out;
-	for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)
 	{
-		const Unit* other = m_scene->GetUnits()[i];
+		m_position += orient3x3[2] * (float)deltaTime * 90.0f; posChanged = true;
+	}
+	else if (m_backrun)
+	{
+		m_position -= orient3x3[2] * (float)deltaTime * 90.0f; posChanged = true;
+	}
+
+	if (posChanged) UpdateBoundVolume();
+	UnitCollections collisions;
+	m_scene->GetPotentialCollisions(this, collisions);
+	
+	glm::vec3 out;
+	for (unsigned int i = 0; i < collisions.size(); ++i)
+	//for (unsigned int j = 0; j < collisions[i]->size(); ++j)
+	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
+	//for (unsigned int i = 0; i < m_scene->GetUnits().size(); ++i)
+	{
+		//const Unit* other = collisions[i][0].begin[j];
+		const Unit* other = *j;
+		//const Unit * other = m_scene->GetUnits()[i];
 		if (other->GetTag() == 2)
-		if (m_scene->CheckPotentialCollision(this, other, NULL))
+		if (m_scene->CheckPotentialCollision(this, other))
+		if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 		{
-			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
-				m_position += out;
+			m_position += out; UpdateBoundVolume();
 		}
 	}
+	
 }
 
 static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));
