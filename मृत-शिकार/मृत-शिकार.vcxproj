@@ -69,6 +69,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="collision\Collision.h" />
+    <ClInclude Include="collision\QuadTree.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="graphics\Animation.h" />
     <ClInclude Include="graphics\graphics.h" />
