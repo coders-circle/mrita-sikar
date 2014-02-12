@@ -38,9 +38,9 @@ void Scene::Draw()
 	{
 		bool toDraw;
 		if (m_units[i]->IsLiveUnit())
-			toDraw = m_camera->GetBoundBox().IntersectBox(static_cast<LiveUnit*>(m_units[i])->GetAABB());
+			toDraw = m_camera->IntersectBox(static_cast<LiveUnit*>(m_units[i])->GetAABB());
 		else
-			toDraw = m_camera->GetBoundBox().IntersectBox(m_units[i]->GetBoundParent());
+			toDraw = m_camera->IntersectBox(m_units[i]->GetBoundParent());
 		if (toDraw)
 			m_units[i]->Draw();
 	}
