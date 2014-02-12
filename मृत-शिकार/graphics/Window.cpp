@@ -66,6 +66,7 @@ bool Window::InitializeWindow(const wchar_t* title, HINSTANCE hInstance, int sho
 		);
 
 	SetWindowLongPtr(m_hwnd, GWLP_USERDATA, (LONG_PTR)this);
+	SetWindowLong(m_hwnd, GWL_STYLE, 0);
 
 	if (!m_hwnd)
 		return false;
