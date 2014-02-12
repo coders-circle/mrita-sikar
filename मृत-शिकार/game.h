@@ -48,6 +48,7 @@ void Initialize()
 		}
 		g_scene.AddUnit(&g_zombies[i]);
 	}
+	
 	//g_zombie.Initialize(&g_zombiemodel, glm::vec3(5.0f, -45.0f, -150.0f));
 
 	Mesh mesh(&g_renderer);
