@@ -17,6 +17,7 @@ protected:
 	BoundVolume m_boundVolume;	//Copy of bound volume, to be updated according to position of unit
 	Rect m_rect;
 
+
 	void UpdateBoundVolume()
 	{
 		m_boundVolume.parent.SetCenter(m_model->GetBoundVolume().parent.GetCenter() + m_position);
@@ -73,5 +74,6 @@ public:
 	}
 
 	bool IsLiveUnit() const { return m_liveUnit; }
+
 
 };

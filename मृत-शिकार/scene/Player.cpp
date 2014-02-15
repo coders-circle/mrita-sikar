@@ -47,6 +47,13 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
+
+	
+}
+
+bool Player::IsRunning()
+{
+	return m_state == PLAYER_RUN;
 }
 
 void Player::Run()
@@ -56,6 +63,10 @@ void Player::Run()
 	{
 		ChangeState(PLAYER_IDLERUN);
 		m_run = true;
+		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
+		{
+			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
+		}
 	}
 }
 
@@ -66,6 +77,12 @@ void Player::EndRun()
 	{
 		ChangeState(PLAYER_RUNIDLE);
 		m_run = false;
+		if (m_a_running)
+		{
+			m_a_running->stop();
+			if (!g_audioengine->isCurrentlyPlaying(m_a_endrun))
+				g_audioengine->play2D(m_a_endrun);
+		}
 	}
 }
 
@@ -76,6 +93,10 @@ void Player::BackRun()
 	{
 		ChangeState(PLAYER_IDLERUN);
 		m_backrun = true;
+		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
+		{
+			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
+		}
 	}
 }
 
@@ -86,6 +107,13 @@ void Player::EndBackRun()
 	{
 		ChangeState(PLAYER_RUNIDLE);
 		m_backrun = false;
+		if (m_a_running)
+		{
+			m_a_running->stop();
+			if (!g_audioengine->isCurrentlyPlaying(m_a_endrun))
+				g_audioengine->play2D(m_a_endrun);
+		}
+		
 	}
 }
 
@@ -95,12 +123,27 @@ void Player::StrafeLeft()
 		ChangeState(PLAYER_STRAFELEFT);
 	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
 		ChangeState(PLAYER_IDLERUN);
+	if (!g_audioengine->isCurrentlyPlaying(m_a_run))
+	{
+		m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
+	}
 }
 void Player::EndStrafeLeft()
 {
 	if (m_state == PLAYER_STRAFELEFT) ChangeState(PLAYER_RUN);
 	else if (m_state == PLAYER_SLEFTSHOOTING) ChangeState(PLAYER_RUNSHOOTING);
 	else if (m_state == PLAYER_SLEFTAIMING) ChangeState(PLAYER_RUNAIMING);
+	if (m_state == PLAYER_IDLE || m_state == PLAYER_IDLEAIM || m_state == PLAYER_SHOOT || m_state == PLAYER_AIMIDLE)
+	{
+		if (m_a_running)
+		{
+			m_a_running->stop();
+			m_a_running->drop();
+			m_a_running = 0;
+			if (!g_audioengine->isCurrentlyPlaying(m_a_endrun))
+				g_audioengine->play2D(m_a_endrun);
+		}
+	}
 }
 void Player::StrafeRight()
 {
@@ -108,12 +151,27 @@ void Player::StrafeRight()
 		ChangeState(PLAYER_STRAFERIGHT);
 	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
 		ChangeState(PLAYER_IDLERUN);
+	if (!g_audioengine->isCurrentlyPlaying(m_a_run))
+	{
+		m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
+	}
 }
 void Player::EndStrafeRight()
 {
 	if (m_state == PLAYER_STRAFERIGHT) ChangeState(PLAYER_RUN);
 	else if (m_state == PLAYER_SRIGHTSHOOTING) ChangeState(PLAYER_RUNSHOOTING);
 	else if (m_state == PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RUNAIMING);
+	if (m_state == PLAYER_IDLE || m_state == PLAYER_IDLEAIM || m_state == PLAYER_SHOOT || m_state == PLAYER_AIMIDLE)
+	{
+		if (m_a_running)
+		{
+			m_a_running->stop();
+			m_a_running->drop();
+			m_a_running = 0;
+			if (!g_audioengine->isCurrentlyPlaying(m_a_endrun))
+				g_audioengine->play2D(m_a_endrun);
+		}
+	}
 }
 
 void Player::Shoot()
@@ -121,21 +179,36 @@ void Player::Shoot()
 	switch (m_state)
 	{
 	case PLAYER_IDLE:
-	case PLAYER_AIM:
+		g_audioengine->play2D(m_a_shootdelayed);
 		ChangeState(PLAYER_SHOOT);
 		break;
+	case PLAYER_AIM:
+		ChangeState(PLAYER_SHOOT);
+		g_audioengine->play2D(m_a_shoot);
 		break;
 	case PLAYER_RUN:
+		ChangeState(PLAYER_RUNSHOOTING);
+		g_audioengine->play2D(m_a_shootdelayed);
+		break;
 	case PLAYER_RUNAIMING:
 		ChangeState(PLAYER_RUNSHOOTING);
+		g_audioengine->play2D(m_a_shoot);
 		break;
 	case PLAYER_STRAFELEFT:
+		ChangeState(PLAYER_SLEFTSHOOTING);
+		g_audioengine->play2D(m_a_shootdelayed);
+		break;
 	case PLAYER_SLEFTAIMING:
 		ChangeState(PLAYER_SLEFTSHOOTING);
+		g_audioengine->play2D(m_a_shoot);
 		break;
 	case PLAYER_STRAFERIGHT:
+		ChangeState(PLAYER_SRIGHTSHOOTING);
+		g_audioengine->play2D(m_a_shootdelayed);
+		break;
 	case PLAYER_SRIGHTAIMING:
 		ChangeState(PLAYER_SRIGHTSHOOTING);
+		g_audioengine->play2D(m_a_shoot);
 		break;
 	}
 }

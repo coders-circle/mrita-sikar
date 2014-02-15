@@ -50,6 +50,10 @@ public:
 			m_model->Draw();
 		}
 	}
+	virtual void SetRotation(float rotation_angle, glm::vec3 rotation_axes)
+	{
+		m_orient *= glm::rotate(glm::mat4(), rotation_angle, rotation_axes);
+	}
 
 	const Box& GetAABB() const { return m_aabb; }
 
