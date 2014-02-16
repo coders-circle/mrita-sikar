@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Zombie.h"
 #include "Scene.h"
 
 enum PlayerStates { 
@@ -281,16 +282,24 @@ void Player::Update(double deltaTime)
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	
-	glm::vec3 out;
 	for (unsigned int i = 0; i < collisions.size(); ++i)
 	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	{
 		const Unit* other = *j;
 		if (other->GetTag() == 2)
 		if (m_scene->CheckPotentialCollision(this, other))
-		if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 		{
-			m_position += out; UpdateBoundVolume();
+			glm::vec3 out;
+			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+			{
+				m_position += out; UpdateBoundVolume();
+			}
+
+			if (((Zombie*)other)->IsAttacking())
+			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+			{
+				m_position += out; UpdateBoundVolume();
+			}
 		}
 	}
 	
