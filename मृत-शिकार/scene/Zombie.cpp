@@ -63,18 +63,20 @@ void Zombie::Update(double deltaTime)
 	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	{
 		const Unit* other = *j;
-		if (other->GetTag() == 1)
-		if (m_scene->CheckPotentialCollision(this, other))
+		if (other->GetTag() == 1 || other->GetTag() == 2 && other != this)
 		{
-			glm::vec3 out;
-			if (GetBoundParent().IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), (glm::mat3)((LiveUnit*)other)->GetOrient(), &out))
+			if (m_scene->CheckPotentialCollision(this, other))
 			{
-				m_position += out; UpdateBoundVolume();
-			}
-			if (IsAttacking())
-			if (GetBoundChild(3).IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), (glm::mat3)((LiveUnit*)other)->GetOrient(), &out))
-			{
-				m_position += out; UpdateBoundVolume();
+				glm::vec3 out;
+				if (GetBoundParent().IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), (glm::mat3)((LiveUnit*)other)->GetOrient(), &out))
+				{
+					m_position += out; UpdateBoundVolume();
+				}
+				if (IsAttacking())
+				if (GetBoundChild(3).IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), (glm::mat3)((LiveUnit*)other)->GetOrient(), &out))
+				{
+					m_position += out; UpdateBoundVolume();
+				}
 			}
 		}
 	}

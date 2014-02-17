@@ -252,6 +252,8 @@ void Player::Update(double deltaTime)
 		}
 	}
 
+	const float deltaPos = 90.0f;
+
 	bool posChanged = false;
 	glm::mat3 orient3x3(m_orient);
 	switch (m_state)
@@ -259,23 +261,23 @@ void Player::Update(double deltaTime)
 	case PLAYER_STRAFELEFT:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SLEFTSHOOTING:
-		m_position += orient3x3[0] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position += orient3x3[0] * (float)deltaTime * deltaPos; posChanged = true;
 		break;
 
 	case PLAYER_STRAFERIGHT:
 	case PLAYER_SRIGHTAIMING:
 	case PLAYER_SRIGHTSHOOTING:
-		m_position -= orient3x3[0] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position -= orient3x3[0] * (float)deltaTime * deltaPos; posChanged = true;
 		break;
 	}
 
 	if (m_run)
 	{
-		m_position += orient3x3[2] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position += orient3x3[2] * (float)deltaTime * deltaPos; posChanged = true;
 	}
 	else if (m_backrun)
 	{
-		m_position -= orient3x3[2] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position -= orient3x3[2] * (float)deltaTime * deltaPos; posChanged = true;
 	}
 
 	if (posChanged) UpdateBoundVolume();
