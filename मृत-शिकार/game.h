@@ -153,8 +153,8 @@ void Update(double totalTime, double deltaTime)
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
 		glm::vec3 dist = g_zombies[i].GetPosition() - g_player.GetPosition();
-		float len = glm::sqrt(dist.x*dist.x + dist.y*dist.y + dist.z*dist.z);
-		if ( len < 50.0f)
+		float lensqr = glm::dot(dist, dist);//dist.x*dist.x + dist.y*dist.y + dist.z*dist.z;
+		if ( lensqr < 50.0f*50.0f)
 		{
 			if (!g_zombies[i].IsAttacking())
 			{
@@ -191,7 +191,7 @@ void Update(double totalTime, double deltaTime)
 	g_player.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
 	g_camera.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
 	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);
-	
+
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 
 	g_scene.Update(deltaTime);

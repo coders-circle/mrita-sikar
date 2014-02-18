@@ -18,6 +18,9 @@ public:
 	virtual void Update(double deltaTime) {}
 	virtual void Draw();
 
+	void SetPosition(const glm::vec2 &position) { m_position = position; }
+	const glm::vec2 &GetPosition() { return m_position; }
+
 	bool GetDead() { return m_dead; }
 };
 

@@ -12,7 +12,7 @@ protected:
 	{
 		m_boundVolume.parent.SetCenter(m_model->GetBoundVolume().parent.GetCenter() * glm::mat3(m_orient) + m_position);
 		for (unsigned int i = 0; i < m_boundVolume.children.size(); ++i)
-			m_boundVolume.children[i].SetCenter(m_model->GetBoundVolume().children[i].GetCenter() * glm::mat3(m_orient) + m_position);
+			m_boundVolume.children[i].SetCenter(m_model->GetBoundVolume().children[i].GetCenter() * glm::mat3(glm::transpose(m_orient)) + m_position);
 
 		m_aabb.SetCenter(m_boundVolume.parent.GetCenter());
 		m_aabb.SetExtents(glm::vec3(glm::length(m_boundVolume.parent.GetExtents())));

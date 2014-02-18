@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Zombie.h"
 #include "Scene.h"
 
 enum PlayerStates { 
@@ -251,6 +252,8 @@ void Player::Update(double deltaTime)
 		}
 	}
 
+	const float deltaPos = 90.0f;
+
 	bool posChanged = false;
 	glm::mat3 orient3x3(m_orient);
 	switch (m_state)
@@ -258,39 +261,47 @@ void Player::Update(double deltaTime)
 	case PLAYER_STRAFELEFT:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SLEFTSHOOTING:
-		m_position += orient3x3[0] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position += orient3x3[0] * (float)deltaTime * deltaPos; posChanged = true;
 		break;
 
 	case PLAYER_STRAFERIGHT:
 	case PLAYER_SRIGHTAIMING:
 	case PLAYER_SRIGHTSHOOTING:
-		m_position -= orient3x3[0] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position -= orient3x3[0] * (float)deltaTime * deltaPos; posChanged = true;
 		break;
 	}
 
 	if (m_run)
 	{
-		m_position += orient3x3[2] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position += orient3x3[2] * (float)deltaTime * deltaPos; posChanged = true;
 	}
 	else if (m_backrun)
 	{
-		m_position -= orient3x3[2] * (float)deltaTime * 90.0f; posChanged = true;
+		m_position -= orient3x3[2] * (float)deltaTime * deltaPos; posChanged = true;
 	}
 
 	if (posChanged) UpdateBoundVolume();
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	
-	glm::vec3 out;
 	for (unsigned int i = 0; i < collisions.size(); ++i)
 	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	{
 		const Unit* other = *j;
 		if (other->GetTag() == 2)
 		if (m_scene->CheckPotentialCollision(this, other))
-		if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 		{
-			m_position += out; UpdateBoundVolume();
+			glm::vec3 out;
+			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+			{
+				m_position += out; UpdateBoundVolume();
+			}
+
+			if (((Zombie*)other)->IsAttacking())
+			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+			{
+				m_position += out; UpdateBoundVolume();
+			}
 		}
 	}
 	
