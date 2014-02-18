@@ -18,6 +18,7 @@ public:
 	void Walk();
 	void Idle();
 	void Attack();
+	void Flinch();
 	bool IsAttacking();
 	bool IsIdle();
 	bool IsWalking();

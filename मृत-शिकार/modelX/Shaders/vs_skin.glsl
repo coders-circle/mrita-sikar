@@ -24,4 +24,4 @@ void main()
 	fNormal = mat3(model * bonetransform) * vNormal;				//transpose(inverse(mat3(model * bonetransform))) * vNormal;
 
 	fTexCoord = vTexCoord;
-};
+}

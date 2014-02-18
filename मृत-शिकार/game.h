@@ -64,7 +64,7 @@ void Initialize()
 	g_groundmodel.SetTexture(0, "ground.jpg");
 	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
 
-	g_crossspr.LoadSprite("cross.png", 64.0f, 64.0f);//, 5.0f, 5.0f);
+	g_crossspr.LoadSprite("cross.png", 86.0f, 86.0f);//, 5.0f, 5.0f);
 	g_cross.Initialize(&g_crossspr, glm::vec2(g_width/2.0f, g_height/2.0f));
 
 	g_scene.AddUnit(&g_player);
@@ -163,7 +163,11 @@ void Update(double totalTime, double deltaTime)
 		}
 		else
 		{
-			if (!g_zombies[i].IsWalking())
+			if (g_zombies[i].IsAttacking())
+			{
+				g_zombies[i].Flinch();
+			}
+			else if (!g_zombies[i].IsWalking())
 			{
 				g_zombies[i].Walk();
 			}

@@ -31,13 +31,13 @@ void Zombie::InitAudio()
 {
 	InitNoise();
 	m_a_snoise = g_audioengine->play3D(g_a_noise, irrklang::vec3df(m_position.x, m_position.y, m_position.z), true, false, true);
-	m_a_snoise->setMinDistance(100.0f);
+	m_a_snoise->setMinDistance(50.0f);
 	m_a_snoise->setMaxDistance(2000.0f);
 }
 void Zombie::Update(double deltaTime)
 {
 	bool end = false;
-	m_model->Advance(m_animation, deltaTime, &end);
+	m_model->Advance(m_animation, deltaTime * 1.5, &end);
 
 	if (end)
 	{
@@ -48,7 +48,7 @@ void Zombie::Update(double deltaTime)
 	switch (m_state)
 	{
 	case ZOMBIE_WALK:
-		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f; posChanged = true;
+		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f *2.0f; posChanged = true;
 		if (m_a_snoise)
 		{
 			m_a_snoise->setPosition(irrklang::vec3df(m_position.x, m_position.y, m_position.z));
@@ -81,7 +81,7 @@ void Zombie::Draw()
 
 void Zombie::Walk()
 {
-	m_model->Transition(m_animation, ZOMBIE_WALK, 0.08);
+	m_model->Transition(m_animation, ZOMBIE_WALK, 1.00);
 	m_state = ZOMBIE_WALK;
 }
 
@@ -89,6 +89,12 @@ void Zombie::Idle()
 {
 	m_model->Transition(m_animation, ZOMBIE_IDLE, 0.08);
 	m_state = ZOMBIE_IDLE;
+}
+
+void Zombie::Flinch()
+{
+	m_model->Transition(m_animation, ZOMBIE_FLINCH, 0.08);
+	m_state = ZOMBIE_FLINCH;
 }
 
 void Zombie::Attack()

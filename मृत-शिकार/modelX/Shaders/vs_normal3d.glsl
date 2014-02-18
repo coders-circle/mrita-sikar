@@ -15,4 +15,4 @@ void main()
 	gl_Position = mvp * vPosition;
 	fNormal = mat3(model) * vNormal;				//transpose(inverse(mat3(model))) * vNormal;
 	fTexCoord = vTexCoord;
-};
+}
