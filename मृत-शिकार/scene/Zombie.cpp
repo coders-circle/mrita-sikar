@@ -98,7 +98,7 @@ void Zombie::Draw()
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient);
 	m_model->Animate(m_animation);		// use Animate(m_animation, false) if you don't want to loop the animation	
-	m_model->Draw();
+	m_model->Draw();	//
 }
 
 void Zombie::Walk()
