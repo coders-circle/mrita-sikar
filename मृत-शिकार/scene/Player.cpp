@@ -288,42 +288,25 @@ void Player::Update(double deltaTime)
 	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	{
 		const Unit* other = *j;
-		if (other->GetTag() == 2)	//Zombies
+		if (other != this)
 		{
-
-			if (m_scene->CheckPotentialCollision(this, other))
+			if (other->IsLiveUnit())
 			{
-				glm::vec3 out;
-				if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
-				{
-					m_position += out; UpdateBoundVolume();
-				}
-
+				Collide((LiveUnit*)other);
+			if (other->GetTag() == 2)
 				if (((Zombie*)other)->IsAttacking())
-				{
-					if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
-					{
-						m_position += out; UpdateBoundVolume();
-					}
-				}
+					Collide(other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()));
 			}
-		}
-		else if (other->GetTag() == 3)	//Obstacles
-		{
-			glm::vec3 out;
-			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(glm::translate(glm::mat4(), other->GetPosition())), &out))
-			{
-				m_position += out; UpdateBoundVolume();
-			}
+			else
+				Collide(other);
 		}
 	}
 	
 }
 
-static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));
 void Player::Draw()
 {
-	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient * g_globaltransform
+	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
 	m_model->Animate(m_animation);
 	m_model->Draw();	

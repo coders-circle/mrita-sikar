@@ -28,7 +28,6 @@ protected:
 
 public:
 	Unit(const glm::vec3 &position = glm::vec3(0.0f));
-	//Unit();
 	virtual ~Unit() {}
 
 	virtual void Initialize(Model * model, glm::vec3 position = glm::vec3())
@@ -59,13 +58,11 @@ public:
 	const Box &GetBoundParent() const
 	{
 		return m_boundVolume.parent;
-		//return Box(m_model->GetBoundVolume().parent.GetCenter() + m_position, m_model->GetBoundVolume().parent.GetExtents());
 	}
 
 	const Box &GetBoundChild(unsigned int i) const
 	{
 		return m_boundVolume.children[i];
-		//return Box(m_model->GetBoundVolume().children[i].GetCenter() + m_position, m_model->GetBoundVolume().children[i].GetExtents());
 	}
 
 	const Rect &GetRect() const

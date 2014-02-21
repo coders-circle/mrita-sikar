@@ -160,7 +160,7 @@ void Model::DrawNode(Node * node)
 {
 	unsigned int i;
 	for (i = 0; i<node->meshes.size(); ++i)
-		m_meshes[node->meshes[i]].Draw(m_transform * node->combined_transform);
+		m_meshes[node->meshes[i]].Draw(m_transform * m_scale * node->combined_transform);
 	for (i = 0; i<node->children.size(); ++i)
 		DrawNode(&node->children[i]);
 }
@@ -171,7 +171,7 @@ void Model::Draw()
 		DrawNode(&m_animationtree->rootnode);
 	else
 	for (unsigned i = 0; i < m_meshes.size(); ++i)
-		m_meshes[i].Draw(m_transform);
+		m_meshes[i].Draw(m_transform * m_scale);
 }
 
 
