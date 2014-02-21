@@ -24,6 +24,7 @@ struct ModelAnimation
 class Model
 {
 private:
+	glm::mat4 m_scale;
 	BoundVolume m_boundvolume;
 
 	struct AnimatedModelInfo
@@ -48,6 +49,8 @@ public:
 	void LoadModel(std::string filename);
 	void Draw();
 	void CleanUp();
+
+	void SetScale(float scale) { m_scale = glm::scale(glm::mat4(), glm::vec3(scale)); }
 
 	unsigned int AddMesh(Mesh &mesh);
 	void SetTexture(unsigned int mesh, std::string filename);
