@@ -31,8 +31,12 @@ void Zombie::InitAudio()
 {
 	InitNoise();
 	m_a_snoise = g_audioengine->play3D(g_a_noise, irrklang::vec3df(m_position.x, m_position.y, m_position.z), true, false, true);
-	m_a_snoise->setMinDistance(50.0f);
-	m_a_snoise->setMaxDistance(2000.0f);
+	if (m_a_snoise)
+	{
+
+		m_a_snoise->setMinDistance(50.0f);
+		m_a_snoise->setMaxDistance(2000.0f);
+	}
 }
 void Zombie::Update(double deltaTime)
 {
@@ -77,6 +81,14 @@ void Zombie::Update(double deltaTime)
 				{
 					m_position += out; UpdateBoundVolume();
 				}
+			}
+		}
+		else if (other->GetTag() == 3)
+		{
+			glm::vec3 out;
+			if (GetBoundParent().IntersectBox((glm::mat3)m_orient, other->GetBoundParent(), glm::mat3(glm::translate(glm::mat4(), other->GetPosition())), &out))
+			{
+				m_position += out; UpdateBoundVolume();
 			}
 		}
 	}

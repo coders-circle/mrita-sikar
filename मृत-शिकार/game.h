@@ -6,6 +6,7 @@
 #include "scene/Ground.h"
 #include "scene/TPCamera.h"
 #include "scene/Unit2d.h"
+#include "scene/WorldObject.h"
 
 #include "audio/audio.h"
 
@@ -22,7 +23,11 @@ int g_height = 650;
 Scene g_scene(&g_renderer);
 TPCamera g_camera;
 Model g_humanmodel(&g_renderer), g_zombiemodel(&g_renderer);
+Model g_housemodel(&g_renderer);
+Model g_cratemodel(&g_renderer);
 Player g_player;
+WorldObject g_house;
+WorldObject g_crate;
 
 #define MAX_ZOMBIES 2
 Zombie g_zombies[MAX_ZOMBIES];
@@ -37,13 +42,24 @@ irrklang::ISoundEngine* g_audioengine = 0;
 
 void Initialize()
 {
-	
 	g_renderer.Initialize();
 	g_scene.Initialize();
 	g_scene.SetCamera(&g_camera);
 
 	g_humanmodel.LoadModel("human.mdl");
-	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, -70.0f));
+	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 70.0f));
+
+	g_housemodel.LoadModel("hc.mdl");
+	//g_housemodel.SetTransform(glm::scale(glm::vec3(0.2f, 0.2f, 0.2f)));
+	//g_house.Initialize(&g_housemodel, &g_scene, glm::vec3(100.0f, -3.0f*g_housemodel.GetMinY() - 45.0f, -200.0f), glm::vec3(3.0f, 3.0f, 3.0f));
+	g_house.Initialize(&g_housemodel, &g_scene, glm::vec3(100.0f, -g_housemodel.GetMinY() - 45.0f, -200.0f));
+
+	g_cratemodel.LoadModel("crate.mdl");
+	//g_cratemodel.SetBoundBox(Box(glm::vec3(50.0f, -40.0f, 100.0f), glm::vec3(10.0f)));
+	//g_cratemodel.SetTransform((glm::scale(glm::vec3(0.2f, 0.2f, 0.2f))));
+	
+	//g_crate.Initialize(&g_cratemodel, &g_scene, glm::vec3(50.0f, crate_ypos, 100.0f), glm::vec3(0.2f, 0.2f, 0.2f));
+	g_crate.Initialize(&g_cratemodel, &g_scene, glm::vec3(50.0f, g_cratemodel.GetMaxY() - 45.0f, 100.0f));
 
 	g_zombiemodel.LoadModel("zombie.mdl");
 	float x = -200.0f, z= -400.0f;
@@ -64,14 +80,17 @@ void Initialize()
 	g_groundmodel.SetTexture(0, "ground.jpg");
 	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
 
-	g_crossspr.LoadSprite("cross.png", 86.0f, 86.0f);//, 5.0f, 5.0f);
+	g_crossspr.LoadSprite("cross.png", 100.0f, 100.0f);//, 5.0f, 5.0f);
 	g_cross.Initialize(&g_crossspr, glm::vec2(g_width/2.0f, g_height/2.0f));
 
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
+	g_scene.AddUnit(&g_crate);
+	g_scene.AddUnit(&g_house);
 	g_scene.AddUnit(&g_cross);
 
-	g_camera.Initialize(&g_player, 70.0f);	// Todo :: Make the distance parameter vec3
+
+	g_camera.Initialize(&g_player, 110.0f);	// Todo :: Make the distance parameter vec3
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
@@ -99,6 +118,7 @@ void CleanUp()
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
+	g_housemodel.CleanUp();
 
 	g_player.CleanUp();
 	//g_zombie.CleanUp();
@@ -112,6 +132,7 @@ void CleanUp()
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
+
 }
 
 bool g_justDown = false;
@@ -153,7 +174,7 @@ void Update(double totalTime, double deltaTime)
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
 		glm::vec3 dist = g_zombies[i].GetPosition() - g_player.GetPosition();
-		float lensqr = glm::dot(dist, dist);//dist.x*dist.x + dist.y*dist.y + dist.z*dist.z;
+		float lensqr = glm::dot(dist, dist);
 		if ( lensqr < 50.0f*50.0f)
 		{
 			if (!g_zombies[i].IsAttacking())
@@ -181,8 +202,6 @@ void Update(double totalTime, double deltaTime)
 		}
 	}
 
-
-	
 	g_audioengine->setListenerPosition(irrklang::vec3df(g_player.GetPosition().x, g_player.GetPosition().y, g_player.GetPosition().z), 
 		irrklang::vec3df(g_player.GetOrient()[2].x, g_player.GetOrient()[2].y, g_player.GetOrient()[2].z),
 		irrklang::vec3df(0.0f, 0.0f, 0.0f), irrklang::vec3df(0.0f, -1.0f, 0.0f));
@@ -193,6 +212,7 @@ void Update(double totalTime, double deltaTime)
 	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
+	g_cross.SetPosition(glm::vec2(g_width/2 - 50, g_height/2 - 50));
 
 	g_scene.Update(deltaTime);
 }

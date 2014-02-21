@@ -48,7 +48,7 @@ public:
 	{
 		if (m_model)
 		{
-			m_model->SetTransform(glm::translate(glm::mat4(), m_position));
+			m_model->SetTransform( glm::translate(glm::mat4(), m_position));
 			m_model->Draw();
 		}
 	}
@@ -74,6 +74,10 @@ public:
 	}
 
 	bool IsLiveUnit() const { return m_liveUnit; }
-
+	
+	glm::vec3 GetPosition() const
+	{
+		return m_position;
+	}
 
 };

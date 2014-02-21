@@ -2,12 +2,19 @@
 #include "stdinc.h"
 #include "Mesh.h"
 
-Mesh::Mesh(Renderer * renderer) : m_texture(0), m_loaded(false), m_bones(NULL), m_renderer(renderer)
+Mesh::Mesh(Renderer * renderer) : m_texture(0), m_loaded(false), m_bones(NULL), m_renderer(renderer), m_miny(0.0f), m_maxy(0.0f)
 {}
 
 void Mesh::LoadData(const std::vector<Vertex> &vertices, const std::vector<unsigned short> &indices)
 {
 	if (m_loaded) CleanUp();
+	m_maxy = vertices[0].position.y;
+	m_miny = vertices[0].position.y;
+	for (int i = 0; i < vertices.size(); i++)
+	{
+		if (vertices[i].position.y > m_maxy) m_maxy = vertices[i].position.y;
+		if (vertices[i].position.y < m_miny) m_miny = vertices[i].position.y;
+	}
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);

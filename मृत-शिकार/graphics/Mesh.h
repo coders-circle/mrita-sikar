@@ -25,6 +25,8 @@ private:
 	unsigned int m_numIndices;
 	bool m_loaded;
 	Renderer * m_renderer;
+	float m_miny, m_maxy;
+
 public:
 	Mesh(Renderer * renderer = NULL);
 	void SetRenderer(Renderer * renderer) { m_renderer = renderer; }
@@ -41,5 +43,7 @@ public:
 	static void CreateSphere(Mesh* mesh, float radius, unsigned int rings, unsigned int sectors);
 
 	std::vector<Bone>* &GetBones() { return m_bones; }
+	float GetMinY(){ return m_miny; }
+	float GetMaxY(){ return m_maxy; }
 };
 

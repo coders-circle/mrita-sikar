@@ -288,17 +288,30 @@ void Player::Update(double deltaTime)
 	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	{
 		const Unit* other = *j;
-		if (other->GetTag() == 2)
-		if (m_scene->CheckPotentialCollision(this, other))
+		if (other->GetTag() == 2)	//Zombies
+		{
+
+			if (m_scene->CheckPotentialCollision(this, other))
+			{
+				glm::vec3 out;
+				if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+				{
+					m_position += out; UpdateBoundVolume();
+				}
+
+				if (((Zombie*)other)->IsAttacking())
+				{
+					if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+					{
+						m_position += out; UpdateBoundVolume();
+					}
+				}
+			}
+		}
+		else if (other->GetTag() == 3)	//Obstacles
 		{
 			glm::vec3 out;
-			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
-			{
-				m_position += out; UpdateBoundVolume();
-			}
-
-			if (((Zombie*)other)->IsAttacking())
-			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
+			if (GetBoundParent().IntersectBox(orient3x3, other->GetBoundParent(), glm::mat3(glm::translate(glm::mat4(), other->GetPosition())), &out))
 			{
 				m_position += out; UpdateBoundVolume();
 			}

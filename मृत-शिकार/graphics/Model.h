@@ -67,6 +67,25 @@ public:
 		m_boundvolume.parent = box;
 	}
 
+	float GetMinY()
+	{
+		float miny = m_meshes[0].GetMinY();
+		for (unsigned int i = 1; i < m_meshes.size(); i++)
+		{
+			if (miny > m_meshes[i].GetMinY()) miny = m_meshes[i].GetMinY();
+		}
+		return miny;
+	}
+	float GetMaxY()
+	{
+		float maxy = m_meshes[0].GetMaxY();
+		for (unsigned int i = 1; i < m_meshes.size(); i++)
+		{
+			if (maxy < m_meshes[i].GetMaxY()) maxy = m_meshes[i].GetMaxY();
+		}
+		return maxy;
+	}
+
 /*	void Translate(const glm::vec3 &translation);
 	void TranslateAbs(const glm::vec3 &translation);
 	void Rotate(const float angle, const glm::vec3 &axis);

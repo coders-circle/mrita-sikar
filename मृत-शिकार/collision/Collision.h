@@ -35,6 +35,12 @@ public:
 	{
 		return Rect(m_center.x-m_extents.x, m_center.y-m_extents.y, m_extents.x*2.0f, m_extents.y*2.0f);
 	}
+
+	Box operator * (glm::vec3 scale)
+	{
+		//m_extents *= scale;
+		return Box(m_center, m_extents*scale);
+	}
 };
 
 class Ray
