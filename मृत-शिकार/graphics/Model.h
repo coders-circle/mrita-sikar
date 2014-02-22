@@ -50,7 +50,17 @@ public:
 	void Draw();
 	void CleanUp();
 
-	void SetScale(float scale) { m_scale = glm::scale(glm::mat4(), glm::vec3(scale)); }
+	void SetScale(float scale) {
+		m_scale = glm::scale(glm::mat4(), glm::vec3(scale));
+		m_boundvolume.parent.SetCenter(m_boundvolume.parent.GetCenter() * scale);
+		m_boundvolume.parent.SetExtents(m_boundvolume.parent.GetExtents() * scale);
+
+		for (unsigned int i = 0; i < m_boundvolume.children.size(); ++i)
+		{
+			m_boundvolume.children[i].SetCenter(m_boundvolume.children[i].GetCenter() * scale);
+			m_boundvolume.children[i].SetExtents(m_boundvolume.children[i].GetExtents() * scale);
+		}
+	}
 
 	unsigned int AddMesh(Mesh &mesh);
 	void SetTexture(unsigned int mesh, std::string filename);
