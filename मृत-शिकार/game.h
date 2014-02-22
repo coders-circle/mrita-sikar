@@ -38,6 +38,11 @@ Unit2d g_cross;
 Model g_groundmodel(&g_renderer);
 Ground g_ground;
 
+/*
+Model g_testmodel(&g_renderer);
+Unit g_test;
+//*/
+
 irrklang::ISoundEngine* g_audioengine = 0;
 
 void Initialize()
@@ -47,7 +52,7 @@ void Initialize()
 	g_scene.SetCamera(&g_camera);
 
 	g_humanmodel.LoadModel("human.mdl");
-	g_humanmodel.SetScale(1 / 4.0f);
+	//g_humanmodel.SetScale(1 / 4.0f);
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 70.0f));
 
 	g_housemodel.LoadModel("hc.mdl");
@@ -56,11 +61,21 @@ void Initialize()
 	g_house.Initialize(&g_housemodel,  glm::vec3(100.0f, -g_housemodel.GetMinY() - 45.0f, -200.0f));
 
 	g_cratemodel.LoadModel("crate.mdl");
+	g_cratemodel.SetScale(1 / 2.0f);
 	//g_cratemodel.SetBoundBox(Box(glm::vec3(50.0f, -40.0f, 100.0f), glm::vec3(10.0f)));
 	//g_cratemodel.SetTransform((glm::scale(glm::vec3(0.2f, 0.2f, 0.2f))));
 	
 	//g_crate.Initialize(&g_cratemodel, &g_scene, glm::vec3(50.0f, crate_ypos, 100.0f), glm::vec3(0.2f, 0.2f, 0.2f));
-	g_crate.Initialize(&g_cratemodel, glm::vec3(50.0f, g_cratemodel.GetMaxY() - 45.0f, 100.0f));
+	g_crate.Initialize(&g_cratemodel, glm::vec3(50.0f, g_cratemodel.GetMaxY() - 45.0f - 45.0f, 100.0f));
+
+	/*
+	Mesh tmesh(&g_renderer);
+	Mesh::CreateBox(&tmesh, g_crate.GetBoundParent().GetExtents());
+	g_testmodel.AddMesh(tmesh);
+	g_testmodel.SetTexture(0, "ground.jpg");
+	g_test.Initialize(&g_testmodel, g_crate.GetBoundParent().GetCenter());
+	g_scene.AddUnit(&g_test);
+	//*/
 
 	g_zombiemodel.LoadModel("zombie.mdl");
 	float x = -200.0f, z= -400.0f;
@@ -120,6 +135,11 @@ void CleanUp()
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
 	g_housemodel.CleanUp();
+
+	/*
+	g_testmodel.CleanUp();
+	g_test.CleanUp();
+	//*/
 
 	g_player.CleanUp();
 	//g_zombie.CleanUp();

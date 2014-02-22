@@ -304,9 +304,10 @@ void Player::Update(double deltaTime)
 	
 }
 
+static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));
 void Player::Draw()
 {
-	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient
+	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient * g_globaltransform
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
 	m_model->Animate(m_animation);
 	m_model->Draw();	
