@@ -114,6 +114,7 @@
     <ClInclude Include="scene\TPCamera.h" />
     <ClInclude Include="scene\Unit.h" />
     <ClInclude Include="scene\Unit2d.h" />
+    <ClInclude Include="scene\WorldMap.h" />
     <ClInclude Include="scene\WorldObject.h" />
     <ClInclude Include="scene\Zombie.h" />
   </ItemGroup>

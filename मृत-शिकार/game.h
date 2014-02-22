@@ -6,7 +6,7 @@
 #include "scene/Ground.h"
 #include "scene/TPCamera.h"
 #include "scene/Unit2d.h"
-#include "scene/WorldObject.h"
+#include "scene/WorldMap.h"
 
 #include "audio/audio.h"
 
@@ -23,11 +23,14 @@ int g_height = 650;
 Scene g_scene(&g_renderer);
 TPCamera g_camera;
 Model g_humanmodel(&g_renderer), g_zombiemodel(&g_renderer);
-Model g_housemodel(&g_renderer);
-Model g_cratemodel(&g_renderer);
+//Model g_housemodel(&g_renderer);
+//Model g_cratemodel(&g_renderer);
 Player g_player;
-WorldObject g_house;
-WorldObject g_crate;
+//WorldObject g_house;
+//WorldObject g_crate;
+
+WorldMap g_testmap;
+
 
 #define MAX_ZOMBIES 2
 Zombie g_zombies[MAX_ZOMBIES];
@@ -49,18 +52,21 @@ void Initialize()
 	g_humanmodel.LoadModel("human.mdl");
 	g_humanmodel.SetScale(1 / 4.0f);
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 70.0f));
+	g_testmap.Initialize("testmap.map", &g_renderer, &g_scene);
 
-	g_housemodel.LoadModel("hc.mdl");
+	//g_housemodel.LoadModel("hc.mdl");
+	//g_housemodel.SetScale(3.0f);
 	//g_housemodel.SetTransform(glm::scale(glm::vec3(0.2f, 0.2f, 0.2f)));
 	//g_house.Initialize(&g_housemodel, &g_scene, glm::vec3(100.0f, -3.0f*g_housemodel.GetMinY() - 45.0f, -200.0f), glm::vec3(3.0f, 3.0f, 3.0f));
-	g_house.Initialize(&g_housemodel,  glm::vec3(100.0f, -g_housemodel.GetMinY() - 45.0f, -200.0f));
+	//g_house.Initialize(&g_housemodel,  glm::vec3(100.0f, -g_housemodel.GetMinY() - 45.0f, -200.0f));
 
-	g_cratemodel.LoadModel("crate.mdl");
+	//g_cratemodel.LoadModel("crate.mdl");
+	//g_cratemodel.SetScale(0.2f);
 	//g_cratemodel.SetBoundBox(Box(glm::vec3(50.0f, -40.0f, 100.0f), glm::vec3(10.0f)));
 	//g_cratemodel.SetTransform((glm::scale(glm::vec3(0.2f, 0.2f, 0.2f))));
 	
 	//g_crate.Initialize(&g_cratemodel, &g_scene, glm::vec3(50.0f, crate_ypos, 100.0f), glm::vec3(0.2f, 0.2f, 0.2f));
-	g_crate.Initialize(&g_cratemodel, glm::vec3(50.0f, g_cratemodel.GetMaxY() - 45.0f, 100.0f));
+	//g_crate.Initialize(&g_cratemodel, glm::vec3(50.0f, g_cratemodel.GetMaxY() - 45.0f, 100.0f));
 
 	g_zombiemodel.LoadModel("zombie.mdl");
 	float x = -200.0f, z= -400.0f;
@@ -86,8 +92,8 @@ void Initialize()
 
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
-	g_scene.AddUnit(&g_crate);
-	g_scene.AddUnit(&g_house);
+	//g_scene.AddUnit(&g_crate);
+	//g_scene.AddUnit(&g_house);
 	g_scene.AddUnit(&g_cross);
 
 
@@ -119,7 +125,7 @@ void CleanUp()
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
-	g_housemodel.CleanUp();
+//	g_housemodel.CleanUp();
 
 	g_player.CleanUp();
 	//g_zombie.CleanUp();

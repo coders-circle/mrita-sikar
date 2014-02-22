@@ -10,5 +10,9 @@ public:
 	{
 		m_tag = 3;	//obstacles
 	}
+	void AddToScene(Scene* scene)
+	{
+		scene->AddUnit(this);
+	}
 	
 };
