@@ -142,7 +142,6 @@
     <ClCompile Include="scene\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="shaders\fs_normal3d.glsl" />
     <None Include="shaders\fs_sprite.glsl" />
     <None Include="shaders\vs_normal3d.glsl" />

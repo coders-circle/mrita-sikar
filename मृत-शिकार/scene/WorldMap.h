@@ -25,7 +25,7 @@ public:
 			return;
 		}
 		int n = 0;
-		std::cin >> n;
+		is >> n;
 
 		m_worldmodels.resize(n);
 		m_worldobjects.resize(n);
@@ -38,9 +38,11 @@ public:
 			is >> x >> y >> z >> s;
 			m_worldmodels[i].SetRenderer(renderer);
 			m_worldmodels[i].LoadModel(mdlfilename);
+			m_worldmodels[i].SetScale(s);
 			m_worldobjects[i].Initialize(&m_worldmodels[i], glm::vec3(x, y, z));
+			m_worldobjects[i].AddToScene(scene);
 		}
-
+		is.close();
 
 		//while (!is.eof())
 		//{

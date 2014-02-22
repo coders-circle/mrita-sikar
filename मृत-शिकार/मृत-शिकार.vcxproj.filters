@@ -256,6 +256,5 @@
     <None Include="shaders\vs_sprite.glsl">
       <Filter>shaders</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
 </Project>
