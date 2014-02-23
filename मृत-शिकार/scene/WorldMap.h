@@ -44,6 +44,8 @@ public:
 		}
 		is.close();
 
+		m_worldobjects[0].RotateY(90.0f);
+
 		//while (!is.eof())
 		//{
 		//	float x = 0.0f, y = 0.0f, z = 0.0f, s = 1.0f;
