@@ -64,9 +64,8 @@ void Zombie::Update(double deltaTime)
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	for (unsigned int i = 0; i < collisions.size(); ++i)
-	for (UnitIterator j = collisions[i]->begin(); j != collisions[i]->end(); ++j)
 	{
-		const Unit* other = *j;
+		const Unit* other = collisions[i];
 		if (other != this)
 		{
 			if (other->IsLiveUnit())
