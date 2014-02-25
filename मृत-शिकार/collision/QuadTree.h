@@ -19,11 +19,11 @@ private:
 public:
 	QuadTree() { m_nodes = NULL; }
 	~QuadTree() { Clear(); }
-	
+
 	void Initialize(unsigned char depth, const Rect &rect) {
 		m_depth = depth; m_rect = rect;
 	}
-	
+
 	void Split()
 	{
 		m_nodes = new QuadTree[4];
@@ -95,14 +95,16 @@ public:
 			if (!m_nodes)
 				Split();
 
+			std::vector<UnitIterator> toerase;
 			for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
 			{
 				int index = GetIndex(*i);
 				if (index != -1) {
 					m_nodes[index].Insert(*i);
-					m_units.erase(i);
+					toerase.push_back(i);
 				}
 			}
+			for (unsigned int i = 0; i < toerase.size(); ++i) m_units.erase(toerase[i]);
 		}
 	}
 
@@ -117,18 +119,30 @@ public:
 				return;
 			}
 		}
-		
+
 		m_units.erase(unit);
 	}
 
 	const std::unordered_set<const Unit*> &GetUnits() const
-	{ return m_units; }
+	{
+		return m_units;
+	}
 
 	void GetPotentialCollisions(const Unit* unit, UnitCollections &unitCollections) const
 	{
-		int index = GetIndex(unit);
-		if (index != -1 && m_nodes) {
-			m_nodes[index].GetPotentialCollisions(unit, unitCollections);
+		if (m_nodes)
+		{
+			int index = GetIndex(unit);
+			if (index != -1) {
+				m_nodes[index].GetPotentialCollisions(unit, unitCollections);
+			}
+			else
+			{
+				m_nodes[0].GetPotentialCollisions(unit, unitCollections);
+				m_nodes[1].GetPotentialCollisions(unit, unitCollections);
+				m_nodes[2].GetPotentialCollisions(unit, unitCollections);
+				m_nodes[3].GetPotentialCollisions(unit, unitCollections);
+			}
 		}
 		unitCollections.push_back(&m_units);
 	}

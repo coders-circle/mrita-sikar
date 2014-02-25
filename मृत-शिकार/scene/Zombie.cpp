@@ -75,6 +75,7 @@ void Zombie::Update(double deltaTime)
 				Collide(other);
 		}
 	}
+
 }
 
 void Zombie::Draw()
