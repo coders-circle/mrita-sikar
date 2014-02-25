@@ -3,8 +3,9 @@
 #include "../scene/Unit.h"
 #include <unordered_set>
 
-typedef std::vector<const std::unordered_set<const Unit*>*> UnitCollections;
-typedef std::unordered_set<const Unit*>::iterator UnitIterator;
+//typedef std::vector<const std::unordered_set<const Unit*>*> UnitCollections;
+typedef std::vector<const Unit *> UnitCollections;
+
 
 #define MAX_UNITS_PER_NODE 5
 #define MAX_DEPTH_QUADTREE 5
@@ -15,6 +16,7 @@ private:
 	unsigned char m_depth;
 	Rect m_rect;
 	std::unordered_set<const Unit*> m_units;
+	typedef std::unordered_set<const Unit*>::iterator UnitIterator;
 
 public:
 	QuadTree() { m_nodes = NULL; }
@@ -144,7 +146,8 @@ public:
 				m_nodes[3].GetPotentialCollisions(unit, unitCollections);
 			}
 		}
-		unitCollections.push_back(&m_units);
+		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
+			unitCollections.push_back(*i);
 	}
 
 };

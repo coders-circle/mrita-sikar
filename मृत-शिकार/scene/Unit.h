@@ -6,6 +6,7 @@ class Unit
 {
 protected:
 	Model * m_model;
+	glm::mat4 m_orient;
 	Scene * m_scene;
 
 	glm::vec3 m_position;
@@ -20,10 +21,15 @@ protected:
 
 	void UpdateBoundVolume()
 	{
-		m_boundVolume.parent.SetCenter(m_model->GetBoundVolume().parent.GetCenter() + m_position);
+		m_boundVolume.parent.SetCenter(glm::mat3(m_orient) * m_model->GetBoundVolume().parent.GetCenter() + m_position);
+		m_boundVolume.parent.SetExtents(glm::abs(glm::mat3(m_orient) *m_model->GetBoundVolume().parent.GetExtents()));
 		for (unsigned int i = 0; i < m_boundVolume.children.size(); ++i)
-			m_boundVolume.children[i].SetCenter(m_model->GetBoundVolume().children[i].GetCenter() + m_position);
+		{
+			m_boundVolume.children[i].SetCenter(glm::mat3(m_orient) *m_model->GetBoundVolume().children[i].GetCenter() + m_position);
+			m_boundVolume.children[i].SetExtents(glm::abs(glm::mat3(m_orient) *m_model->GetBoundVolume().children[i].GetExtents()));
+		}
 		m_rect = m_boundVolume.parent.GetRect();
+
 	}
 
 public:
@@ -47,7 +53,7 @@ public:
 	{
 		if (m_model)
 		{
-			m_model->SetTransform( glm::translate(glm::mat4(), m_position));
+			m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient);
 			m_model->Draw();
 		}
 	}
@@ -76,5 +82,9 @@ public:
 	{
 		return m_position;
 	}
+
+	void RotateX(float xangle) { m_orient = glm::rotate(glm::mat4(), xangle, glm::vec3(1.0f, 0.0f, 0.0f)) * m_orient; UpdateBoundVolume(); }
+	void RotateY(float yangle) { m_orient = glm::rotate(glm::mat4(), yangle, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient; UpdateBoundVolume(); }
+	void RotateZ(float zangle) { m_orient = glm::rotate(glm::mat4(), zangle, glm::vec3(0.0f, 0.0f, 1.0f)) * m_orient; UpdateBoundVolume(); }
 
 };
