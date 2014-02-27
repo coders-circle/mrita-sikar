@@ -25,7 +25,6 @@ private:
 	unsigned int m_numIndices;
 	bool m_loaded;
 	Renderer * m_renderer;
-	float m_miny, m_maxy;
 
 public:
 	Mesh(Renderer * renderer = NULL);
@@ -33,7 +32,7 @@ public:
 
 	void LoadData(const std::vector<Vertex> &vertices, const std::vector<unsigned short> &indices);
 	void LoadData(const std::vector<SkinVertex> &vertices, const std::vector<unsigned short> &indices);
-	void Draw(const glm::mat4 &transform);
+	void Draw(const glm::mat4 &transform, unsigned int pass);
 	void CleanUp();
 
 	void SetTexture(unsigned int texture) { m_texture = texture; }
@@ -43,7 +42,5 @@ public:
 	static void CreateSphere(Mesh* mesh, float radius, unsigned int rings, unsigned int sectors);
 
 	std::vector<Bone>* &GetBones() { return m_bones; }
-	float GetMinY(){ return m_miny; }
-	float GetMaxY(){ return m_maxy; }
 };
 

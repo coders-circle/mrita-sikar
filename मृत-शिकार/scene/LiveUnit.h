@@ -68,12 +68,12 @@ public:
 	const glm::mat4 &GetOrient() const { return m_orient; }
 
 	virtual void Update() { UpdateBoundVolume(); }
-	virtual void Draw()
+	virtual void Draw(unsigned int pass)
 	{
 		if (m_model)
 		{
 			m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient);
-			m_model->Draw();
+			m_model->Draw(pass);
 		}
 	}
 	virtual void SetRotation(float rotation_angle, glm::vec3 rotation_axes)

@@ -13,11 +13,14 @@ private:
 	Camera * m_camera;
 
 	QuadTree m_quadTree;
+	bool m_firstPass;
 
 public:
 	Scene(Renderer * renderer = NULL);
 	void SetRenderer(Renderer * renderer) { m_renderer = renderer; }
 	Renderer* GetRenderer() { return m_renderer; }
+
+	bool IsFirstPass() { return m_firstPass; }
 
 	void Initialize();
 	void Resize(float width, float height);

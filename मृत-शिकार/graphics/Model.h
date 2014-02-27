@@ -40,14 +40,14 @@ private:
 
 	void ReadNode(std::fstream &file, Node * node, std::map<unsigned int, Node*> &map); 
 	void UpdateNode(Node * node, Node * parentnode);
-	void DrawNode(Node * node);
+	void DrawNode(Node * node, unsigned int pass);
 	Renderer * m_renderer;
 public:
 	Model(Renderer * renderer = NULL);
 	void SetRenderer(Renderer * renderer) { m_renderer = renderer; }
 
 	void LoadModel(std::string filename);
-	void Draw();
+	void Draw(unsigned int pass);
 	void CleanUp();
 
 	void SetScale(float scale) {
@@ -78,25 +78,6 @@ public:
 	void SetBoundBox(const Box &box)
 	{
 		m_boundvolume.parent = box;
-	}
-
-	float GetMinY()
-	{
-		float miny = m_meshes[0].GetMinY();
-		for (unsigned int i = 1; i < m_meshes.size(); i++)
-		{
-			if (miny > m_meshes[i].GetMinY()) miny = m_meshes[i].GetMinY();
-		}
-		return miny;
-	}
-	float GetMaxY()
-	{
-		float maxy = m_meshes[0].GetMaxY();
-		for (unsigned int i = 1; i < m_meshes.size(); i++)
-		{
-			if (maxy < m_meshes[i].GetMaxY()) maxy = m_meshes[i].GetMaxY();
-		}
-		return maxy;
 	}
 
 /*	void Translate(const glm::vec3 &translation);
