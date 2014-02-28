@@ -41,12 +41,17 @@ void Renderer::InitShaders()
 		{ GL_VERTEX_SHADER, "shaders\\vs_normal3d.glsl" },
 		{ GL_FRAGMENT_SHADER, "shaders\\fs_sprite.glsl" },
 		{ GL_VERTEX_SHADER, "shaders\\vs_sprite.glsl" },
+		{ GL_VERTEX_SHADER, "shaders\\vs_depthmap_skin.glsl" },
+		{ GL_FRAGMENT_SHADER, "shaders\\fs_depthmap.glsl" },
+		{ GL_VERTEX_SHADER, "shaders\\vs_depthmap_normal.glsl" },
 	};
 
 	std::vector<ProgramInfo> programs = { 
 		{ { 0, 1 }, &m_techniques.skin.program },
 		{ { 1, 2 }, &m_techniques.normal3D.program },
-		{ { 3, 4 }, &m_techniques.sprite.program }
+		{ { 3, 4 }, &m_techniques.sprite.program },
+		{ { 5, 6 }, &m_techniques.depthMapSkin.program },
+		{ { 6, 7 }, &m_techniques.depthMapNormal.program },
 	};
 	CreatePrograms(shaders, programs);
 

@@ -77,7 +77,7 @@ void Mesh::Draw(const glm::mat4 &transform, unsigned int pass)
 	if (!m_loaded) return;
 
 	Techniques &techniques = m_renderer->GetTechniques();
-	glm::mat4 &pretransform = m_renderer->GetViewProjection3d();
+	const glm::mat4 &pretransform = m_renderer->GetViewProjection3d();
 	
 	if (m_texture > 0)
 	{

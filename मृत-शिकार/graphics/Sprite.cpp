@@ -70,7 +70,7 @@ void Sprite::DrawSprite(unsigned imageid, float posX, float posY)
 	glm::vec2 uv((float)(imageid % m_numCols) / (float)m_numCols, - (float)(imageid / m_numCols) / (float)m_numRows);
 
 	Techniques &techniques = m_renderer->GetTechniques();
-	glm::mat4 &pretransform = m_renderer->GetProjection2d();
+	const glm::mat4 &pretransform = m_renderer->GetProjection2d();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
@@ -93,7 +93,7 @@ void Sprite::DrawBillboard(unsigned imageid, const glm::mat4 &transform)
 	glm::vec2 uv((float)(imageid % m_numCols) / (float)m_numCols, -(float)(imageid / m_numCols) / (float)m_numRows);
 
 	Techniques &techniques = m_renderer->GetTechniques();
-	glm::mat4 &pretransform = m_renderer->GetViewProjectionBB();
+	const glm::mat4 &pretransform = m_renderer->GetViewProjectionBB();
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture);

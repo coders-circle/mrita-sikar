@@ -2,10 +2,12 @@
 
 in vec3 fNormal;
 in vec2 fTexCoord;
+in vec4 fShadowCoord;
 
 layout (location = 0) out vec4 fColor;
 
 uniform sampler2D texture_sample;
+uniform sampler2D texture_depthmap;
 
 void main()
 {

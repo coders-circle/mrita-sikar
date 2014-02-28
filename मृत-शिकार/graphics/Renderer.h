@@ -11,7 +11,7 @@ private:
 	Techniques m_techniques;
 	void InitShaders();
 
-	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_viewProjectionBB;
+	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_viewProjectionBB, m_lightViewProjection;
 public:
 	enum Passes { SHADOW_PASS, REFLECTION_PASS, NORMAL_PASS };
 
@@ -23,11 +23,17 @@ public:
 		m_viewProjectionBB = m_projection * glm::mat4(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.0f), view[3]);
 	}
 
+	void UpdateShadowMatrix(const glm::mat4 &lightViewProjection)
+	{
+		m_lightViewProjection = lightViewProjection;
+	}
+
 	void BeginRender(unsigned int pass)
 	{
 		switch (pass)
 		{
 		case NORMAL_PASS:
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			break;
 		}
@@ -47,8 +53,9 @@ public:
 	void CleanUp();
 
 	Techniques& GetTechniques(){ return m_techniques; }
-	glm::mat4& GetViewProjection3d() { return m_viewProjection3d; }
-	glm::mat4& GetViewProjectionBB() { return m_viewProjectionBB; }
-	glm::mat4& GetProjection2d() { return m_projection2d; }
+	const glm::mat4& GetViewProjection3d() { return m_viewProjection3d; }
+	const glm::mat4& GetViewProjectionBB() { return m_viewProjectionBB; }
+	const glm::mat4& GetProjection2d() { return m_projection2d; }
+	const glm::mat4& GetLightViewProjection() { return m_lightViewProjection; }
 };
 

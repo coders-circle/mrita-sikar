@@ -256,5 +256,14 @@
     <None Include="shaders\vs_sprite.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="shaders\vs_depthmap_normal.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vs_depthmap_skin.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\fs_depthmap.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
