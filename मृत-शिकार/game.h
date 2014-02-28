@@ -41,21 +41,15 @@ Unit2d g_cross;
 Model g_groundmodel(&g_renderer);
 Ground g_ground;
 
-/*
-Model g_testmodel(&g_renderer);
-Unit g_test;
-//*/
-
 irrklang::ISoundEngine* g_audioengine = 0;
 
 void Initialize()
 {
 	g_renderer.Initialize();
-	g_scene.Initialize();
+	g_scene.Initialize(Rect(-5000, -5000, 10000, 10000));	// quadtree needs limits of the world
 	g_scene.SetCamera(&g_camera);
 
 	g_humanmodel.LoadModel("human.mdl");
-	//g_humanmodel.SetScale(1 / 4.0f);
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
 	g_testmap.Initialize("testmap.map", &g_renderer, &g_scene);
 
@@ -118,13 +112,8 @@ void CleanUp()
 	g_groundmodel.CleanUp();
 //	g_housemodel.CleanUp();
 
-	/*
-	g_testmodel.CleanUp();
-	g_test.CleanUp();
-	//*/
 
 	g_player.CleanUp();
-	//g_zombie.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
 		g_zombies[i].CleanUp();
 	g_ground.CleanUp();

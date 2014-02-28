@@ -3,9 +3,9 @@
 Scene::Scene(Renderer * renderer) : m_renderer(renderer)
 {}
 
-void Scene::Initialize()
+void Scene::Initialize(const Rect &area)
 {
-	m_quadTree.Initialize(0, Rect(-5000, -5000, 10000, 10000));
+	m_quadTree.Initialize(0, area);
 }
 
 void Scene::Resize(float width, float height)
@@ -56,6 +56,7 @@ void Scene::Draw()
 void Scene::CleanUp()
 {
 	m_units.clear();
+	m_unit2ds.clear();
 }
 
 bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
@@ -77,10 +78,4 @@ bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
 		else
 			return bx1.IntersectBox(bx2);
 	}
-	/*UnitCollections coll;
-	m_quadTree.GetPotentialCollisions(unit1, coll);
-	for (unsigned int i = 0; i < coll.size(); ++i)
-	for (unsigned int j = 0; j < coll[i][0].size(); ++j)
-	if (unit2 == coll[i][0][j]) return true;
-	return false;*/
 }

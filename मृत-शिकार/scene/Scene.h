@@ -22,7 +22,7 @@ public:
 
 	bool IsFirstPass() { return m_firstPass; }
 
-	void Initialize();
+	void Initialize(const Rect &area);
 	void Resize(float width, float height);
 	void Update(double deltaTime);
 	void Draw();
