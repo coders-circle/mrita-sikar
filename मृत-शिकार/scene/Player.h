@@ -26,28 +26,14 @@ private:
 public:
 	Player();
 	void Update(double deltaTime);
-	void Draw();
+	void Draw(unsigned int pass);
 
 	void Run(); void EndRun();
 	void BackRun(); void EndBackRun();
 	void StrafeLeft(); void EndStrafeLeft();
 	void StrafeRight(); void EndStrafeRight();
 	void Shoot();
-	void InitAudio()
-	{
-		m_a_run = g_audioengine->addSoundSourceFromFile("sound/player/player_run.flac", irrklang::ESM_AUTO_DETECT, true);
-		if (m_a_run)
-		{
-			m_a_run->setDefaultVolume(0.5f);
-		}
-		m_a_endrun = g_audioengine->addSoundSourceFromFile("sound/player/player_endrun.flac", irrklang::ESM_AUTO_DETECT, true);
-		if (m_a_endrun)
-		{
-			m_a_endrun->setDefaultVolume(0.5f);
-		}
-		m_a_shootdelayed = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shootdelayed.flac", irrklang::ESM_AUTO_DETECT, true);
-		m_a_shoot = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shoot.flac", irrklang::ESM_AUTO_DETECT, true);
-	}
+	void InitAudio();
 
 	void RotateX(float deltaX)
 	{

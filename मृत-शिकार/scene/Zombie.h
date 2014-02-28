@@ -13,7 +13,7 @@ private:
 public:
 	Zombie();
 	void Update(double timeDelta);
-	void Draw();
+	void Draw(unsigned int pass);
 	void InitAudio();
 
 	void SetDestination(glm::vec3);

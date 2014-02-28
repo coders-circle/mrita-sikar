@@ -3,9 +3,9 @@
 Scene::Scene(Renderer * renderer) : m_renderer(renderer)
 {}
 
-void Scene::Initialize()
+void Scene::Initialize(const Rect &area)
 {
-	m_quadTree.Initialize(0, Rect(-5000, -5000, 10000, 10000));
+	m_quadTree.Initialize(0, area);
 }
 
 void Scene::Resize(float width, float height)
@@ -31,8 +31,9 @@ void Scene::Draw()
 {
 	if (!m_camera) return;
 	m_renderer->UpdateView(m_camera->GetView());
-	m_renderer->BeginRender();
+	m_renderer->BeginRender(Renderer::NORMAL_PASS);
 
+	m_firstPass = true;
 	for (unsigned i = 0; i < m_units.size(); ++i)
 	if (!m_units[i]->GetDead())
 	{
@@ -42,19 +43,20 @@ void Scene::Draw()
 		else
 			toDraw = m_camera->IntersectBox(m_units[i]->GetBoundParent());
 		if (toDraw)
-			m_units[i]->Draw();
+			m_units[i]->Draw(Renderer::NORMAL_PASS);
 	}
 
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 	if (!m_unit2ds[i]->GetDead())
 		m_unit2ds[i]->Draw();
 
-	m_renderer->EndRender();
+	m_renderer->EndRender(Renderer::NORMAL_PASS);
 }
 
 void Scene::CleanUp()
 {
 	m_units.clear();
+	m_unit2ds.clear();
 }
 
 bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
@@ -76,10 +78,4 @@ bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
 		else
 			return bx1.IntersectBox(bx2);
 	}
-	/*UnitCollections coll;
-	m_quadTree.GetPotentialCollisions(unit1, coll);
-	for (unsigned int i = 0; i < coll.size(); ++i)
-	for (unsigned int j = 0; j < coll[i][0].size(); ++j)
-	if (unit2 == coll[i][0][j]) return true;
-	return false;*/
 }

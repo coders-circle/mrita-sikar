@@ -143,8 +143,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fs_normal3d.glsl" />
+    <None Include="shaders\fs_depthmap.glsl" />
     <None Include="shaders\fs_sprite.glsl" />
     <None Include="shaders\vs_normal3d.glsl" />
+    <None Include="shaders\vs_depthmap_normal.glsl" />
+    <None Include="shaders\vs_depthmap_skin.glsl" />
     <None Include="shaders\vs_skin.glsl" />
     <None Include="shaders\vs_sprite.glsl" />
   </ItemGroup>

@@ -15,22 +15,6 @@ void Renderer::Resize(float width, float height, const glm::mat4 &projection)
 	m_projection2d = glm::ortho(0.0f, width, height, 0.0f);
 }
 
-void Renderer::UpdateView(const glm::mat4 &view)
-{
-	m_viewProjection3d = m_projection * view;
-	m_viewProjectionBB = m_projection * glm::mat4(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.0f), view[3]);
-}
-
-void Renderer::BeginRender()
-{
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void Renderer::EndRender()
-{
-	m_window->SwapBuffers();
-}
-
 void Renderer::Initialize()
 {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -42,6 +26,7 @@ void Renderer::Initialize()
 
 	InitShaders();
 }
+
 void Renderer::CleanUp()
 {
 	glDeleteProgram(m_techniques.normal3D.program);
@@ -56,12 +41,17 @@ void Renderer::InitShaders()
 		{ GL_VERTEX_SHADER, "shaders\\vs_normal3d.glsl" },
 		{ GL_FRAGMENT_SHADER, "shaders\\fs_sprite.glsl" },
 		{ GL_VERTEX_SHADER, "shaders\\vs_sprite.glsl" },
+		{ GL_VERTEX_SHADER, "shaders\\vs_depthmap_skin.glsl" },
+		{ GL_FRAGMENT_SHADER, "shaders\\fs_depthmap.glsl" },
+		{ GL_VERTEX_SHADER, "shaders\\vs_depthmap_normal.glsl" },
 	};
 
 	std::vector<ProgramInfo> programs = { 
 		{ { 0, 1 }, &m_techniques.skin.program },
 		{ { 1, 2 }, &m_techniques.normal3D.program },
-		{ { 3, 4 }, &m_techniques.sprite.program }
+		{ { 3, 4 }, &m_techniques.sprite.program },
+		{ { 5, 6 }, &m_techniques.depthMapSkin.program },
+		{ { 6, 7 }, &m_techniques.depthMapNormal.program },
 	};
 	CreatePrograms(shaders, programs);
 

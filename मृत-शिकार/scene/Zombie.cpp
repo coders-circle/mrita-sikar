@@ -157,11 +157,11 @@ void Zombie::Update(double deltaTime)
 
 }
 
-void Zombie::Draw()
+void Zombie::Draw(unsigned int pass)
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient);
-	m_model->Animate(m_animation);
-	m_model->Draw();
+	if (m_scene->IsFirstPass()) m_model->Animate(m_animation);
+	m_model->Draw(pass);
 }
 
 void Zombie::Walk()

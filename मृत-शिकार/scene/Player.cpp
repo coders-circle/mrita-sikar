@@ -53,6 +53,22 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 	
 }
 
+void Player::InitAudio()
+{
+	m_a_run = g_audioengine->addSoundSourceFromFile("sound/player/player_run.flac", irrklang::ESM_AUTO_DETECT, true);
+	if (m_a_run)
+	{
+		m_a_run->setDefaultVolume(0.5f);
+	}
+	m_a_endrun = g_audioengine->addSoundSourceFromFile("sound/player/player_endrun.flac", irrklang::ESM_AUTO_DETECT, true);
+	if (m_a_endrun)
+	{
+		m_a_endrun->setDefaultVolume(0.5f);
+	}
+	m_a_shootdelayed = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shootdelayed.flac", irrklang::ESM_AUTO_DETECT, true);
+	m_a_shoot = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shoot.flac", irrklang::ESM_AUTO_DETECT, true);
+}
+
 bool Player::IsRunning()
 {
 	return m_state == PLAYER_RUN;
@@ -305,10 +321,10 @@ void Player::Update(double deltaTime)
 }
 
 static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));
-void Player::Draw()
+void Player::Draw(unsigned int pass)
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient * g_globaltransform
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
-	m_model->Animate(m_animation);
-	m_model->Draw();	
+	if (m_scene->IsFirstPass()) m_model->Animate(m_animation);
+	m_model->Draw(pass);	
 }
