@@ -20,13 +20,13 @@ public:
 	{
 		scene->AddUnit(this);
 	}
-	void Draw()
+	/*void Draw()
 	{
 		if (m_model)
 		{
 			m_model->SetTransform(glm::translate(glm::mat4(), m_position));
 			m_model->Draw();
 		}
-	}
+	}*/
 	
 };

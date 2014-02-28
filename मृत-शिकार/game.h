@@ -161,12 +161,12 @@ void Update(double totalTime, double deltaTime)
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
 
-	std::vector<Unit*> units = g_scene.GetUnits();
+	//std::vector<Unit*> units = g_scene.GetUnits();
 
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
-
-		glm::vec4 zf = g_zombies[i].GetOrient()[2];
+		g_zombies[i].SetDestination(g_player.GetBoundCenter());
+		//glm::vec4 zf = g_zombies[i].GetOrient()[2];
 
 		/*for (int j = 0; j < units.size(); j++)
 		{
@@ -200,7 +200,7 @@ void Update(double totalTime, double deltaTime)
 		}*/
 
 
-		glm::vec3 dist = g_player.GetBoundParent().GetCenter() - g_zombies[i].GetBoundParent().GetCenter();
+		/*glm::vec3 dist = g_player.GetBoundParent().GetCenter() - g_zombies[i].GetBoundParent().GetCenter();
 		float lensqr = glm::dot(dist, dist);
 		if (lensqr < 50.0f*50.0f)	{ if (!g_zombies[i].IsAttacking()) g_zombies[i].Attack(); }
 		else 
@@ -211,7 +211,7 @@ void Update(double totalTime, double deltaTime)
 		
 		float angle = 0.0f;
 		angle = glm::angle(glm::vec3(zf.x, zf.y, zf.z), glm::normalize(dist));
-		angle *= glm::sign(glm::cos(angle));
+		angle *= glm::sign(glm::cos(angle));*/
 
 		/*for (int j = 0; j < units.size(); j++)
 		{
@@ -228,7 +228,7 @@ void Update(double totalTime, double deltaTime)
 			}
 		}*/
 
-		if (glm::abs(angle) > 0.1f)	g_zombies[i].SetRotation(angle, glm::vec3(0.0f, 1.0f, 0.0f));
+		//if (glm::abs(angle) > 0.1f)	g_zombies[i].SetRotation(angle, glm::vec3(0.0f, 1.0f, 0.0f));
 		
 	}
 

@@ -1,6 +1,8 @@
 #include "Zombie.h"
 #include "Scene.h"
 
+#include "glm/gtx/vector_angle.hpp"
+
 enum ZombieStates{
 	ZOMBIE_IDLE = 0,
 	ZOMBIE_WALK,
@@ -33,11 +35,16 @@ void Zombie::InitAudio()
 	m_a_snoise = g_audioengine->play3D(g_a_noise, irrklang::vec3df(m_position.x, m_position.y, m_position.z), true, false, true);
 	if (m_a_snoise)
 	{
-
 		m_a_snoise->setMinDistance(50.0f);
 		m_a_snoise->setMaxDistance(2000.0f);
 	}
 }
+
+void Zombie::SetDestination(glm::vec3 destination)
+{
+	m_destination = destination;
+}
+
 void Zombie::Update(double deltaTime)
 {
 	bool end = false;
@@ -46,6 +53,79 @@ void Zombie::Update(double deltaTime)
 	if (end)
 	{
 		// To do anything when animation reached the end, do it here
+	}
+
+	float rotang = glm::angle(glm::vec3(m_orient[2]), glm::normalize(m_destination-this->GetBoundCenter()));
+	float distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
+
+	//rotang *= glm::sign(glm::cos(rotang));
+	/*if (glm::abs(rotang) > 0.5f)
+		this->RotateY(rotang);*/
+	distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
+
+	std::vector<Unit*> units = m_scene->GetUnits();
+	for (int i = 0; i < units.size(); i++)
+	{
+		if (this != units[i] && units[i]->GetTag() == 3)
+		{
+			float obstdistsq = glm::dot((units[i]->GetPosition() - m_position), (units[i]->GetPosition() - m_position));
+			if (distsq > obstdistsq)
+			{
+				glm::vec3 obst = units[i]->GetBoundCenter() - this->GetBoundCenter();
+				glm::vec3 obstext = units[i]->GetBoundExtents();
+				glm::vec3 obsedge1 = glm::vec3(obst.x - obstext.x, 0.0f, obst.z - obstext.z);
+				glm::vec3 obsedge2 = glm::vec3(obst.x + obstext.x, 0.0f, obst.z - obstext.z);
+				glm::vec3 obsedge3 = glm::vec3(obst.x + obstext.x, 0.0f, obst.z + obstext.z);
+				glm::vec3 obsedge4 = glm::vec3(obst.x - obstext.x, 0.0f, obst.z + obstext.z);
+				glm::vec3 view = glm::vec3(m_orient[2]);
+				float ang1 = glm::angle(view, glm::normalize(obsedge1 - this->GetBoundCenter()));
+				float ang2 = glm::angle(view, glm::normalize(obsedge2 - this->GetBoundCenter()));
+				float ang3 = glm::angle(view, glm::normalize(obsedge3 - this->GetBoundCenter()));
+				float ang4 = glm::angle(view, glm::normalize(obsedge4 - this->GetBoundCenter()));
+				float angmin = glm::min(glm::min(ang1, ang2), glm::min(ang3, ang4));
+				float angmax = glm::max(glm::max(ang1, ang2), glm::max(ang3, ang4));
+
+				//std::cout << ang1 << ", " << ang2 << ", " << ang3 << ", " << ang4 << std::endl;
+				//float ang = glm::angle(view, glm::vec3());
+				if (angmax > rotang && angmin < rotang)
+				if (glm::abs(angmin) < glm::abs(angmax))
+				{
+					this->RotateY(angmax);
+				}
+				else
+				{
+					this->RotateY(angmin);
+				}
+
+				/*if (angmax > rotang && angmin < rotang)
+				{
+					if (angmax - rotang > rotang - angmin)
+					{
+						rotang = 90.0f;
+					}
+					else
+					{
+						rotang = -90.0f;
+					}
+					this->RotateY(rotang);
+				}*/
+				
+				/*ang *= glm::sign(glm::cos(ang));
+				if (glm::abs(ang) > 0.5f) this->RotateY(ang);*/
+			}
+		}
+	}
+	//rotang *= glm::sign(glm::cos(rotang));
+	/*if (glm::abs(rotang) > 0.5f)
+		this->RotateY(rotang);*/
+
+	if (distsq > 2500.0f)
+	{
+		if (this->IsWalking() == false) this->Walk();
+	}
+	else
+	{
+		if (this->IsAttacking() == false) this->Attack();
 	}
 
 	bool posChanged = false;
@@ -80,8 +160,8 @@ void Zombie::Update(double deltaTime)
 void Zombie::Draw()
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient);
-	m_model->Animate(m_animation);		// use Animate(m_animation, false) if you don't want to loop the animation	
-	m_model->Draw();	//
+	m_model->Animate(m_animation);
+	m_model->Draw();
 }
 
 void Zombie::Walk()
