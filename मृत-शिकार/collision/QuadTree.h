@@ -97,14 +97,16 @@ public:
 			if (!m_nodes)
 				Split();
 
+			std::vector<UnitIterator> toerase;
 			for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
 			{
 				int index = GetIndex(*i);
 				if (index != -1) {
 					m_nodes[index].Insert(*i);
-					m_units.erase(i);
+					toerase.push_back(i);
 				}
 			}
+			for (unsigned int i = 0; i < toerase.size(); ++i) m_units.erase(toerase[i]);
 		}
 	}
 
@@ -124,18 +126,21 @@ public:
 	}
 
 	const std::unordered_set<const Unit*> &GetUnits() const
-	{ return m_units; }
+	{
+		return m_units;
+	}
 
 	void GetPotentialCollisions(const Unit* unit, UnitCollections &unitCollections) const
 	{
 		if (m_nodes)
 		{
 			int index = GetIndex(unit);
-			if (index != -1)
+			if (index != -1) {
 				m_nodes[index].GetPotentialCollisions(unit, unitCollections);
+			}
+			for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
+				unitCollections.push_back(*i);
 		}
-		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
-			unitCollections.push_back(*i);
 	}
 
 	bool Intersectray(const Ray &ray)
