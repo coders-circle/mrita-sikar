@@ -1,7 +1,7 @@
 #include "Zombie.h"
 #include "Scene.h"
 
-#include "glm/gtx/vector_angle.hpp"
+#include "../glm/gtx/vector_angle.hpp"
 
 enum ZombieStates{
 	ZOMBIE_IDLE = 0,
@@ -64,7 +64,7 @@ void Zombie::Update(double deltaTime)
 	distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
 
 	std::vector<Unit*> units = m_scene->GetUnits();
-	for (int i = 0; i < units.size(); i++)
+	for (unsigned int i = 0; i < units.size(); i++)
 	{
 		if (this != units[i] && units[i]->GetTag() == 3)
 		{
@@ -118,7 +118,7 @@ void Zombie::Update(double deltaTime)
 	//rotang *= glm::sign(glm::cos(rotang));
 	/*if (glm::abs(rotang) > 0.5f)
 		this->RotateY(rotang);*/
-
+	
 	if (distsq > 2500.0f)
 	{
 		if (this->IsWalking() == false) this->Walk();
