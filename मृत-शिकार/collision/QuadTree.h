@@ -128,10 +128,30 @@ public:
 
 	void GetPotentialCollisions(const Unit* unit, UnitCollections &unitCollections) const
 	{
-		int index = GetIndex(unit);
-		if (index != -1 && m_nodes) {
-			m_nodes[index].GetPotentialCollisions(unit, unitCollections);
+		if (m_nodes)
+		{
+			int index = GetIndex(unit);
+			if (index != -1)
+				m_nodes[index].GetPotentialCollisions(unit, unitCollections);
 		}
+		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
+			unitCollections.push_back(*i);
+	}
+
+	bool Intersectray(const Ray &ray)
+	{
+		return ray.IntersectRect(m_rect);
+	}
+	void GetPotentialCollisions(const Ray &ray, UnitCollections &unitCollections) const
+	{
+		if (m_nodes)
+		{
+			if (m_nodes[0].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[1].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[2].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[3].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
+		}
+
 		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
 			unitCollections.push_back(*i);
 	}

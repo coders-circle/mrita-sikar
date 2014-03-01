@@ -58,24 +58,3 @@ void Scene::CleanUp()
 	m_units.clear();
 	m_unit2ds.clear();
 }
-
-bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
-{
-	const Box &bx1 = unit1->GetBoundParent();
-	const Box &bx2 = unit2->GetBoundParent();
-	if (unit1->IsLiveUnit())
-	{
-		const Box &bx11 = static_cast<const LiveUnit*>(unit1)->GetAABB();
-		if (unit2->IsLiveUnit())
-			return bx11.IntersectBox(static_cast<const LiveUnit*>(unit2)->GetAABB());
-		else
-			return bx11.IntersectBox(bx2);
-	}
-	else
-	{
-		if (unit2->IsLiveUnit())
-			return bx1.IntersectBox(static_cast<const LiveUnit*>(unit2)->GetAABB());
-		else
-			return bx1.IntersectBox(bx2);
-	}
-}

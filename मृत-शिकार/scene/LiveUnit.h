@@ -65,8 +65,6 @@ public:
 	virtual void SetPosition(const glm::vec3& position) { m_position = position; }
 	const glm::vec3 &GetPosition() const { return m_position; }
 
-	const glm::mat4 &GetOrient() const { return m_orient; }
-
 	virtual void Update() { UpdateBoundVolume(); }
 	virtual void Draw(unsigned int pass)
 	{

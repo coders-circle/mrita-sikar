@@ -311,7 +311,7 @@ void Player::Update(double deltaTime)
 				Collide((LiveUnit*)other);
 			if (other->GetTag() == 2)
 				if (((Zombie*)other)->IsAttacking())
-					Collide(other->GetBoundChild(3), glm::mat3(((LiveUnit*)other)->GetOrient()));
+					Collide(other->GetBoundChild(3), glm::mat3(other->GetOrient()));
 			}
 			else
 				Collide(other);

@@ -38,13 +38,37 @@ bool Ray::IntersectBox(const Box &box, float &tmin) const
 			if (t1 > t2) Swap(t1, t2);
 			// Compute the intersection of slab intersection intervals
 			if (t1 > tmin) tmin = t1;
-			if (t2 > tmax) tmax = t2;
+			if (t2 < tmax) tmax = t2;		// in book it is given (t2 > tmax) but seems to be wrong according to text
+
 			// Exit with no collision as soon as slab intersection becomes empty
 			if (tmin > tmax) return false;
 		}
 	}
 	return true;
 }
+bool Ray::IntersectRect(const Rect &rect) const
+{
+	float tmin = 0.0f, tmax = FLT_MAX;
+	for (int i = 0; i < 2; i++) {
+		//float amin = (i == 0) ? rect.x : rect.y,	amax = (i == 0) ? rect.x + rect.width : rect.y + rect.height;
+		float amin = *(&(rect.x) + i), amax = *(&(rect.x) + i) + *(&(rect.width) + i);
+
+		if (fabs(m_direction[i]) < FLT_EPSILON) {
+			if (m_origin[i] < amin || m_origin[i] > amax) return false;
+		}
+		else {
+			float ood = 1.0f / m_direction[i];
+			float t1 = (amin - m_origin[i]) * ood;
+			float t2 = (amax - m_origin[i]) * ood;
+			if (t1 > t2) Swap(t1, t2);
+			if (t1 > tmin) tmin = t1;
+			if (t2 < tmax) tmax = t2;
+			if (tmin > tmax) return false;
+		}
+	}
+	return true;
+}
+
 
 bool Box::IntersectBox(const glm::mat3 &orient1, const Box &box2, const glm::mat3 &orient2, glm::vec3 * out) const
 {

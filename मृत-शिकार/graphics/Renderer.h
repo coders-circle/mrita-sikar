@@ -13,7 +13,7 @@ private:
 
 	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_viewProjectionBB, m_lightViewProjection;
 public:
-	enum Passes { SHADOW_PASS, REFLECTION_PASS, NORMAL_PASS };
+	enum Passes { SHADOW_PASS, NORMAL_PASS };
 
 	Renderer(Window* window);
 	void Resize(float width, float height, const glm::mat4 &projection);

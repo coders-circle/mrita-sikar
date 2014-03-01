@@ -61,6 +61,7 @@ public:
 		Ray newray(m_origin, m_direction * glm::transpose(orient));
 		return newray.IntersectBox(box, tmin);
 	}
+	bool IntersectRect(const Rect &rect) const;
 };
 
 struct BoundVolume
