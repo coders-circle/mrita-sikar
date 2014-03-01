@@ -150,24 +150,14 @@ void Update(double totalTime, double deltaTime)
 	else
 		g_justDown = false;
 
-	if (g_window.CheckKey('a'))
-	{
-		g_player.StrafeLeft();
-	}
+	if (g_window.CheckKey('a'))	g_player.StrafeLeft();
 	else g_player.EndStrafeLeft();
 
 	if (g_window.CheckKey('d')) g_player.StrafeRight();
 	else g_player.EndStrafeRight();
 
-	if (g_window.CheckKey('w'))
-	{
-		g_player.Run();
-	}
-	else
-	{
-		g_player.EndRun();
-
-	}
+	if (g_window.CheckKey('w'))	g_player.Run();
+	else g_player.EndRun();
 
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();

@@ -17,7 +17,6 @@ enum PlayerStates {
 
 inline void Player::ChangeState(int x)
 {
-	m_state = x;
 	switch (x)
 	{
 	case PLAYER_RUNSHOOTING:
@@ -38,6 +37,9 @@ inline void Player::ChangeState(int x)
 		m_model->Transition(m_animation, x, 0.18);
 	else
 		m_model->Transition(m_animation, x, 0.0);
+
+
+	m_state = x;
 
 	if (x == PLAYER_RUNIDLE || x == PLAYER_IDLERUN || x == PLAYER_AIMIDLE || x == PLAYER_IDLEAIM)
 		m_inTransition = true;
@@ -76,11 +78,12 @@ bool Player::IsRunning()
 
 void Player::Run()
 {
-	if (m_backrun) { m_run = true; m_backrun = false; }
+	if (m_state != PLAYER_IDLEAIM && m_state != PLAYER_SHOOT)
+		m_run = true;
+	if (m_backrun) { m_backrun = false; }
 	if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
 	{
 		ChangeState(PLAYER_IDLERUN);
-		m_run = true;
 		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
 		{
 			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
@@ -91,10 +94,10 @@ void Player::Run()
 void Player::EndRun()
 {
 	if (m_backrun) return;
+	m_run = false;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
 	{
 		ChangeState(PLAYER_RUNIDLE);
-		m_run = false;
 		if (m_a_running)
 		{
 			m_a_running->stop();
@@ -106,11 +109,12 @@ void Player::EndRun()
 
 void Player::BackRun()
 {
-	if (m_run) { m_backrun = true; m_run = false; }
-	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
+	if (m_state != PLAYER_IDLEAIM && m_state != PLAYER_SHOOT)
+		m_backrun = true;
+	if (m_run) {  m_run = false; }
+	if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
 	{
 		ChangeState(PLAYER_IDLERUN);
-		m_backrun = true;
 		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
 		{
 			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
@@ -121,10 +125,10 @@ void Player::BackRun()
 void Player::EndBackRun()
 {
 	if (m_run) return;
+	m_backrun = false;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
 	{
 		ChangeState(PLAYER_RUNIDLE);
-		m_backrun = false;
 		if (m_a_running)
 		{
 			m_a_running->stop();
