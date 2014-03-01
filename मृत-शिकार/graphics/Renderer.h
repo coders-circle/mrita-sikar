@@ -57,5 +57,7 @@ public:
 	const glm::mat4& GetViewProjectionBB() { return m_viewProjectionBB; }
 	const glm::mat4& GetProjection2d() { return m_projection2d; }
 	const glm::mat4& GetLightViewProjection() { return m_lightViewProjection; }
+
+	
 };
 

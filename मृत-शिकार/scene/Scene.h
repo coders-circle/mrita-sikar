@@ -67,4 +67,32 @@ public:
 	{
 		m_quadTree.GetPotentialCollisions(unit, unitCollections);
 	}
+
+	static Ray GeneratePickRay(float mouseX, float mouseY, float screenWidth, float screenHeight, const glm::mat4 viewProjection)
+	{
+		// The ray Start and End positions, in Normalized Device Coordinates (Have you read Tutorial 4 ?)
+		glm::vec4 lRayStart_NDC(
+			(mouseX / screenWidth - 0.5f) * 2.0f, // [0,1024] -> [-1,1]
+			(mouseY / screenHeight - 0.5f) * 2.0f, // [0, 768] -> [-1,1]
+			-1.0, // The near plane maps to Z=-1 in Normalized Device Coordinates
+			1.0f
+			);
+		glm::vec4 lRayEnd_NDC(
+			(mouseX / screenWidth - 0.5f) * 2.0f,
+			(mouseY / screenHeight - 0.5f) * 2.0f,
+			0.0,
+			1.0f
+			);
+
+
+		glm::mat4 M = glm::inverse(viewProjection);
+		glm::vec4 lRayStart_world = M * lRayStart_NDC; lRayStart_world /= lRayStart_world.w;
+		glm::vec4 lRayEnd_world = M * lRayEnd_NDC; lRayEnd_world /= lRayEnd_world.w;
+
+
+		glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
+		lRayDir_world = glm::normalize(lRayDir_world);
+
+		return Ray(glm::vec3(lRayStart_world), glm::vec3(lRayDir_world));
+	}
 };
