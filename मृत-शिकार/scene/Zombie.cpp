@@ -121,11 +121,11 @@ void Zombie::Update(double deltaTime)
 	
 	if (distsq > 2500.0f)
 	{
-		if (this->IsWalking() == false) this->Walk();
+		if (this->IsWalking() == false && m_state != ZOMBIE_DEATH) this->Walk();
 	}
 	else
 	{
-		if (this->IsAttacking() == false) this->Attack();
+		if (this->IsAttacking() == false && m_state != ZOMBIE_DEATH) this->Attack();
 	}
 
 	bool posChanged = false;
@@ -160,10 +160,15 @@ void Zombie::Update(double deltaTime)
 void Zombie::Draw(unsigned int pass)
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient);
-	if (m_scene->IsFirstPass()) m_model->Animate(m_animation);
+	if (m_scene->IsFirstPass()) m_model->Animate(m_animation, m_state!=ZOMBIE_DEATH);
 	m_model->Draw(pass);
 }
 
+void Zombie::Die()
+{
+	m_model->Transition(m_animation, ZOMBIE_DEATH, 0.08);
+	m_state = ZOMBIE_DEATH;
+}
 void Zombie::Walk()
 {
 	m_model->Transition(m_animation, ZOMBIE_WALK, 1.00);

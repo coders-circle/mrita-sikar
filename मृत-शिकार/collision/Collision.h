@@ -6,6 +6,9 @@
 template <typename T>
 inline void Swap(T &x, T &y) { T temp; temp = x; x = y; y = temp; };
 
+/*
+A 2-d rectangle
+*/
 struct Rect
 {
 	float x, y, width, height;
@@ -13,6 +16,11 @@ struct Rect
 	Rect(){}
 };
 
+/*
+A bounding box 
+- Center is the position of the box
+- Extents is the half-length of sides in each direction from the center
+*/
 class Box
 {
 private:
@@ -28,21 +36,24 @@ public:
 	void SetCenter(const glm::vec3 &center){ m_center = center; }
 	void SetExtents(const glm::vec3 &extents){ m_extents = extents; }
 
+	/*Check if box intersects another box*/
 	bool IntersectBox(const Box &box2, glm::vec3 * out = NULL) const;
+	/*Check if box intersects another box considering both boxes are rotated
+	Use glm::mat3() for orient parameter if one of the boxes is not rotated*/
 	bool IntersectBox(const glm::mat3 &orient1, const Box &box2, const glm::mat3 &orient2, glm::vec3 * out = NULL) const;
 
+	/*Get a 2d-rectangle (xz-values only) from the box*/
 	Rect GetRect() const
 	{
-		return Rect(m_center.x-m_extents.x, m_center.y-m_extents.y, m_extents.x*2.0f, m_extents.y*2.0f);
-	}
-
-	Box operator * (glm::vec3 scale)
-	{
-		//m_extents *= scale;
-		return Box(m_center, m_extents*scale);
+		return Rect(m_center.x-m_extents.x, m_center.z-m_extents.z, m_extents.x*2.0f, m_extents.z*2.0f);
 	}
 };
 
+/*
+A Ray
+- Origin is the origin point of the ray
+- Direction is where it's pointing to
+*/
 class Ray
 {
 private:
@@ -55,22 +66,33 @@ public:
 	const glm::vec3& GetDirection() const
 	{ return m_direction; }
 
+	/*Check if ray intersects a box
+	tmin is the minimum distance along the ray (a scalar value in the range [0, infinity]) 
+	where the intersection takes place*/
 	bool IntersectBox(const Box &box, float &tmin) const;
+	/*Check if ray intersects a rotated box*/
 	bool IntersectBox(const Box &box, const glm::mat3 &orient, float &tmin) const
 	{
 		Ray newray(m_origin, m_direction * glm::transpose(orient));
 		return newray.IntersectBox(box, tmin);
 	}
+	/*Check if ray intersects a 2d rectangle*/
 	bool IntersectRect(const Rect &rect) const;
 };
 
+/*
+A collection of a parent bounding bxo and its children
+*/
 struct BoundVolume
 {
 	Box parent;
 	std::vector<Box> children;
 };
 
-
+/*
+A plane
+- consists of any point of the plane and a normal
+*/
 class Plane
 {
 private:
@@ -85,10 +107,15 @@ public:
 	void SetNormal(const glm::vec3 &normal) { m_normal = normal; }
 	void SetNormalAndPoint(const glm::vec3 &normal, const glm::vec3 &point) { m_point = point; m_normal = normal; }
 
+	/*Get distance from a point to this plane*/
 	float GetDistance(const glm::vec3 &point) { return glm::dot(point-m_point, m_normal); }
 
 };
 
+/*
+A frustum
+- consists of 6 planes
+*/
 class Frustum
 {
 private:
@@ -175,6 +202,7 @@ public:
 	}
 
 
+	/*Check if a box intersects a frustum*/
 	bool BoxInFrustum(const Box &box) {
 		//for each plane do ...
 		for (int i = 0; i < 6; i++) {

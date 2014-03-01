@@ -138,9 +138,16 @@ public:
 			if (index != -1) {
 				m_nodes[index].GetPotentialCollisions(unit, unitCollections);
 			}
-			for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
-				unitCollections.push_back(*i);
+			else
+			{
+				m_nodes[0].GetPotentialCollisions(unit, unitCollections);
+				m_nodes[1].GetPotentialCollisions(unit, unitCollections);
+				m_nodes[2].GetPotentialCollisions(unit, unitCollections);
+				m_nodes[3].GetPotentialCollisions(unit, unitCollections);
+			}
 		}
+		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
+			unitCollections.push_back(*i);
 	}
 
 	bool Intersectray(const Ray &ray)

@@ -126,8 +126,25 @@ void Update(double totalTime, double deltaTime)
 
 			int mx, my;
 			g_window.GetMousePos(mx, my);
-			const Unit * ClickedUnit = g_scene.GetNearestIntersection(g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height), &g_player);
-			if (ClickedUnit) std::cout << ClickedUnit->GetTag() << std::endl;
+			Ray pickRay = g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height);
+			Unit * ClickedUnit = const_cast<Unit*>(g_scene.GetNearestIntersection(pickRay, &g_player));
+			if (ClickedUnit)
+			{
+				if (ClickedUnit->GetTag() == 2)
+				{
+					// May be check for ray against children boxes here
+					//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
+					//  xxx = 
+					//	0 for head
+					//  1 for chest
+					//	2 for bottom
+					// (Note that there is another child box (3) that can be checked against the player to see if the attack
+					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
+					//
+					// For now just die
+					static_cast<Zombie*>(ClickedUnit)->Die();
+				}
+			}
 		}
 	}
 	else
