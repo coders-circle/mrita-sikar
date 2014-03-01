@@ -82,15 +82,15 @@ bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2) cons
 
 
 
-const Unit* Scene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit) const
+Unit* Scene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit) const
 {
 	UnitCollections unitCollections;
 	m_quadTree.GetPotentialCollisions(ray, unitCollections);
-	const Unit * nearestUnit = NULL;
+	Unit * nearestUnit = NULL;
 	float tmin = FLT_MAX;
 	for (unsigned int i = 0; i < unitCollections.size(); ++i)
 	{
-		const Unit * testUnit = unitCollections[i];
+		Unit * testUnit = unitCollections[i];
 		if (testUnit == ignoreUnit) continue;
 		bool test; float t;
 		if (testUnit->IsLiveUnit())

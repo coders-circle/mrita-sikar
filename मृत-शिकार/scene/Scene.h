@@ -37,11 +37,11 @@ public:
 	const std::vector<Unit*> &GetUnits() const { return m_units; }
 	const std::vector<Unit2d*> &GetUnit2ds() const { return m_unit2ds; }
 
-	const Unit* GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit = NULL) const;
+	Unit* GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit = NULL) const;
 
 	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const;
 
-	void GetPotentialCollisions(const Unit * unit, UnitCollections &unitCollections) const
+	void GetPotentialCollisions(Unit * unit, UnitCollections &unitCollections) const
 	{
 		m_quadTree.GetPotentialCollisions(unit, unitCollections);
 	}

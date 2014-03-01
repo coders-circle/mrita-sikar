@@ -303,7 +303,7 @@ void Player::Update(double deltaTime)
 	
 	for (unsigned int i = 0; i < collisions.size(); ++i)
 	{
-		const Unit* other = collisions[i];
+		Unit* other = collisions[i];
 		if (other != this)
 		{
 			if (other->IsLiveUnit())

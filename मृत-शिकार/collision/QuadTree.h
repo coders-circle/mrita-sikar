@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 //typedef std::vector<const std::unordered_set<const Unit*>*> UnitCollections;
-typedef std::vector<const Unit *> UnitCollections;
+typedef std::vector<Unit *> UnitCollections;
 
 
 #define MAX_UNITS_PER_NODE 5
@@ -15,8 +15,8 @@ private:
 	QuadTree * m_nodes;
 	unsigned char m_depth;
 	Rect m_rect;
-	std::unordered_set<const Unit*> m_units;
-	typedef std::unordered_set<const Unit*>::iterator UnitIterator;
+	std::unordered_set<Unit*> m_units;
+	typedef std::unordered_set<Unit*>::iterator UnitIterator;
 
 public:
 	QuadTree() { m_nodes = NULL; }
@@ -50,7 +50,7 @@ public:
 		m_units.clear();
 	}
 
-	int GetIndex(const Unit *unit) const
+	int GetIndex(Unit *unit) const
 	{
 		const Rect& rect = unit->GetRect();
 
@@ -80,7 +80,7 @@ public:
 		return index;
 	}
 
-	void Insert(const Unit* unit)
+	void Insert(Unit* unit)
 	{
 		if (m_nodes) {
 			int index = GetIndex(unit);
@@ -110,7 +110,7 @@ public:
 		}
 	}
 
-	void Remove(const Unit* unit)
+	void Remove(Unit* unit)
 	{
 		if (m_nodes) {
 			int index = GetIndex(unit);
@@ -125,12 +125,12 @@ public:
 		m_units.erase(unit);
 	}
 
-	const std::unordered_set<const Unit*> &GetUnits() const
+	const std::unordered_set<Unit*> &GetUnits() const
 	{
 		return m_units;
 	}
 
-	void GetPotentialCollisions(const Unit* unit, UnitCollections &unitCollections) const
+	void GetPotentialCollisions(Unit* unit, UnitCollections &unitCollections) const
 	{
 		if (m_nodes)
 		{
