@@ -127,7 +127,7 @@ void Update(double totalTime, double deltaTime)
 			int mx, my;
 			g_window.GetMousePos(mx, my);
 			Ray pickRay = g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height);
-			Unit * ClickedUnit = const_cast<Unit*>(g_scene.GetNearestIntersection(pickRay, &g_player));
+			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, &g_player);
 			if (ClickedUnit)
 			{
 				if (ClickedUnit->GetTag() == 2)
