@@ -59,7 +59,7 @@ void Scene::CleanUp()
 	m_unit2ds.clear();
 }
 
-bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
+bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const
 {
 	const Box &bx1 = unit1->GetBoundParent();
 	const Box &bx2 = unit2->GetBoundParent();
@@ -78,4 +78,31 @@ bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2)
 		else
 			return bx1.IntersectBox(bx2);
 	}
+}
+
+
+
+const Unit* Scene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit) const
+{
+	UnitCollections unitCollections;
+	m_quadTree.GetPotentialCollisions(ray, unitCollections);
+	const Unit * nearestUnit = NULL;
+	float tmin = FLT_MAX;
+	for (unsigned int i = 0; i < unitCollections.size(); ++i)
+	{
+		const Unit * testUnit = unitCollections[i];
+		if (testUnit == ignoreUnit) continue;
+		bool test; float t;
+		if (testUnit->IsLiveUnit())
+			test = ray.IntersectBox(testUnit->GetBoundParent(), static_cast<glm::mat3>(testUnit->GetOrient()), t);
+		else
+			test = ray.IntersectBox(testUnit->GetBoundParent(), t);
+
+		if (test && t < tmin)
+		{
+			nearestUnit = testUnit;
+			tmin = t;
+		}
+	}
+	return nearestUnit;
 }

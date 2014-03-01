@@ -123,6 +123,11 @@ void Update(double totalTime, double deltaTime)
 		{
 			g_justDown = true;
 			g_player.Shoot();
+
+			int mx, my;
+			g_window.GetMousePos(mx, my);
+			const Unit * ClickedUnit = g_scene.GetNearestIntersection(g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height), &g_player);
+			if (ClickedUnit) std::cout << ClickedUnit->GetTag() << std::endl;
 		}
 	}
 	else
