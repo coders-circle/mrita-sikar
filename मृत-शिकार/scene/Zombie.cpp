@@ -55,69 +55,59 @@ void Zombie::Update(double deltaTime)
 		// To do anything when animation reached the end, do it here
 	}
 
-	float rotang = glm::angle(glm::vec3(m_orient[2]), glm::normalize(m_destination-this->GetBoundCenter()));
-	float distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
+	glm::vec3 dist = m_destination - this->GetBoundCenter();
+	float distsq = glm::dot(dist, dist);
 
-	//rotang *= glm::sign(glm::cos(rotang));
-	/*if (glm::abs(rotang) > 0.5f)
-		this->RotateY(rotang);*/
-	distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
-
-	std::vector<Unit*> units = m_scene->GetUnits();
-	for (int i = 0; i < units.size(); i++)
+	float angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
+	if (glm::abs(angle) > 0.1f)
 	{
-		if (this != units[i] && units[i]->GetTag() == 3)
-		{
-			float obstdistsq = glm::dot((units[i]->GetPosition() - m_position), (units[i]->GetPosition() - m_position));
-			if (distsq > obstdistsq)
-			{
-				glm::vec3 obst = units[i]->GetBoundCenter() - this->GetBoundCenter();
-				glm::vec3 obstext = units[i]->GetBoundExtents();
-				glm::vec3 obsedge1 = glm::vec3(obst.x - obstext.x, 0.0f, obst.z - obstext.z);
-				glm::vec3 obsedge2 = glm::vec3(obst.x + obstext.x, 0.0f, obst.z - obstext.z);
-				glm::vec3 obsedge3 = glm::vec3(obst.x + obstext.x, 0.0f, obst.z + obstext.z);
-				glm::vec3 obsedge4 = glm::vec3(obst.x - obstext.x, 0.0f, obst.z + obstext.z);
-				glm::vec3 view = glm::vec3(m_orient[2]);
-				float ang1 = glm::angle(view, glm::normalize(obsedge1 - this->GetBoundCenter()));
-				float ang2 = glm::angle(view, glm::normalize(obsedge2 - this->GetBoundCenter()));
-				float ang3 = glm::angle(view, glm::normalize(obsedge3 - this->GetBoundCenter()));
-				float ang4 = glm::angle(view, glm::normalize(obsedge4 - this->GetBoundCenter()));
-				float angmin = glm::min(glm::min(ang1, ang2), glm::min(ang3, ang4));
-				float angmax = glm::max(glm::max(ang1, ang2), glm::max(ang3, ang4));
-
-				//std::cout << ang1 << ", " << ang2 << ", " << ang3 << ", " << ang4 << std::endl;
-				//float ang = glm::angle(view, glm::vec3());
-				if (angmax > rotang && angmin < rotang)
-				if (glm::abs(angmin) < glm::abs(angmax))
-				{
-					this->RotateY(angmax);
-				}
-				else
-				{
-					this->RotateY(angmin);
-				}
-
-				/*if (angmax > rotang && angmin < rotang)
-				{
-					if (angmax - rotang > rotang - angmin)
-					{
-						rotang = 90.0f;
-					}
-					else
-					{
-						rotang = -90.0f;
-					}
-					this->RotateY(rotang);
-				}*/
-				
-				/*ang *= glm::sign(glm::cos(ang));
-				if (glm::abs(ang) > 0.5f) this->RotateY(ang);*/
-			}
-		}
+		RotateY(-glm::sign(glm::cos(angle))*angle);
 	}
-	//rotang *= glm::sign(glm::cos(rotang));
-	/*if (glm::abs(rotang) > 0.5f)
-		this->RotateY(rotang);*/
+
+	angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
+
+
+	//std::vector<Unit*> units = m_scene->GetUnits();
+
+	//glm::vec3 resultant;
+	//float resultantangle = 0.0f;
+	//float resdistsq = 0.0f;
+	//std::vector<float> resangles;
+	//std::vector<float> resdistsqs;
+	//for (unsigned int i = 0; i < units.size(); i++)
+	//{
+	//	if (units[i] != this)
+	//	{
+	//		if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2)
+	//		{
+	//			resultant = (this->GetBoundCenter() - units[i]->GetBoundCenter());
+	//			resdistsq = glm::dot(resultant, resultant) / units[i]->GetBoundExtents().length();
+	//			resultantangle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(resultant));
+	//			resangles.push_back(resultantangle);
+	//			resdistsqs.push_back(resdistsq);
+	//		}
+	//	}
+	//}
+
+	//float resultantdist = 1.0f/glm::sqrt(distsq);
+	//resultantangle = angle*resultantdist;
+
+	//for (unsigned int i = 0; i < resangles.size(); i++)
+	//{
+	//	resultantdist += (1.0f / resdistsqs[i]);
+	//	resultantangle += resangles[i] / resdistsqs[i];
+	//}
+
+	//angle = resultantangle / resultantdist;
+
+
+	//if (glm::abs(angle) > 0.1f)
+	//{
+	//	RotateY(glm::sign(-glm::cos(angle))*angle/10.0f);
+	//	//RotateY(angle);
+	//}
+
+
 
 	if (distsq > 2500.0f)
 	{
@@ -154,6 +144,8 @@ void Zombie::Update(double deltaTime)
 				Collide(other);
 		}
 	}
+
+	
 
 }
 

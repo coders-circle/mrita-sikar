@@ -12,7 +12,7 @@ protected:
 	glm::vec3 m_position;
 
 	bool m_dead;		 // Is dead? Meaning, whether should be updated and drawn by scene or not?
-	unsigned char m_tag; // A number to denote the type of unit (e.g: player: 1, zombie: 2, obstacles: 3)
+	unsigned char m_tag; // A number to denote the type of unit (e.g: player: 1, zombie: 2, obstacles: 3, Ground: 4)
 	bool m_liveUnit;	 // Is a live unit?
 
 	BoundVolume m_boundVolume;	//Copy of bound volume, to be updated according to position of unit
