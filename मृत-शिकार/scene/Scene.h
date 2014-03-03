@@ -50,7 +50,7 @@ public:
 	{
 		glm::vec4 lRayStart_NDC(
 			(mouseX / screenWidth - 0.5f) * 2.0f,
-			((screenHeight - mouseY) / screenHeight - 0.5f) * 2.0f,
+			(0.5f - mouseY / screenHeight) * 2.0f,
 			-1.0,
 			1.0f
 			);
@@ -69,5 +69,13 @@ public:
 		lRayDir_world = glm::normalize(lRayDir_world);
 
 		return Ray(glm::vec3(lRayStart_world), lRayDir_world);
+
+		/*float normalised_x = 2 * mouseX / screenWidth - 1.0f;
+		float normalised_y = 1.0f - 2 * mouseY / screenHeight;
+
+		glm::vec4 near_pointW = glm::inverse(m_renderer->GetViewProjection3d()) * glm::vec4(normalised_x, normalised_y, 0.0f, 1.0f);
+		glm::vec3 near_point = glm::vec3(near_pointW / near_pointW.w);
+		glm::vec3 camera_pos = glm::vec3(glm::inverse(m_camera->GetView())[3]);
+		return Ray(camera_pos, glm::normalize(near_point-camera_pos));*/
 	}
 };

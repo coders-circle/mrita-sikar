@@ -31,6 +31,9 @@ Player g_player;
 
 WorldMap g_testmap;
 
+Model g_testmodel(&g_renderer);
+LiveUnit g_test;
+
 
 #define MAX_ZOMBIES 2
 Zombie g_zombies[MAX_ZOMBIES];
@@ -80,6 +83,15 @@ void Initialize()
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
+	Mesh tmesh(&g_renderer);
+	Mesh::CreateBox(&tmesh, glm::vec3(0.5f, 0.5f, 0.5f));
+	g_testmodel.AddMesh(tmesh);
+	g_testmodel.SetBoundBox(Box(glm::vec3(0.0f), glm::vec3(0.5f, 0.5f, 0.5f)));
+	g_testmodel.SetTexture(0, "ground.jpg");
+	g_test.Initialize(&g_testmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
+
+	g_scene.AddUnit(&g_test);
+
 	g_audioengine = irrklang::createIrrKlangDevice(); 
 	//up vector is just opposite 
 	g_audioengine->setListenerPosition(irrklang::vec3df(g_player.GetPosition().x, g_player.GetPosition().y, g_player.GetPosition().z),
@@ -99,6 +111,8 @@ void CleanUp()
 	g_groundmodel.CleanUp();
 //	g_housemodel.CleanUp();
 
+	g_testmodel.CleanUp();
+	g_test.CleanUp();
 
 	g_player.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
@@ -117,6 +131,11 @@ void CleanUp()
 bool g_justDown = false;
 void Update(double totalTime, double deltaTime)
 {
+
+	int mx, my;
+	g_window.GetMousePos(mx, my);
+	Ray pickRay = g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height);
+	g_test.SetPosition(pickRay.GetOrigin() + pickRay.GetDirection());
 	if (g_window.CheckMButton(MOUSE_LEFT) || g_window.CheckKey(' '))
 	{
 		if (!g_justDown)
@@ -124,9 +143,8 @@ void Update(double totalTime, double deltaTime)
 			g_justDown = true;
 			g_player.Shoot();
 
-			int mx, my;
-			g_window.GetMousePos(mx, my);
-			Ray pickRay = g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height);
+			
+
 			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, &g_player);
 			if (ClickedUnit)
 			{

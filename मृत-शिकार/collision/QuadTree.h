@@ -158,10 +158,10 @@ public:
 	{
 		if (m_nodes)
 		{
-			if (m_nodes[0].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
-			if (m_nodes[1].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
-			if (m_nodes[2].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
-			if (m_nodes[3].Intersectray(ray)) m_nodes->GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[0].Intersectray(ray)) m_nodes[0].GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[1].Intersectray(ray)) m_nodes[1].GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[2].Intersectray(ray)) m_nodes[2].GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[3].Intersectray(ray)) m_nodes[3].GetPotentialCollisions(ray, unitCollections);
 		}
 
 		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
