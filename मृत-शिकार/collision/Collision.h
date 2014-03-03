@@ -66,6 +66,9 @@ public:
 	const glm::vec3& GetDirection() const
 	{ return m_direction; }
 
+	void SetOrigin(const glm::vec3& origin) { m_origin = origin; }
+	void SetDirection(const glm::vec3& direction) { m_direction = direction; }
+
 	/*Check if ray intersects a box
 	tmin is the minimum distance along the ray (a scalar value in the range [0, infinity]) 
 	where the intersection takes place*/
