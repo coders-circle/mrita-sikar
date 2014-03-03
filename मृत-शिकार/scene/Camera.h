@@ -36,4 +36,6 @@ public:
 	{
 		return m_frustum.BoxInFrustum(box);
 	}
+
+	virtual glm::vec3 GetPosition() { return glm::vec3(); }
 };

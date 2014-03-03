@@ -16,7 +16,9 @@ public:
 	void InitAudio();
 
 	void SetDestination(glm::vec3);
-	
+
+	void Die();
+
 	void Walk();
 	void Idle();
 	void Attack();
@@ -24,6 +26,7 @@ public:
 	bool IsAttacking();
 	bool IsIdle();
 	bool IsWalking();
+
 
 };
 

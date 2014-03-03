@@ -43,5 +43,11 @@ public:
 		m_orient = target->GetOrient();
 		m_target = target; m_distance = distance;
 	}
+
+	glm::vec3 GetPosition() {
+		glm::vec3 tpos = m_target->GetPosition();
+		tpos = glm::vec3(tpos.x, tpos.y + 50.0f, tpos.z);
+		return tpos - (glm::vec3)m_orient[2] * m_distance;
+	}
 };
 

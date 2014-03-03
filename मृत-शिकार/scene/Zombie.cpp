@@ -1,7 +1,7 @@
 #include "Zombie.h"
 #include "Scene.h"
 
-#include "glm/gtx/vector_angle.hpp"
+#include "../glm/gtx/vector_angle.hpp"
 
 enum ZombieStates{
 	ZOMBIE_IDLE = 0,
@@ -48,76 +48,74 @@ void Zombie::SetDestination(glm::vec3 destination)
 void Zombie::Update(double deltaTime)
 {
 	bool end = false;
-	m_model->Advance(m_animation, deltaTime * 1.5, &end);
+	m_model->Advance(m_animation, deltaTime * 2.0f, &end);
 
 	if (end)
 	{
 		// To do anything when animation reached the end, do it here
 	}
 
-	glm::vec3 dist = m_destination - this->GetBoundCenter();
-	float distsq = glm::dot(dist, dist);
-
-	float angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
-	if (glm::abs(angle) > 0.1f)
+	
+	if (m_state != ZOMBIE_DEATH)
 	{
-		RotateY(-glm::sign(glm::cos(angle))*angle);
+		glm::vec3 dist = m_destination - this->GetBoundCenter();
+		float distsq = glm::dot(dist, dist);
+
+
+		/*float angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
+		if (glm::abs(angle) > 0.1f)
+		{
+			RotateY(-glm::sign(glm::cos(angle))*angle);
+		}
+
+		angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));*/
+
+		glm::vec3 fa = glm::normalize(dist);
+		float fmf = 1.0f;
+		fa.x *= fmf;
+		fa.y *= fmf;
+		fa.z *= fmf;
+
+		std::vector<Unit*> units = m_scene->GetUnits();
+		glm::vec3 resultant = fa;
+
+		for (unsigned int i = 0; i < units.size(); i++)
+		{
+			if (units[i] != this)
+			{
+				if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2)
+				{
+					glm::vec3 r = (this->GetBoundCenter() - units[i]->GetBoundCenter());
+					float d1 = glm::dot(r, r);
+					float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
+
+					if ( d2 + 10000.0f > d1 )
+					{
+						glm::vec3 f = glm::normalize(r);
+
+						float mf = 100.0f*(float)(glm::sqrt(d2) / d1);
+						f.x *= mf;
+						f.y *= mf;
+						f.z *= mf;
+						resultant += f;
+					}
+				}
+			}
+		}
+		resultant.y = 0.0f;
+		m_orient[2] = glm::vec4(glm::normalize(resultant), 0.0f);
+		m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+		m_orient[0] = glm::vec4(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2])), 0.0f);
+
+		if (distsq > 2500.0f)
+		{
+			if (this->IsWalking() == false && m_state != ZOMBIE_DEATH) this->Walk();
+		}
+		else
+		{
+			if (this->IsAttacking() == false && m_state != ZOMBIE_DEATH) this->Attack();
+		}
 	}
-
-	angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
-
-
-	//std::vector<Unit*> units = m_scene->GetUnits();
-
-	//glm::vec3 resultant;
-	//float resultantangle = 0.0f;
-	//float resdistsq = 0.0f;
-	//std::vector<float> resangles;
-	//std::vector<float> resdistsqs;
-	//for (unsigned int i = 0; i < units.size(); i++)
-	//{
-	//	if (units[i] != this)
-	//	{
-	//		if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2)
-	//		{
-	//			resultant = (this->GetBoundCenter() - units[i]->GetBoundCenter());
-	//			resdistsq = glm::dot(resultant, resultant) / units[i]->GetBoundExtents().length();
-	//			resultantangle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(resultant));
-	//			resangles.push_back(resultantangle);
-	//			resdistsqs.push_back(resdistsq);
-	//		}
-	//	}
-	//}
-
-	//float resultantdist = 1.0f/glm::sqrt(distsq);
-	//resultantangle = angle*resultantdist;
-
-	//for (unsigned int i = 0; i < resangles.size(); i++)
-	//{
-	//	resultantdist += (1.0f / resdistsqs[i]);
-	//	resultantangle += resangles[i] / resdistsqs[i];
-	//}
-
-	//angle = resultantangle / resultantdist;
-
-
-	//if (glm::abs(angle) > 0.1f)
-	//{
-	//	RotateY(glm::sign(-glm::cos(angle))*angle/10.0f);
-	//	//RotateY(angle);
-	//}
-
-
-
-	if (distsq > 2500.0f)
-	{
-		if (this->IsWalking() == false) this->Walk();
-	}
-	else
-	{
-		if (this->IsAttacking() == false) this->Attack();
-	}
-
 	bool posChanged = false;
 	switch (m_state)
 	{
@@ -135,7 +133,7 @@ void Zombie::Update(double deltaTime)
 	m_scene->GetPotentialCollisions(this, collisions);
 	for (unsigned int i = 0; i < collisions.size(); ++i)
 	{
-		const Unit* other = collisions[i];
+		Unit* other = collisions[i];
 		if (other != this)
 		{
 			if (other->IsLiveUnit())
@@ -152,10 +150,15 @@ void Zombie::Update(double deltaTime)
 void Zombie::Draw(unsigned int pass)
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient);
-	if (m_scene->IsFirstPass()) m_model->Animate(m_animation);
+	if (m_scene->IsFirstPass()) m_model->Animate(m_animation, m_state!=ZOMBIE_DEATH);
 	m_model->Draw(pass);
 }
 
+void Zombie::Die()
+{
+	m_model->Transition(m_animation, ZOMBIE_DEATH, 0.08);
+	m_state = ZOMBIE_DEATH;
+}
 void Zombie::Walk()
 {
 	m_model->Transition(m_animation, ZOMBIE_WALK, 1.00);

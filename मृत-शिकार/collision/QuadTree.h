@@ -4,7 +4,7 @@
 #include <unordered_set>
 
 //typedef std::vector<const std::unordered_set<const Unit*>*> UnitCollections;
-typedef std::vector<const Unit *> UnitCollections;
+typedef std::vector<Unit *> UnitCollections;
 
 
 #define MAX_UNITS_PER_NODE 5
@@ -15,17 +15,17 @@ private:
 	QuadTree * m_nodes;
 	unsigned char m_depth;
 	Rect m_rect;
-	std::unordered_set<const Unit*> m_units;
-	typedef std::unordered_set<const Unit*>::iterator UnitIterator;
+	std::unordered_set<Unit*> m_units;
+	typedef std::unordered_set<Unit*>::iterator UnitIterator;
 
 public:
 	QuadTree() { m_nodes = NULL; }
 	~QuadTree() { Clear(); }
-
+	
 	void Initialize(unsigned char depth, const Rect &rect) {
 		m_depth = depth; m_rect = rect;
 	}
-
+	
 	void Split()
 	{
 		m_nodes = new QuadTree[4];
@@ -50,7 +50,7 @@ public:
 		m_units.clear();
 	}
 
-	int GetIndex(const Unit *unit) const
+	int GetIndex(Unit *unit) const
 	{
 		const Rect& rect = unit->GetRect();
 
@@ -80,7 +80,7 @@ public:
 		return index;
 	}
 
-	void Insert(const Unit* unit)
+	void Insert(Unit* unit)
 	{
 		if (m_nodes) {
 			int index = GetIndex(unit);
@@ -110,7 +110,7 @@ public:
 		}
 	}
 
-	void Remove(const Unit* unit)
+	void Remove(Unit* unit)
 	{
 		if (m_nodes) {
 			int index = GetIndex(unit);
@@ -121,16 +121,16 @@ public:
 				return;
 			}
 		}
-
+		
 		m_units.erase(unit);
 	}
 
-	const std::unordered_set<const Unit*> &GetUnits() const
+	const std::unordered_set<Unit*> &GetUnits() const
 	{
 		return m_units;
 	}
 
-	void GetPotentialCollisions(const Unit* unit, UnitCollections &unitCollections) const
+	void GetPotentialCollisions(Unit* unit, UnitCollections &unitCollections) const
 	{
 		if (m_nodes)
 		{
@@ -146,6 +146,24 @@ public:
 				m_nodes[3].GetPotentialCollisions(unit, unitCollections);
 			}
 		}
+		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
+			unitCollections.push_back(*i);
+	}
+
+	bool Intersectray(const Ray &ray)
+	{
+		return ray.IntersectRect(m_rect);
+	}
+	void GetPotentialCollisions(const Ray &ray, UnitCollections &unitCollections) const
+	{
+		if (m_nodes)
+		{
+			if (m_nodes[0].Intersectray(ray)) m_nodes[0].GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[1].Intersectray(ray)) m_nodes[1].GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[2].Intersectray(ray)) m_nodes[2].GetPotentialCollisions(ray, unitCollections);
+			if (m_nodes[3].Intersectray(ray)) m_nodes[3].GetPotentialCollisions(ray, unitCollections);
+		}
+
 		for (UnitIterator i = m_units.begin(); i != m_units.end(); ++i)
 			unitCollections.push_back(*i);
 	}

@@ -221,7 +221,7 @@ void Model::Animate(ModelAnimation &modelAnimation, bool loop)
 		animTime = modelAnimation.transition->prevTime;
 	}
 
-	while (animTime >= anim->duration)	if (loop)  animTime -= anim->duration; else animTime = anim->duration = 0.00001;
+	while (animTime >= anim->duration)	if (loop)  animTime -= anim->duration; else animTime = anim->duration - 0.00001;
 
 	unsigned int i, j;
 	for (i = 0; i < anim->nodeanims.size(); ++i)

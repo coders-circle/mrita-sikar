@@ -61,27 +61,14 @@ public:
 	int GetTag() const { return m_tag; }
 	void SetScene(Scene * scene) { m_scene = scene; };
 
-	const Box &GetBoundParent() const
-	{
-		return m_boundVolume.parent;
-	}
+	const Box &GetBoundParent() const { return m_boundVolume.parent; }
+	const Box &GetBoundChild(unsigned int i) const { return m_boundVolume.children[i]; }
+	const Rect &GetRect() const	{ return m_rect; }
 
-	const Box &GetBoundChild(unsigned int i) const
-	{
-		return m_boundVolume.children[i];
-	}
-
-	const Rect &GetRect() const
-	{
-		return m_rect;
-	}
+	const glm::mat4 &GetOrient() const { return m_orient; }
+	const glm::vec3 &GetPosition() const { return m_position; }
 
 	bool IsLiveUnit() const { return m_liveUnit; }
-	
-	glm::vec3 GetPosition() const
-	{
-		return m_position;
-	}
 
 	void RotateX(float xangle) { m_orient = glm::rotate(glm::mat4(), xangle, glm::vec3(1.0f, 0.0f, 0.0f)) * m_orient; UpdateBoundVolume(); }
 	void RotateY(float yangle) { m_orient = glm::rotate(glm::mat4(), yangle, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient; UpdateBoundVolume(); }

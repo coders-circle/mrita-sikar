@@ -71,7 +71,7 @@ void Initialize()
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
-	g_camera.Initialize(&g_player, 400.0f);
+	g_camera.Initialize(&g_player, 110.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
@@ -109,6 +109,11 @@ void CleanUp()
 
 }
 
+std::ostream & operator << (std::ostream & os, const glm::vec3&v)
+{
+	os << v.x << " " << v.y << " " << v.z;
+	return os;
+}
 bool g_justDown = false;
 void Update(double totalTime, double deltaTime)
 {
@@ -118,28 +123,43 @@ void Update(double totalTime, double deltaTime)
 		{
 			g_justDown = true;
 			g_player.Shoot();
+
+			int mx, my;
+			g_window.GetMousePos(mx, my);
+
+
+			Ray pickRay = g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height);
+			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, &g_player);
+			if (ClickedUnit)
+			{
+				if (ClickedUnit->GetTag() == 2)
+				{
+					// May be check for ray against children boxes here
+					//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
+					//  xxx = 
+					//	0 for head
+					//  1 for chest
+					//	2 for bottom
+					// (Note that there is another child box (3) that can be checked against the player to see if the attack
+					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
+					//
+					// For now just die
+					static_cast<Zombie*>(ClickedUnit)->Die();
+				}
+			}
 		}
 	}
 	else
 		g_justDown = false;
 
-	if (g_window.CheckKey('a'))
-	{
-		g_player.StrafeLeft();
-	}
+	if (g_window.CheckKey('a'))	g_player.StrafeLeft();
 	else g_player.EndStrafeLeft();
 
 	if (g_window.CheckKey('d')) g_player.StrafeRight();
 	else g_player.EndStrafeRight();
 
-	if (g_window.CheckKey('w'))
-	{
-		g_player.Run();
-	}
-	else
-	{
-		g_player.EndRun();
-	}
+	if (g_window.CheckKey('w'))	g_player.Run();
+	else g_player.EndRun();
 
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
