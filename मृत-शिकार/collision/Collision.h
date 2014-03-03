@@ -76,7 +76,7 @@ public:
 	/*Check if ray intersects a rotated box*/
 	bool IntersectBox(const Box &box, const glm::mat3 &orient, float &tmin) const
 	{
-		Ray newray(m_origin, m_direction * glm::transpose(orient));
+		Ray newray((orient * (m_origin-box.GetCenter())) + box.GetCenter(), orient * m_direction);
 		return newray.IntersectBox(box, tmin);
 	}
 	/*Check if ray intersects a 2d rectangle*/

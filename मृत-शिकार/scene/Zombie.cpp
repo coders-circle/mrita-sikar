@@ -55,7 +55,7 @@ void Zombie::Update(double deltaTime)
 		// To do anything when animation reached the end, do it here
 	}
 
-	
+
 	if (m_state != ZOMBIE_DEATH)
 	{
 		glm::vec3 dist = m_destination - this->GetBoundCenter();
