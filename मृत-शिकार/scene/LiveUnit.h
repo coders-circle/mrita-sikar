@@ -6,6 +6,7 @@ class LiveUnit : public Unit
 protected:
 	glm::vec3 m_velocity;
 	Box m_aabb;
+	int m_health;
 
 	void UpdateBoundVolume()
 	{

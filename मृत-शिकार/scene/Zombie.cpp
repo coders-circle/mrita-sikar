@@ -61,15 +61,6 @@ void Zombie::Update(double deltaTime)
 		glm::vec3 dist = m_destination - this->GetBoundCenter();
 		float distsq = glm::dot(dist, dist);
 
-
-		/*float angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
-		if (glm::abs(angle) > 0.1f)
-		{
-			RotateY(-glm::sign(glm::cos(angle))*angle);
-		}
-
-		angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));*/
-
 		glm::vec3 fa = glm::normalize(dist);
 		float fmf = 1.0f;
 		fa.x *= fmf;
@@ -105,7 +96,7 @@ void Zombie::Update(double deltaTime)
 		resultant.y = 0.0f;
 		m_orient[2] = glm::vec4(glm::normalize(resultant), 0.0f);
 		m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-		m_orient[0] = glm::vec4(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2])), 0.0f);
+		m_orient[0] = glm::normalize(glm::vec4(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2])), 0.0f));
 
 		if (distsq > 2500.0f)
 		{
@@ -115,6 +106,7 @@ void Zombie::Update(double deltaTime)
 		{
 			if (this->IsAttacking() == false && m_state != ZOMBIE_DEATH) this->Attack();
 		}
+		//*/
 	}
 	bool posChanged = false;
 	switch (m_state)

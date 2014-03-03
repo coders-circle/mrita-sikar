@@ -71,11 +71,11 @@ void Initialize()
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
-	g_camera.Initialize(&g_player, 110.0f);
+	g_camera.Initialize(&g_player, 100.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
-	g_scene.AddUnit(&g_test);
+//	g_scene.AddUnit(&g_test);
 
 	g_audioengine = irrklang::createIrrKlangDevice(); 
 	//up vector is just opposite 
