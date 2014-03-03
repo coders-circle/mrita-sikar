@@ -7,7 +7,6 @@ class Zombie : public LiveUnit
 private:
 	ModelAnimation m_animation;
 	int m_state;
-	//irrklang::ISoundSource* m_a_noise;
 	irrklang::ISound* m_a_snoise;
 	glm::vec3 m_destination;
 public:

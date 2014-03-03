@@ -23,12 +23,7 @@ int g_height = 650;
 Scene g_scene(&g_renderer);
 TPCamera g_camera;
 Model g_humanmodel(&g_renderer), g_zombiemodel(&g_renderer);
-//Model g_housemodel(&g_renderer);
-//Model g_cratemodel(&g_renderer);
 Player g_player;
-//WorldObject g_house;
-//WorldObject g_crate;
-
 WorldMap g_testmap;
 
 
@@ -76,7 +71,7 @@ void Initialize()
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
-	g_camera.Initialize(&g_player, 110.0f);	// Todo :: Make the distance parameter vec3
+	g_camera.Initialize(&g_player, 110.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
@@ -115,12 +110,11 @@ void CleanUp()
 
 }
 
-std::ostream & operator << (std::ostream& os, const glm::vec3 &v)
+std::ostream & operator << (std::ostream & os, const glm::vec3&v)
 {
 	os << v.x << " " << v.y << " " << v.z;
 	return os;
 }
-
 bool g_justDown = false;
 void Update(double totalTime, double deltaTime)
 {
@@ -173,75 +167,9 @@ void Update(double totalTime, double deltaTime)
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
 
-	//std::vector<Unit*> units = g_scene.GetUnits();
-
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
 		g_zombies[i].SetDestination(g_player.GetBoundCenter());
-		//glm::vec4 zf = g_zombies[i].GetOrient()[2];
-
-		/*for (int j = 0; j < units.size(); j++)
-		{
-			if (&g_zombies[i] != units[j])
-			{
-				glm::vec3 dist = units[j]->GetBoundParent().GetCenter() - g_zombies[i].GetBoundParent().GetCenter();
-				dist.y = 0.0f;
-				float angle = 0.0f;
-				angle = glm::angle(glm::vec3(g_zombies[i].GetOrient()[2]), glm::normalize(units[j]->GetPosition() - g_zombies[i].GetPosition()));
-				angle = angle*glm::sign(glm::cos(angle));
-				float lensqr = glm::dot(dist, dist);
-				if (units[j]->GetTag() == 1)
-				{
-					if (lensqr < 50.0f*50.0f)	{ if (!g_zombies[i].IsAttacking()) g_zombies[i].Attack(); }
-					else
-					{
-						if (g_zombies[i].IsAttacking())	g_zombies[i].Flinch();
-						else if (!g_zombies[i].IsWalking())	g_zombies[i].Walk();
-					}
-					if (glm::abs(angle) > 0.1f) g_zombies[i].SetRotation(angle/5.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-				}
-				else
-				{
-					if (lensqr > 1.0f)
-					{
-						angle = angle/lensqr;
-					}
-					if (glm::abs(angle) > 0.1f) g_zombies[i].SetRotation(angle, glm::vec3(0.0f, -1.0f, 0.0f));
-				}
-			}
-		}*/
-
-
-		/*glm::vec3 dist = g_player.GetBoundParent().GetCenter() - g_zombies[i].GetBoundParent().GetCenter();
-		float lensqr = glm::dot(dist, dist);
-		if (lensqr < 50.0f*50.0f)	{ if (!g_zombies[i].IsAttacking()) g_zombies[i].Attack(); }
-		else 
-		{
-			if (g_zombies[i].IsAttacking())	g_zombies[i].Flinch();
-			else if (!g_zombies[i].IsWalking())	g_zombies[i].Walk();
-		}
-		
-		float angle = 0.0f;
-		angle = glm::angle(glm::vec3(zf.x, zf.y, zf.z), glm::normalize(dist));
-		angle *= glm::sign(glm::cos(angle));*/
-
-		/*for (int j = 0; j < units.size(); j++)
-		{
-			if (units[j] != &g_zombies[i] && units[j]->GetTag() != 1)
-			{
-				dist = units[j]->GetBoundParent().GetCenter() - g_zombies[i].GetBoundParent().GetCenter();
-				float extents = units[j]->GetBoundParent().GetExtents().length() + g_zombies[i].GetBoundParent().GetExtents().length();
-				dist.y = 0;
-				if (glm::dot(dist, dist) < extents*extents*4.0f)
-				{
-					angle += glm::sign(angle)*90.0f;
-					break;
-				}
-			}
-		}*/
-
-		//if (glm::abs(angle) > 0.1f)	g_zombies[i].SetRotation(angle, glm::vec3(0.0f, 1.0f, 0.0f));
-		
 	}
 
 	g_audioengine->setListenerPosition(irrklang::vec3df(g_player.GetPosition().x, g_player.GetPosition().y, g_player.GetPosition().z), 

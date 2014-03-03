@@ -48,86 +48,74 @@ void Zombie::SetDestination(glm::vec3 destination)
 void Zombie::Update(double deltaTime)
 {
 	bool end = false;
-	m_model->Advance(m_animation, deltaTime * 1.5, &end);
+	m_model->Advance(m_animation, deltaTime * 2.0f, &end);
 
 	if (end)
 	{
 		// To do anything when animation reached the end, do it here
 	}
 
-	float rotang = glm::angle(glm::vec3(m_orient[2]), glm::normalize(m_destination-this->GetBoundCenter()));
-	float distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
-
-	//rotang *= glm::sign(glm::cos(rotang));
-	/*if (glm::abs(rotang) > 0.5f)
-		this->RotateY(rotang);*/
-	distsq = glm::dot((m_destination - this->GetBoundCenter()), (m_destination - this->GetBoundCenter()));
-
-	std::vector<Unit*> units = m_scene->GetUnits();
-	for (unsigned int i = 0; i < units.size(); i++)
+	
+	if (m_state != ZOMBIE_DEATH)
 	{
-		if (this != units[i] && units[i]->GetTag() == 3)
+		glm::vec3 dist = m_destination - this->GetBoundCenter();
+		float distsq = glm::dot(dist, dist);
+
+
+		/*float angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));
+		if (glm::abs(angle) > 0.1f)
 		{
-			float obstdistsq = glm::dot((units[i]->GetPosition() - m_position), (units[i]->GetPosition() - m_position));
-			if (distsq > obstdistsq)
+			RotateY(-glm::sign(glm::cos(angle))*angle);
+		}
+
+		angle = glm::angle(glm::vec3(m_orient[2]), glm::normalize(dist));*/
+
+		glm::vec3 fa = glm::normalize(dist);
+		float fmf = 1.0f;
+		fa.x *= fmf;
+		fa.y *= fmf;
+		fa.z *= fmf;
+
+		std::vector<Unit*> units = m_scene->GetUnits();
+		glm::vec3 resultant = fa;
+
+		for (unsigned int i = 0; i < units.size(); i++)
+		{
+			if (units[i] != this)
 			{
-				glm::vec3 obst = units[i]->GetBoundCenter() - this->GetBoundCenter();
-				glm::vec3 obstext = units[i]->GetBoundExtents();
-				glm::vec3 obsedge1 = glm::vec3(obst.x - obstext.x, 0.0f, obst.z - obstext.z);
-				glm::vec3 obsedge2 = glm::vec3(obst.x + obstext.x, 0.0f, obst.z - obstext.z);
-				glm::vec3 obsedge3 = glm::vec3(obst.x + obstext.x, 0.0f, obst.z + obstext.z);
-				glm::vec3 obsedge4 = glm::vec3(obst.x - obstext.x, 0.0f, obst.z + obstext.z);
-				glm::vec3 view = glm::vec3(m_orient[2]);
-				float ang1 = glm::angle(view, glm::normalize(obsedge1 - this->GetBoundCenter()));
-				float ang2 = glm::angle(view, glm::normalize(obsedge2 - this->GetBoundCenter()));
-				float ang3 = glm::angle(view, glm::normalize(obsedge3 - this->GetBoundCenter()));
-				float ang4 = glm::angle(view, glm::normalize(obsedge4 - this->GetBoundCenter()));
-				float angmin = glm::min(glm::min(ang1, ang2), glm::min(ang3, ang4));
-				float angmax = glm::max(glm::max(ang1, ang2), glm::max(ang3, ang4));
+				if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2)
+				{
+					glm::vec3 r = (this->GetBoundCenter() - units[i]->GetBoundCenter());
+					float d1 = glm::dot(r, r);
+					float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
 
-				//std::cout << ang1 << ", " << ang2 << ", " << ang3 << ", " << ang4 << std::endl;
-				//float ang = glm::angle(view, glm::vec3());
-				if (angmax > rotang && angmin < rotang)
-				if (glm::abs(angmin) < glm::abs(angmax))
-				{
-					this->RotateY(angmax);
-				}
-				else
-				{
-					this->RotateY(angmin);
-				}
+					if ( d2 + 10000.0f > d1 )
+					{
+						glm::vec3 f = glm::normalize(r);
 
-				/*if (angmax > rotang && angmin < rotang)
-				{
-					if (angmax - rotang > rotang - angmin)
-					{
-						rotang = 90.0f;
+						float mf = 100.0f*(float)(glm::sqrt(d2) / d1);
+						f.x *= mf;
+						f.y *= mf;
+						f.z *= mf;
+						resultant += f;
 					}
-					else
-					{
-						rotang = -90.0f;
-					}
-					this->RotateY(rotang);
-				}*/
-				
-				/*ang *= glm::sign(glm::cos(ang));
-				if (glm::abs(ang) > 0.5f) this->RotateY(ang);*/
+				}
 			}
 		}
-	}
-	//rotang *= glm::sign(glm::cos(rotang));
-	/*if (glm::abs(rotang) > 0.5f)
-		this->RotateY(rotang);*/
-	
-	if (distsq > 2500.0f)
-	{
-		if (this->IsWalking() == false && m_state != ZOMBIE_DEATH) this->Walk();
-	}
-	else
-	{
-		if (this->IsAttacking() == false && m_state != ZOMBIE_DEATH) this->Attack();
-	}
+		resultant.y = 0.0f;
+		m_orient[2] = glm::vec4(glm::normalize(resultant), 0.0f);
+		m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+		m_orient[0] = glm::vec4(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2])), 0.0f);
 
+		if (distsq > 2500.0f)
+		{
+			if (this->IsWalking() == false && m_state != ZOMBIE_DEATH) this->Walk();
+		}
+		else
+		{
+			if (this->IsAttacking() == false && m_state != ZOMBIE_DEATH) this->Attack();
+		}
+	}
 	bool posChanged = false;
 	switch (m_state)
 	{
@@ -154,6 +142,8 @@ void Zombie::Update(double deltaTime)
 				Collide(other);
 		}
 	}
+
+	
 
 }
 
