@@ -71,11 +71,10 @@ void Initialize()
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
-	g_camera.Initialize(&g_player, 100.0f);
+	g_camera.Initialize(&g_player, 110.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
-//	g_scene.AddUnit(&g_test);
 
 	g_audioengine = irrklang::createIrrKlangDevice(); 
 	//up vector is just opposite 
@@ -130,8 +129,8 @@ void Update(double totalTime, double deltaTime)
 			int mx, my;
 			g_window.GetMousePos(mx, my);
 
-
-			Ray pickRay = g_scene.GeneratePickRay((float)mx, (float)my, (float)g_width, (float)g_height);
+			glm::mat4 camInverse = glm::inverse(g_camera.GetView());
+			Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
 
 			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, &g_player);
 			if (ClickedUnit)

@@ -44,6 +44,24 @@ bool Ray::IntersectBox(const Box &box, float &tmin) const
 			if (tmin > tmax) return false;
 		}
 	}
+	/*
+	Vector m = p - s.c;
+	float b = Dot(m, d);
+	float c = Dot(m, m) - s.r * s.r;
+	// Exit if r’s origin outside s (c > 0) and r pointing away from s (b > 0)
+	if (c > 0.0f && b > 0.0f) return 0;
+	float discr = b*b - c;
+	// A negative discriminant corresponds to ray missing sphere
+	if (discr < 0.0f) return 0;
+	// Ray now found to intersect sphere, compute smallest t value of intersection
+	t = -b - Sqrt(discr);
+	// If t is negative, ray started inside sphere so clamp t to zero
+	if (t < 0.0f) t = 0.0f;
+	q = p + t * d;
+	return 1;
+	*/
+
+
 	return true;
 }
 bool Ray::IntersectRect(const Rect &rect) const

@@ -46,9 +46,9 @@ public:
 		m_quadTree.GetPotentialCollisions(unit, unitCollections);
 	}
 
-	Ray GeneratePickRay(float mouseX, float mouseY, float screenWidth, float screenHeight) const
+	/*Ray GeneratePickRay(float mouseX, float mouseY, float screenWidth, float screenHeight) const
 	{
-		glm::vec4 lRayStart_NDC(
+		/*glm::vec4 lRayStart_NDC(
 			(mouseX / screenWidth - 0.5f) * 2.0f,
 			(0.5f - mouseY / screenHeight) * 2.0f,
 			-1.0,
@@ -68,7 +68,8 @@ public:
 		glm::vec3 lRayDir_world(lRayEnd_world - lRayStart_world);
 		lRayDir_world = glm::normalize(lRayDir_world);
 
-		return Ray(glm::vec3(lRayStart_world), lRayDir_world);
+		return Ray(glm::vec3(lRayStart_world), lRayDir_world);*/
+		//return Ray(glm::vec3(glm::inverse(m_camera->GetView())[3]), -glm::vec3(glm::inverse(m_camera->GetView())[2]));
 
 		/*float normalised_x = 2 * mouseX / screenWidth - 1.0f;
 		float normalised_y = 1.0f - 2 * mouseY / screenHeight;
@@ -77,5 +78,5 @@ public:
 		glm::vec3 near_point = glm::vec3(near_pointW / near_pointW.w);
 		glm::vec3 camera_pos = glm::vec3(glm::inverse(m_camera->GetView())[3]);
 		return Ray(camera_pos, glm::normalize(near_point-camera_pos));*/
-	}
+	//}
 };

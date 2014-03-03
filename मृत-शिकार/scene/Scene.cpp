@@ -95,6 +95,7 @@ Unit* Scene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit) con
 		bool test; float t;
 		if (testUnit->IsLiveUnit())
 			test = ray.IntersectBox(testUnit->GetBoundParent(), static_cast<glm::mat3>(testUnit->GetOrient()), t);
+			//test = ray.IntersectBox(((LiveUnit*)testUnit)->GetAABB(), t);
 		else
 			test = ray.IntersectBox(testUnit->GetBoundParent(), t);
 
