@@ -33,6 +33,7 @@ struct Technique_Skin3D : Technique
 	unsigned int mbones;
 	unsigned int bias_light_mvp;
 	unsigned int texture_sample;
+	unsigned int texture_depthmap;
 	void Init() 
 	{ 
 		mvp = GetUniform("mvp"); 
@@ -40,6 +41,7 @@ struct Technique_Skin3D : Technique
 		mbones = GetUniform("mbones");
 		bias_light_mvp = GetUniform("bias_light_mvp");
 		texture_sample = GetUniform("texture_sample");
+		texture_depthmap = GetUniform("texture_depthmap");
 	}
 };
 
@@ -49,12 +51,14 @@ struct Technique_3D : Technique
 	unsigned int model;
 	unsigned int bias_light_mvp;
 	unsigned int texture_sample;
+	unsigned int texture_depthmap;
 	void Init()
 	{
 		mvp = GetUniform("mvp");
 		model = GetUniform("model");
 		bias_light_mvp = GetUniform("bias_light_mvp");
 		texture_sample = GetUniform("texture_sample");
+		texture_depthmap = GetUniform("texture_depthmap");
 	}
 };
 

@@ -20,22 +20,27 @@ void Scene::Update(double deltaTime)
 	if (m_camera) m_camera->UpdateView(deltaTime);
 
 	for (unsigned i = 0; i < m_units.size(); ++i)
-	if (!m_units[i]->GetDead())
 		m_units[i]->Update(deltaTime);
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
-	if (!m_unit2ds[i]->GetDead())
 		m_unit2ds[i]->Update(deltaTime);
 }
 
 void Scene::Draw()
 {
 	if (!m_camera) return;
+
+	m_firstPass = true;
+	glm::vec3 target = glm::vec3(m_camera->GetView()[0] - m_camera->GetView()[2]);
+	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 500, 500, -1000, 5000);
+	m_renderer->BeginRender(Renderer::SHADOW_PASS);
+	for (unsigned i = 0; i < m_units.size(); ++i)
+			m_units[i]->Draw();
+
+	m_firstPass = false;
 	m_renderer->UpdateView(m_camera->GetView());
 	m_renderer->BeginRender(Renderer::NORMAL_PASS);
 
-	m_firstPass = true;
 	for (unsigned i = 0; i < m_units.size(); ++i)
-	if (!m_units[i]->GetDead())
 	{
 		bool toDraw;
 		if (m_units[i]->IsLiveUnit())
@@ -47,7 +52,6 @@ void Scene::Draw()
 	}
 
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
-	if (!m_unit2ds[i]->GetDead())
 		m_unit2ds[i]->Draw();
 
 	m_renderer->EndRender();

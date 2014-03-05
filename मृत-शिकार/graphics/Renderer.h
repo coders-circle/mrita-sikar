@@ -13,6 +13,9 @@ private:
 
 	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_viewProjectionBB, m_lightViewProjection;
 	unsigned int m_pass;
+
+	GLuint m_depthFBO, m_depthTexture;
+	float m_width, m_height;
 public:
 	enum Passes { SHADOW_PASS, NORMAL_PASS };
 
@@ -24,33 +27,23 @@ public:
 		m_viewProjectionBB = m_projection * glm::mat4(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.0f), view[3]);
 	}
 
-	void UpdateShadowMatrix(const glm::mat4 &lightViewProjection)
+	void UpdateLightMatrix(const glm::mat4 &lightViewProjection)
 	{
 		m_lightViewProjection = lightViewProjection;
 	}
 
-	void BeginRender(unsigned int pass)
+	void SetupLightMatrix(const glm::vec3 &lightDirection, const glm::vec3 &target, float lrLimit, float tbLimit, float minZ, float maxZ)
 	{
-		m_pass = pass;
-		switch (pass)
-		{
-		case NORMAL_PASS:
-			glBindFramebuffer(GL_FRAMEBUFFER, 0);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			break;
-		}
+		m_lightViewProjection = glm::ortho(-lrLimit, lrLimit, -tbLimit, tbLimit, minZ, maxZ)
+						* glm::lookAt(target-lightDirection, target, glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
-	unsigned int GetRenderPass() { return m_pass; }
+	void BeginRender(unsigned int pass);
 
 	void EndRender()
 	{
-		switch (m_pass)
-		{
-		case NORMAL_PASS:
+		//if (m_pass == NORMAL_PASS)
 			m_window->SwapBuffers();
-			break;
-		};
 	}
 
 	void Initialize();
@@ -61,6 +54,9 @@ public:
 	const glm::mat4& GetViewProjectionBB() { return m_viewProjectionBB; }
 	const glm::mat4& GetProjection2d() { return m_projection2d; }
 	const glm::mat4& GetLightViewProjection() { return m_lightViewProjection; }
+
+	unsigned int GetRenderPass() { return m_pass; }
+	GLuint GetDepthTexture() { return m_depthTexture; }
 
 	
 };
