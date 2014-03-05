@@ -152,6 +152,7 @@ void Zombie::Update(double deltaTime)
 
 	if (posChanged) UpdateBoundVolume();
 
+	m_isstruck = false;
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	for (unsigned int i = 0; i < collisions.size(); ++i)
@@ -160,9 +161,9 @@ void Zombie::Update(double deltaTime)
 		if (other != this)
 		{
 			if (other->IsLiveUnit())
-				Collide((LiveUnit*)other);
+				if (Collide((LiveUnit*)other)) m_isstruck = true;
 			else
-				Collide(other);
+				if (Collide(other)) m_isstruck = true;
 		}
 	}
 

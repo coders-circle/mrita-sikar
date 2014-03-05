@@ -13,6 +13,7 @@ private:
 	float m_attackspeed;
 	bool m_avoidingObstacle;
 	int GetRand(int range){ return rand() % range; }
+	bool m_isstruck;
 public:
 	Zombie();
 	void Update(double timeDelta);
