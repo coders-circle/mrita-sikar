@@ -329,6 +329,6 @@ void Player::Draw()
 {
 	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient * g_globaltransform
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
-	if (m_scene->IsFirstPass()) m_model->Animate(m_animation);
+	m_model->Animate(m_animation);
 	m_model->Draw();	
 }

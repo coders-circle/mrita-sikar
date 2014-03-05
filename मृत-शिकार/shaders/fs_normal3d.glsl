@@ -39,8 +39,8 @@ void main()
 	float visibility = 1.0;
 	// the loop takes care of neighbouring samples as well
 	// larger spread means much nearer samples
-	float spread = 800.0f;
-	for (int i = 0; i<10; i++){ //i<4
+	float spread = 1200.0f;
+	for (int i = 0; i<7; i++){ //i<4
 		int index = i;
 		//0.2 *
 		visibility -= 0.08*(1.0 - texture(texture_depthmap,

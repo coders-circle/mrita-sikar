@@ -30,8 +30,9 @@ void Scene::Draw()
 	if (!m_camera) return;
 
 	m_firstPass = true;
-	glm::vec3 target = glm::vec3(m_camera->GetView()[0] - m_camera->GetView()[2]);
-	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 500, 500, -1000, 5000);
+	glm::mat4 camInverse = glm::inverse(m_camera->GetView());
+	glm::vec3 target = glm::vec3(camInverse[3] - camInverse[2]);
+	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 1000, 500, -10000, 100000);
 	m_renderer->BeginRender(Renderer::SHADOW_PASS);
 	for (unsigned i = 0; i < m_units.size(); ++i)
 			m_units[i]->Draw();
