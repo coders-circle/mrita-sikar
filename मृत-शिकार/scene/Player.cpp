@@ -58,17 +58,13 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 void Player::InitAudio()
 {
 	m_a_run = g_audioengine->addSoundSourceFromFile("sound/player/player_run.flac", irrklang::ESM_AUTO_DETECT, true);
-	if (m_a_run)
-	{
-		m_a_run->setDefaultVolume(0.5f);
-	}
+	if (m_a_run) m_a_run->setDefaultVolume(0.1f);
 	m_a_endrun = g_audioengine->addSoundSourceFromFile("sound/player/player_endrun.flac", irrklang::ESM_AUTO_DETECT, true);
-	if (m_a_endrun)
-	{
-		m_a_endrun->setDefaultVolume(0.5f);
-	}
+	if (m_a_endrun) m_a_endrun->setDefaultVolume(0.1f);
 	m_a_shootdelayed = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shootdelayed.flac", irrklang::ESM_AUTO_DETECT, true);
 	m_a_shoot = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shoot.flac", irrklang::ESM_AUTO_DETECT, true);
+	if (m_a_shoot) m_a_shoot->setDefaultVolume(0.01f);
+	if (m_a_shootdelayed) m_a_shootdelayed->setDefaultVolume(0.01f);
 }
 
 bool Player::IsRunning()
@@ -277,28 +273,29 @@ void Player::Update(double deltaTime)
 
 	bool posChanged = false;
 	glm::mat3 orient3x3(m_orient);
+	float posboost = 1.5f;
 	switch (m_state)
 	{
 	case PLAYER_STRAFELEFT:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SLEFTSHOOTING:
-		m_position += orient3x3[0] * (float)deltaTime * deltaPos; posChanged = true;
+		m_position += orient3x3[0] * (float)deltaTime * deltaPos *posboost; posChanged = true;
 		break;
 
 	case PLAYER_STRAFERIGHT:
 	case PLAYER_SRIGHTAIMING:
 	case PLAYER_SRIGHTSHOOTING:
-		m_position -= orient3x3[0] * (float)deltaTime * deltaPos; posChanged = true;
+		m_position -= orient3x3[0] * (float)deltaTime * deltaPos*posboost; posChanged = true;
 		break;
 	}
 
 	if (m_run)
 	{
-		m_position += orient3x3[2] * (float)deltaTime * deltaPos; posChanged = true;
+		m_position += orient3x3[2] * (float)deltaTime * deltaPos*posboost; posChanged = true;
 	}
 	else if (m_backrun)
 	{
-		m_position -= orient3x3[2] * (float)deltaTime * deltaPos; posChanged = true;
+		m_position -= orient3x3[2] * (float)deltaTime * deltaPos*posboost; posChanged = true;
 	}
 
 	if (posChanged) UpdateBoundVolume();

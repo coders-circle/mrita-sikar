@@ -48,10 +48,12 @@ public:
 			is >> index;
 			if (index >= 0 && index < m_worldmodels.size())
 			{
-				float fx = 0.0f, fy = 0.0f, fz = 0.0f;
-				is >> fx >> fy >> fz;
+				float fx = 0.0f, fy = 0.0f, fz = 0.0f, ry = 0.0f;
+				is >> fx >> fy >> fz >> ry;
 				m_worldobjects[i].Initialize(&m_worldmodels[index], glm::vec3(fx, fy, fz));
 				m_worldobjects[i].AddToScene(scene);
+				m_worldobjects[i].RotateY(ry);
+
 			}
 			else
 			{

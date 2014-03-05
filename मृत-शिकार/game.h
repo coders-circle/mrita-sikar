@@ -27,7 +27,7 @@ Player g_player;
 WorldMap g_testmap;
 
 
-#define MAX_ZOMBIES 2
+#define MAX_ZOMBIES 8
 Zombie g_zombies[MAX_ZOMBIES];
 
 Sprite g_crossspr(&g_renderer);
@@ -53,6 +53,8 @@ void Initialize()
 	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
 	{
 		g_zombies[i].Initialize(&g_zombiemodel, glm::vec3(x, -45.0f, z));
+		float activeness = 1.4f + 1.0f*rand() / RAND_MAX;
+		g_zombies[i].SetSpeed(activeness, activeness/1.5f);
 		x += 500.0f; 
 		if (x >= 1300.0f){
 			z += 200.0f; x = -200.0f;
@@ -62,10 +64,11 @@ void Initialize()
 	
 	Mesh mesh(&g_renderer);
 	Mesh::CreateBox(&mesh, glm::vec3(1000.0f, 0.5f, 1000.0f));
-	g_groundmodel.AddMesh(mesh);
-	g_groundmodel.SetBoundBox(Box(glm::vec3(0.0f), glm::vec3(1000.0f, 0.5f, 1000.0f)));
+	//g_groundmodel.AddMesh(mesh);
+	g_groundmodel.LoadModel("ground.mdl");
+	//g_groundmodel.SetBoundBox(Box(glm::vec3(0.0f), glm::vec3(1000.0f, 0.5f, 1000.0f)));
 	g_groundmodel.SetTexture(0, "ground.jpg");
-	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, -45.0f - 0.25f, -50.0f));
+	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, 0.0f, 0.0f));
 	g_crossspr.LoadSprite("cross.png", 100.0f, 100.0f);//, 5.0f, 5.0f);
 	g_cross.Initialize(&g_crossspr, glm::vec2(g_width/2.0f, g_height/2.0f));
 	g_scene.AddUnit(&g_player);
@@ -93,8 +96,6 @@ void CleanUp()
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
-//	g_housemodel.CleanUp();
-
 
 	g_player.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
@@ -107,7 +108,6 @@ void CleanUp()
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
-
 }
 
 std::ostream & operator << (std::ostream & os, const glm::vec3&v)
@@ -115,6 +115,7 @@ std::ostream & operator << (std::ostream & os, const glm::vec3&v)
 	os << v.x << " " << v.y << " " << v.z;
 	return os;
 }
+
 bool g_justDown = false;
 void Update(double totalTime, double deltaTime)
 {
@@ -147,7 +148,7 @@ void Update(double totalTime, double deltaTime)
 					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
 					//
 					// For now just die
-					static_cast<Zombie*>(ClickedUnit)->Die();
+					static_cast<Zombie*>(ClickedUnit)->TakeHit(2, glm::vec3(g_player.GetOrient()[2]));
 				}
 			}
 		}
