@@ -71,6 +71,7 @@ void Zombie::Update(double deltaTime)
 	if (end)
 	{
 		// To do anything when animation reached the end, do it here
+
 	}
 
 
