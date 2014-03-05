@@ -71,41 +71,79 @@ void Mesh::LoadData(const std::vector<SkinVertex> &vertices, const std::vector<u
 	m_bones = new std::vector<Bone>;
 }
 
-void Mesh::Draw(const glm::mat4 &transform, unsigned int pass)
+
+const glm::mat4 g_biasMatrix(
+	0.5, 0.0, 0.0, 0.0,
+	0.0, 0.5, 0.0, 0.0,
+	0.0, 0.0, 0.5, 0.0,
+	0.5, 0.5, 0.5, 1.0
+	);
+void Mesh::Draw(const glm::mat4 &transform)
 {
 	if (!m_renderer) return;
 	if (!m_loaded) return;
 
 	Techniques &techniques = m_renderer->GetTechniques();
-	const glm::mat4 &pretransform = m_renderer->GetViewProjection3d();
-	
-	if (m_texture > 0)
-	{
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, m_texture);
-	}
 
-	if (m_bones)
+	if (m_renderer->GetRenderPass() == Renderer::NORMAL_PASS)
 	{
-		glUseProgram(techniques.skin.program);
-		glUniformMatrix4fv(techniques.skin.mvp, 1, GL_FALSE, glm::value_ptr(pretransform * transform));
-		glUniformMatrix4fv(techniques.skin.model, 1, GL_FALSE, glm::value_ptr(transform));
-		glUniform1f(techniques.skin.texture_sample, 0);
+		const glm::mat4 &pretransform = m_renderer->GetViewProjection3d();
+		if (m_texture > 0)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_texture);
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, m_renderer->GetDepthTexture());
+		}
 
-		glm::mat4 * bonemats = new glm::mat4[m_bones->size()];
-		for (unsigned k = 0; k<m_bones->size(); ++k)
-			bonemats[k] = (*m_bones)[k].node->combined_transform * (*m_bones)[k].offset;
-		glUniformMatrix4fv(techniques.skin.mbones, m_bones->size(), GL_FALSE, glm::value_ptr(*bonemats));	// MODIFIED from (float*)&bonemats[0][0][0]
-		delete[] bonemats;
+		if (m_bones)
+		{
+			glUseProgram(techniques.skin.program);
+			glUniformMatrix4fv(techniques.skin.mvp, 1, GL_FALSE, glm::value_ptr(pretransform * transform));
+			glUniformMatrix4fv(techniques.skin.model, 1, GL_FALSE, glm::value_ptr(transform));
+			glm::mat4 biaslightmvp = g_biasMatrix * m_renderer->GetLightViewProjection() * transform;
+			glUniformMatrix4fv(techniques.skin.bias_light_mvp, 1, GL_FALSE, glm::value_ptr(biaslightmvp));
+			glUniform1i(techniques.skin.texture_sample, 0);
+			glUniform1i(techniques.skin.texture_depthmap, 1);
+
+			glm::mat4 * bonemats = new glm::mat4[m_bones->size()];
+			for (unsigned k = 0; k < m_bones->size(); ++k)
+				bonemats[k] = (*m_bones)[k].node->combined_transform * (*m_bones)[k].offset;
+			glUniformMatrix4fv(techniques.skin.mbones, m_bones->size(), GL_FALSE, glm::value_ptr(*bonemats));	// MODIFIED from (float*)&bonemats[0][0][0]
+			delete[] bonemats;
+		}
+		else
+		{
+			glUseProgram(techniques.normal3D.program);
+			glUniformMatrix4fv(techniques.normal3D.mvp, 1, GL_FALSE, glm::value_ptr(pretransform * transform));
+			glUniformMatrix4fv(techniques.normal3D.model, 1, GL_FALSE, glm::value_ptr(transform));
+			glm::mat4 biaslightmvp = g_biasMatrix * m_renderer->GetLightViewProjection() * transform;
+			glUniformMatrix4fv(techniques.normal3D.bias_light_mvp, 1, GL_FALSE, glm::value_ptr(biaslightmvp));
+			glUniform1i(techniques.normal3D.texture_sample, 0);
+			glUniform1i(techniques.normal3D.texture_depthmap, 1);
+		}
 	}
-	else
+	else if (m_renderer->GetRenderPass() == Renderer::SHADOW_PASS)
 	{
-		glUseProgram(techniques.normal3D.program);
-		glUniformMatrix4fv(techniques.normal3D.mvp, 1, GL_FALSE, glm::value_ptr(pretransform * transform));
-		glUniformMatrix4fv(techniques.normal3D.model, 1, GL_FALSE, glm::value_ptr(transform));
-		glUniform1f(techniques.normal3D.texture_sample, 0);
-	}
+		const glm::mat4 &pretransform = m_renderer->GetLightViewProjection();
 
+		if (m_bones)
+		{
+			glUseProgram(techniques.depthMapSkin.program);
+			glUniformMatrix4fv(techniques.depthMapSkin.mvp, 1, GL_FALSE, glm::value_ptr(pretransform * transform));
+
+			glm::mat4 * bonemats = new glm::mat4[m_bones->size()];
+			for (unsigned k = 0; k < m_bones->size(); ++k)
+				bonemats[k] = (*m_bones)[k].node->combined_transform * (*m_bones)[k].offset;
+			glUniformMatrix4fv(techniques.depthMapSkin.mbones, m_bones->size(), GL_FALSE, glm::value_ptr(*bonemats));	
+			delete[] bonemats;
+		}
+		else
+		{
+			glUseProgram(techniques.depthMapNormal.program);
+			glUniformMatrix4fv(techniques.depthMapNormal.mvp, 1, GL_FALSE, glm::value_ptr(pretransform * transform));
+		}
+	}
 	glBindVertexArray(m_vao);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_buffers[IBO]);
 	glDrawElements(GL_TRIANGLES, m_numIndices, GL_UNSIGNED_SHORT, 0);

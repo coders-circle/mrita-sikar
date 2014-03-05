@@ -24,7 +24,7 @@ private:
 public:
 	Player();
 	void Update(double deltaTime);
-	void Draw(unsigned int pass);
+	void Draw();
 
 	void Run(); void EndRun();
 	void BackRun(); void EndBackRun();

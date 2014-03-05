@@ -11,7 +11,6 @@ protected:
 
 	glm::vec3 m_position;
 
-	bool m_dead;		 // Is dead? Meaning, whether should be updated and drawn by scene or not?
 	unsigned char m_tag; // A number to denote the type of unit (e.g: player: 1, zombie: 2, obstacles: 3, Ground: 4)
 	bool m_liveUnit;	 // Is a live unit?
 
@@ -45,16 +44,13 @@ public:
 	}
 	virtual void CleanUp() {}
 
-	void SetDead(bool die) { m_dead = die; }
-	bool GetDead() const { return m_dead; }
-
 	virtual void Update(double deltaTime) {}
-	virtual void Draw(unsigned int pass)
+	virtual void Draw()
 	{
 		if (m_model)
 		{
 			m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient);
-			m_model->Draw(pass);
+			m_model->Draw();
 		}
 	}
 

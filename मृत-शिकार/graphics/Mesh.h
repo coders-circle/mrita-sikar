@@ -32,7 +32,7 @@ public:
 
 	void LoadData(const std::vector<Vertex> &vertices, const std::vector<unsigned short> &indices);
 	void LoadData(const std::vector<SkinVertex> &vertices, const std::vector<unsigned short> &indices);
-	void Draw(const glm::mat4 &transform, unsigned int pass);
+	void Draw(const glm::mat4 &transform);
 	void CleanUp();
 
 	void SetTexture(unsigned int texture) { m_texture = texture; }

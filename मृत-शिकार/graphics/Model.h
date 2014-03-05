@@ -40,14 +40,14 @@ private:
 
 	void ReadNode(std::fstream &file, Node * node, std::map<unsigned int, Node*> &map); 
 	void UpdateNode(Node * node, Node * parentnode);
-	void DrawNode(Node * node, unsigned int pass);
+	void DrawNode(Node * node);
 	Renderer * m_renderer;
 public:
 	Model(Renderer * renderer = NULL);
 	void SetRenderer(Renderer * renderer) { m_renderer = renderer; }
 
 	void LoadModel(std::string filename);
-	void Draw(unsigned int pass);
+	void Draw();
 	void CleanUp();
 
 	void SetScale(float scale) {

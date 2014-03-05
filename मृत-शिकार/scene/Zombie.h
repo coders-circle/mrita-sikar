@@ -16,7 +16,7 @@ private:
 public:
 	Zombie();
 	void Update(double timeDelta);
-	void Draw(unsigned int pass);
+	void Draw();
 	void InitAudio();
 	void SetDestination(glm::vec3);
 	void Die();

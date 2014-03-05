@@ -67,12 +67,12 @@ public:
 	const glm::vec3 &GetPosition() const { return m_position; }
 
 	virtual void Update() { UpdateBoundVolume(); }
-	virtual void Draw(unsigned int pass)
+	virtual void Draw()
 	{
 		if (m_model)
 		{
 			m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient);
-			m_model->Draw(pass);
+			m_model->Draw();
 		}
 	}
 	virtual void SetRotation(float rotation_angle, glm::vec3 rotation_axes)
