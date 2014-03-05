@@ -71,7 +71,7 @@ void Mesh::LoadData(const std::vector<SkinVertex> &vertices, const std::vector<u
 	m_bones = new std::vector<Bone>;
 }
 
-void Mesh::Draw(const glm::mat4 &transform, unsigned int pass)
+void Mesh::Draw(const glm::mat4 &transform)
 {
 	if (!m_renderer) return;
 	if (!m_loaded) return;

@@ -49,12 +49,12 @@ public:
 	bool GetDead() const { return m_dead; }
 
 	virtual void Update(double deltaTime) {}
-	virtual void Draw(unsigned int pass)
+	virtual void Draw()
 	{
 		if (m_model)
 		{
 			m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient);
-			m_model->Draw(pass);
+			m_model->Draw();
 		}
 	}
 

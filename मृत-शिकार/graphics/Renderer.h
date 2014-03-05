@@ -12,6 +12,7 @@ private:
 	void InitShaders();
 
 	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_viewProjectionBB, m_lightViewProjection;
+	unsigned int m_pass;
 public:
 	enum Passes { SHADOW_PASS, NORMAL_PASS };
 
@@ -30,6 +31,7 @@ public:
 
 	void BeginRender(unsigned int pass)
 	{
+		m_pass = pass;
 		switch (pass)
 		{
 		case NORMAL_PASS:
@@ -39,9 +41,11 @@ public:
 		}
 	}
 
-	void EndRender(unsigned int pass)
+	unsigned int GetRenderPass() { return m_pass; }
+
+	void EndRender()
 	{
-		switch (pass)
+		switch (m_pass)
 		{
 		case NORMAL_PASS:
 			m_window->SwapBuffers();

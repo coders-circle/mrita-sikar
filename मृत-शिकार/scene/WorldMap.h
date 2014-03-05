@@ -46,7 +46,7 @@ public:
 		{
 			int index = 0;
 			is >> index;
-			if (index >= 0 && index < m_worldmodels.size())
+			if (index >= 0 && index < static_cast<int>(m_worldmodels.size()))
 			{
 				float fx = 0.0f, fy = 0.0f, fz = 0.0f;
 				is >> fx >> fy >> fz;

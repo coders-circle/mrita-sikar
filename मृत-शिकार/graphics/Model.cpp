@@ -156,22 +156,22 @@ void Model::UpdateNode(Node * node, Node * parentnode)
 		UpdateNode(&node->children[i], node);
 }
 
-void Model::DrawNode(Node * node, unsigned int pass)
+void Model::DrawNode(Node * node)
 {
 	unsigned int i;
 	for (i = 0; i<node->meshes.size(); ++i)
-		m_meshes[node->meshes[i]].Draw(m_transform * m_scale * node->combined_transform, pass);
+		m_meshes[node->meshes[i]].Draw(m_transform * m_scale * node->combined_transform);
 	for (i = 0; i<node->children.size(); ++i)
-		DrawNode(&node->children[i], pass);
+		DrawNode(&node->children[i]);
 }
 
-void Model::Draw(unsigned int pass)
+void Model::Draw()
 {
 	if (m_animationtree) 
-		DrawNode(&m_animationtree->rootnode, pass);
+		DrawNode(&m_animationtree->rootnode);
 	else
 	for (unsigned i = 0; i < m_meshes.size(); ++i)
-		m_meshes[i].Draw(m_transform * m_scale, pass);
+		m_meshes[i].Draw(m_transform * m_scale);
 }
 
 void Model::Transition(ModelAnimation &modelAnimation, unsigned int set, double transitionTime)

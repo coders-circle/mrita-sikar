@@ -43,14 +43,14 @@ void Scene::Draw()
 		else
 			toDraw = m_camera->IntersectBox(m_units[i]->GetBoundParent());
 		if (toDraw)
-			m_units[i]->Draw(Renderer::NORMAL_PASS);
+			m_units[i]->Draw();
 	}
 
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 	if (!m_unit2ds[i]->GetDead())
 		m_unit2ds[i]->Draw();
 
-	m_renderer->EndRender(Renderer::NORMAL_PASS);
+	m_renderer->EndRender();
 }
 
 void Scene::CleanUp()
