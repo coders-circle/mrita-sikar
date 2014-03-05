@@ -21,31 +21,37 @@ protected:
 		if (m_scene) m_scene->Reinsert(this);
 	}
 
-	void Collide(const Unit * other)
+	bool Collide(const Unit * other)
 	{
+		bool ret = false;
 		glm::vec3 out;
 		if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other->GetBoundParent(), glm::mat3(), &out))
 		{
 			m_position += out; UpdateBoundVolume();
 		}
+		return ret;
 	}
 
-	void Collide(const LiveUnit * other)
+	bool Collide(const LiveUnit * other)
 	{
+		bool ret = false;
 		glm::vec3 out;
 		if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 		{
-			m_position += out; UpdateBoundVolume();
+			m_position += out; UpdateBoundVolume(); ret = true;
 		}
+		return ret;
 	}
 
-	void Collide(const Box &other, const glm::mat3 &otherOrient)
+	bool Collide(const Box &other, const glm::mat3 &otherOrient)
 	{
+		bool ret = false;
 		glm::vec3 out;
 		if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other, otherOrient, &out))
 		{
-			m_position += out; UpdateBoundVolume();
+			m_position += out; UpdateBoundVolume(); ret = true;
 		}
+		return ret;
 	}
 
 public:
