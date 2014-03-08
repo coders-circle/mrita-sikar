@@ -27,7 +27,7 @@ Player g_player;
 WorldMap g_testmap;
 
 
-#define MAX_ZOMBIES 8
+#define MAX_ZOMBIES 5
 Zombie g_zombies[MAX_ZOMBIES];
 
 Sprite g_crossspr(&g_renderer);
@@ -54,7 +54,7 @@ void Initialize()
 	{
 		g_zombies[i].Initialize(&g_zombiemodel, glm::vec3(x, -45.0f, z));
 		float activeness = 1.4f + 1.0f*rand() / RAND_MAX;
-		g_zombies[i].SetSpeed(activeness, activeness/1.5f);
+		g_zombies[i].SetSpeed(activeness, activeness/1.4f);
 		x += 500.0f; 
 		if (x >= 1300.0f){
 			z += 200.0f; x = -200.0f;
@@ -74,7 +74,7 @@ void Initialize()
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_cross);
-	g_camera.Initialize(&g_player, 110.0f);
+	g_camera.Initialize(&g_player, 90.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
@@ -138,6 +138,14 @@ void Update(double totalTime, double deltaTime)
 			{
 				if (ClickedUnit->GetTag() == 2)
 				{
+					float tmin;
+					int position;
+					if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(1), glm::mat3(ClickedUnit->GetOrient()), tmin))
+						position = 1;
+					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(0), glm::mat3(ClickedUnit->GetOrient()), tmin))
+						position = 0;
+					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(2), glm::mat3(ClickedUnit->GetOrient()), tmin))
+						position = 2;
 					// May be check for ray against children boxes here
 					//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
 					//  xxx = 
@@ -148,7 +156,7 @@ void Update(double totalTime, double deltaTime)
 					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
 					//
 					// For now just die
-					static_cast<Zombie*>(ClickedUnit)->TakeHit(2, glm::vec3(g_player.GetOrient()[2]));
+					static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2]));
 				}
 			}
 		}
@@ -171,6 +179,14 @@ void Update(double totalTime, double deltaTime)
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
 		g_zombies[i].SetDestination(g_player.GetBoundCenter());
+		if (g_zombies[i].Attacked())
+		{
+			g_player.TakeHit();
+			if (g_player.GetHealthStatus() <= 0)
+			{
+				g_window.Exit();
+			}
+		}
 	}
 
 	g_audioengine->setListenerPosition(irrklang::vec3df(g_player.GetPosition().x, g_player.GetPosition().y, g_player.GetPosition().z), 

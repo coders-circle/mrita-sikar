@@ -85,7 +85,7 @@ public:
 	{
 		m_orient *= glm::rotate(glm::mat4(), rotation_angle, rotation_axes);
 	}
-
+	virtual int GetHealthStatus(){ return m_health; }
 	const Box& GetAABB() const { return m_aabb; }
 
 };

@@ -48,5 +48,5 @@ void main()
 			(fShadowCoord.z) / fShadowCoord.w)));
 	}
 
-    fColor = vec4(vec3(0.45+fDiffuseIntensity*visibility), 1.0) * fTexColor;
+    fColor = vec4(vec3(0.5+fDiffuseIntensity*visibility), 1.0) * fTexColor;
 }

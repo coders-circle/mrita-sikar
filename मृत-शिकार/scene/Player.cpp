@@ -58,13 +58,17 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 void Player::InitAudio()
 {
 	m_a_run = g_audioengine->addSoundSourceFromFile("sound/player/player_run.flac", irrklang::ESM_AUTO_DETECT, true);
-	if (m_a_run) m_a_run->setDefaultVolume(0.1f);
+	if (m_a_run) m_a_run->setDefaultVolume(0.2f);
 	m_a_endrun = g_audioengine->addSoundSourceFromFile("sound/player/player_endrun.flac", irrklang::ESM_AUTO_DETECT, true);
-	if (m_a_endrun) m_a_endrun->setDefaultVolume(0.1f);
+	if (m_a_endrun) m_a_endrun->setDefaultVolume(0.2f);
 	m_a_shootdelayed = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shootdelayed.flac", irrklang::ESM_AUTO_DETECT, true);
 	m_a_shoot = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shoot.flac", irrklang::ESM_AUTO_DETECT, true);
-	if (m_a_shoot) m_a_shoot->setDefaultVolume(0.01f);
-	if (m_a_shootdelayed) m_a_shootdelayed->setDefaultVolume(0.01f);
+	m_a_hit = g_audioengine->addSoundSourceFromFile("sound/player/player_hit.mp3", irrklang::ESM_AUTO_DETECT, true);
+	m_a_breath = g_audioengine->addSoundSourceFromFile("sound/player/player_breath.mp3", irrklang::ESM_AUTO_DETECT, true);
+	if (m_a_breath) m_a_breath->setDefaultVolume(0.1f);
+	if (m_a_shoot) m_a_shoot->setDefaultVolume(0.2f);
+	if (m_a_shootdelayed) m_a_shootdelayed->setDefaultVolume(0.2f);
+	m_a_breathing = g_audioengine->play2D(m_a_breath, true, false, true);
 }
 
 bool Player::IsRunning()
@@ -83,6 +87,7 @@ void Player::Run()
 		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
 		{
 			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
+			//m_a_running = g_audioengine->play3D(m_a_run, irrklang::vec3df(m_position.x, m_position.y, m_position.z), true, false, true);
 		}
 	}
 }
@@ -298,7 +303,14 @@ void Player::Update(double deltaTime)
 		m_position -= orient3x3[2] * (float)deltaTime * deltaPos*posboost; posChanged = true;
 	}
 
-	if (posChanged) UpdateBoundVolume();
+	if (posChanged)
+	{
+		UpdateBoundVolume();
+		if (m_a_breathing)
+		{
+			m_a_breathing->setPosition(irrklang::vec3df(m_position.x, m_position.y, m_position.z));
+		}
+	}
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	
@@ -328,4 +340,10 @@ void Player::Draw()
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
 	m_model->Animate(m_animation);
 	m_model->Draw();	
+}
+
+void Player::TakeHit()
+{
+	m_health -= 10;
+	g_audioengine->play2D(m_a_hit);
 }

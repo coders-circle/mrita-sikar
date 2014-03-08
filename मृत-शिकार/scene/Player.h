@@ -18,6 +18,12 @@ private:
 	irrklang::ISoundSource* m_a_endrun;
 	irrklang::ISoundSource* m_a_shoot;
 	irrklang::ISoundSource* m_a_shootdelayed;
+	irrklang::ISoundSource* m_a_hit;
+	irrklang::ISoundSource* m_a_breath;
+	irrklang::ISound* m_a_breathing;
+
+
+
 	irrklang::vec3df m_a_pos;
 
 
@@ -38,5 +44,6 @@ public:
 		m_orient = glm::rotate(glm::mat4(), -deltaX, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient;
 	}
 	bool IsRunning();
+	void TakeHit();
 };
 
