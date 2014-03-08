@@ -187,7 +187,9 @@ void Zombie::Update(double deltaTime)
 		if (other != this)
 		{
 			if (other->IsLiveUnit())
+			{
 				if (Collide((LiveUnit*)other)) m_isstruck = true;
+			}
 			else
 				if (Collide(other)) m_isstruck = true;
 		}
