@@ -1,3 +1,8 @@
+/*
+COLLISION.CPP
+-----------------------------
+*/
+
 #include "Collision.h"
 
 bool Box::IntersectBox(const Box &box2, glm::vec3 * out) const

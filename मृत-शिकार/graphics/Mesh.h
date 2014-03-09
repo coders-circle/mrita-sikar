@@ -1,13 +1,21 @@
 #pragma once
+
+/*
+MESH.H
+-----------------------------
+*/
+
 #include "Animation.h"
 #include "Renderer.h"
 
+// Normal vertex information including position, normal and texture coordinates
 struct Vertex
 {
 	glm::vec3 position, normal;
 	glm::vec2 texcoords;
 };
 
+// Skinned vertex information including position, normal, texture coordinates and weighted-bone info
 struct SkinVertex
 {
 	glm::vec3 position, normal;
@@ -15,6 +23,7 @@ struct SkinVertex
 	WeightInfo weights;
 };
 
+// A mesh represents a set of 3d-vertices that may or may not be skinned(attached to bones)
 class Mesh
 {
 private:

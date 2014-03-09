@@ -1,7 +1,14 @@
 #pragma once
+
+/*
+MODEL.H
+-----------------------------
+*/
+
 #include "Mesh.h"
 #include "../collision/Collision.h"
 
+// Transition data between two animations
 struct TransitionState
 {
 	double prevTime;
@@ -11,6 +18,8 @@ struct TransitionState
 	double finishTime;
 };
 
+// A structure to hold information about current animation state
+// Use this to render different objects at different animation states using same model
 struct ModelAnimation
 {
 	ModelAnimation(){ transition = NULL; set = 0; time = 0.0; }
@@ -21,6 +30,7 @@ struct ModelAnimation
 	TransitionState * transition;
 };
 
+// A model represents a collections of meshes that may or may not be animated
 class Model
 {
 private:

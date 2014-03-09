@@ -1,4 +1,10 @@
 #pragma once
+
+/*
+COLLISION.H
+-----------------------------
+*/
+
 #include "../graphics/stdinc.h"
 
 #define SIGN(x) (((x)<0?-1.0f:1.0f))
@@ -36,13 +42,13 @@ public:
 	void SetCenter(const glm::vec3 &center){ m_center = center; }
 	void SetExtents(const glm::vec3 &extents){ m_extents = extents; }
 
-	/*Check if box intersects another box*/
+	// Check if box intersects another box
 	bool IntersectBox(const Box &box2, glm::vec3 * out = NULL) const;
-	/*Check if box intersects another box considering both boxes are rotated
-	Use glm::mat3() for orient parameter if one of the boxes is not rotated*/
+	// Check if box intersects another box considering both boxes are rotated
+	// Use glm::mat3() for orient parameter if one of the boxes is not rotated
 	bool IntersectBox(const glm::mat3 &orient1, const Box &box2, const glm::mat3 &orient2, glm::vec3 * out = NULL) const;
 
-	/*Get a 2d-rectangle (xz-values only) from the box*/
+	// Get a 2d-rectangle (xz-values only) from the box
 	Rect GetRect() const
 	{
 		return Rect(m_center.x-m_extents.x, m_center.z-m_extents.z, m_extents.x*2.0f, m_extents.z*2.0f);
@@ -69,22 +75,22 @@ public:
 	void SetOrigin(const glm::vec3& origin) { m_origin = origin; }
 	void SetDirection(const glm::vec3& direction) { m_direction = direction; }
 
-	/*Check if ray intersects a box
-	tmin is the minimum distance along the ray (a scalar value in the range [0, infinity]) 
-	where the intersection takes place*/
+	// Check if ray intersects a box
+	// tmin is the minimum distance along the ray (a scalar value in the range [0, infinity]) 
+	// where the intersection takes place
 	bool IntersectBox(const Box &box, float &tmin) const;
-	/*Check if ray intersects a rotated box*/
+	// Check if ray intersects a rotated box
 	bool IntersectBox(const Box &box, const glm::mat3 &orient, float &tmin) const
 	{
 		Ray newray((orient * (m_origin-box.GetCenter())) + box.GetCenter(), orient * m_direction);
 		return newray.IntersectBox(box, tmin);
 	}
-	/*Check if ray intersects a 2d rectangle*/
+	// Check if ray intersects a 2d rectangle
 	bool IntersectRect(const Rect &rect) const;
 };
 
 /*
-A collection of a parent bounding bxo and its children
+A collection of a parent bounding box and its children
 */
 struct BoundVolume
 {
@@ -110,7 +116,7 @@ public:
 	void SetNormal(const glm::vec3 &normal) { m_normal = normal; }
 	void SetNormalAndPoint(const glm::vec3 &normal, const glm::vec3 &point) { m_point = point; m_normal = normal; }
 
-	/*Get distance from a point to this plane*/
+	// Get distance from a point to this plane
 	float GetDistance(const glm::vec3 &point) { return glm::dot(point-m_point, m_normal); }
 
 };
@@ -205,7 +211,7 @@ public:
 	}
 
 
-	/*Check if a box intersects a frustum*/
+	// Check if a box intersects a frustum
 	bool BoxInFrustum(const Box &box) {
 		//for each plane do ...
 		for (int i = 0; i < 6; i++) {

@@ -60,9 +60,6 @@
     <ClInclude Include="graphics\Sprite.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="graphics\stdinc.h">
-      <Filter>Header Files\graphics</Filter>
-    </ClInclude>
     <ClInclude Include="graphics\Techniques.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
@@ -185,6 +182,9 @@
     </ClInclude>
     <ClInclude Include="scene\WorldMap.h">
       <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics\stdinc.h">
+      <Filter>Header Files\graphics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

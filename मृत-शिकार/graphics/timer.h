@@ -1,8 +1,13 @@
+#pragma once
+/*
+TIMER.H
+-----------------------------
 // This is adapted from StepTimer class which comes with MS Visual Studio 2013's Direct3D Store App sample
+*/
 
-// A high-resolution timer class, for WINDOWS ONLY
 #include <Windows.h>
 
+// A high-resolution timer class, for WINDOWS ONLY
 class Timer
 {
 public:

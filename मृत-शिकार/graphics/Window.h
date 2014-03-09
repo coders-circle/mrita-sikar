@@ -1,7 +1,14 @@
 #pragma once
+
+/*
+WINDOW.H
+-----------------------------
+*/
+
 #include <Windows.h>
 
 enum MouseButtons{MOUSE_LEFT, MOUSE_RIGHT};
+// The Window class is used to create the window and initialize it with rendering context
 class Window
 {
 private:

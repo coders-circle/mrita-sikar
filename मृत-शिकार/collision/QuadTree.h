@@ -1,14 +1,21 @@
 #pragma once
+
+/*
+QUADTREE.H
+-----------------------------
+*/
+
 #include "../graphics/stdinc.h"
 #include "../scene/Unit.h"
 #include <unordered_set>
 
-//typedef std::vector<const std::unordered_set<const Unit*>*> UnitCollections;
 typedef std::vector<Unit *> UnitCollections;
 
 
 #define MAX_UNITS_PER_NODE 5
 #define MAX_DEPTH_QUADTREE 5
+
+// A node in the quadtree
 class QuadTree
 {
 private:

@@ -1,8 +1,17 @@
 #pragma once
 
+/*
+RENDERER.H
+-----------------------------
+*/
+
 #include "Techniques.h"
 #include "Window.h"
 
+// Main heart of the graphics system
+// The renderer is responsible for initializing OpenGL
+// and managing shaders, shadow depth-map, view-projection tranformations
+// and is used to begin and end rendering a frame
 class Renderer
 {
 private:

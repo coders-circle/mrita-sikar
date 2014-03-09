@@ -27,7 +27,7 @@ protected:
 		glm::vec3 out;
 		if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other->GetBoundParent(), glm::mat3(), &out))
 		{
-			m_position += out; UpdateBoundVolume();
+			m_position += out; UpdateBoundVolume(); ret = true;
 		}
 		return ret;
 	}
