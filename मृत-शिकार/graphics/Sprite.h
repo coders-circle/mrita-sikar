@@ -1,7 +1,13 @@
 #pragma once
 
+/*
+SPRITE.H
+-----------------------------
+*/
+
 #include "Renderer.h"
 
+// A structure to hold information about current animation state
 struct SpriteAnimation
 {
 	SpriteAnimation(){ time = 0.0; imageid = 0; }
@@ -9,6 +15,8 @@ struct SpriteAnimation
 	double time;
 };
 
+// A sprite class represents 2-d image(s) that can be drawn with or without animation
+// Can also be used to draw billboards
 class Sprite
 {
 private:

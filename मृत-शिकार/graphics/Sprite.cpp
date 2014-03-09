@@ -1,3 +1,8 @@
+/*
+SPRITE.CPP
+-----------------------------
+*/
+
 #include "stdinc.h"
 #include "TextureLoader.h"
 #include "Sprite.h"

@@ -1,11 +1,19 @@
 #pragma once
 
+/*
+TECHNIQUES.H
+-----------------------------
+A Technique represents a set of shaders, collectively compiled as a program
+*/
+
+// A rendering technique, representing a set of shaders to use
 struct Technique
 {
 	unsigned int program;
 	unsigned int GetUniform(const char* uniformid){ return glGetUniformLocation(program, uniformid); }
 };
 
+// Technique to draw normal 3d objects to shadow depth map
 struct Technique_DepthMapNormal : Technique
 {
 	unsigned int mvp;
@@ -15,6 +23,7 @@ struct Technique_DepthMapNormal : Technique
 	}
 };
 
+// Technique to draw skinned 3d objects to shadow depth map
 struct Technique_DepthMapSkin : Technique
 {
 	unsigned int mvp;
@@ -26,6 +35,7 @@ struct Technique_DepthMapSkin : Technique
 	}
 };
 
+// Technique to draw skinned 3d objects
 struct Technique_Skin3D : Technique
 {
 	unsigned int mvp;
@@ -45,6 +55,7 @@ struct Technique_Skin3D : Technique
 	}
 };
 
+// Technique to draw normal 3d objects
 struct Technique_3D : Technique
 {
 	unsigned int mvp;
@@ -62,6 +73,7 @@ struct Technique_3D : Technique
 	}
 };
 
+// Technique to draw 2d sprite/billboard
 struct Technique_Sprite : Technique
 {
 	unsigned int mvp;
@@ -75,6 +87,19 @@ struct Technique_Sprite : Technique
 	}
 };
 
+// Technique to draw skybox
+struct Technique_Sky : Technique
+{
+	unsigned int mvp;
+	unsigned int texture_sample;
+	void Init()
+	{
+		mvp = GetUniform("mvp");
+		texture_sample = GetUniform("texture_sample");
+	}
+};
+
+// A set of techniques grouped together
 struct Techniques
 {
 	Technique_Skin3D skin;
@@ -82,4 +107,5 @@ struct Techniques
 	Technique_Sprite sprite;
 	Technique_DepthMapNormal depthMapNormal;
 	Technique_DepthMapSkin depthMapSkin;
+	Technique_Sky sky;
 };

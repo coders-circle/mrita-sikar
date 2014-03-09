@@ -1,3 +1,8 @@
+/*
+WINDOW.CPP
+-----------------------------
+*/
+
 #include "stdinc.h"
 #include "timer.h"
 #include "Window.h"

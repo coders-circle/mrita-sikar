@@ -1,3 +1,9 @@
+/*
+STDINC.H
+-----------------------------
+Standard Include to be included everywhere
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
