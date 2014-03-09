@@ -16,6 +16,8 @@ Zombie::Zombie() : m_state(ZOMBIE_IDLE)
 {
 	m_tag = 2;
 	m_avoidingObstacle = false;
+	m_isstruck = false;
+	m_attacked = false;
 }
 
 irrklang::ISoundSource* g_a_noise;
@@ -71,6 +73,14 @@ void Zombie::Update(double deltaTime)
 	if (end)
 	{
 		// To do anything when animation reached the end, do it here
+		if (m_state == ZOMBIE_ATTACK1 || m_state == ZOMBIE_ATTACK2)
+		{
+			m_attacked = true;
+		}
+		if (m_state == ZOMBIE_FLINCH)
+		{
+			Idle();
+		}
 
 	}
 
@@ -86,7 +96,11 @@ void Zombie::Update(double deltaTime)
 		fa.y *= fmf;
 		fa.z *= fmf;
 		glm::vec3 resultant = fa;
-		
+		/*if (!m_isstruck)
+		{
+			resultant = fa;
+		}*/
+
 
 		if (IsWalking())
 		{
@@ -103,7 +117,8 @@ void Zombie::Update(double deltaTime)
 						if (m_avoidingObstacle == true && (d2 + 100000.0f > d1) && (d2 + 10000.0f <= d1))
 						{
 							glm::vec3 f = glm::normalize(r);
-							float mf = 15.0f*(float)(glm::sqrt(d2) / d1);
+							float mf = 55.0f*(float)(glm::sqrt(d2) / d1);
+							
 							f.x *= mf;
 							f.y *= mf;
 							f.z *= mf;
@@ -113,7 +128,11 @@ void Zombie::Update(double deltaTime)
 						else if (d2 + 10000.0f > d1)
 						{
 							glm::vec3 f = glm::normalize(r);
-							float mf = 19.0f*(float)(glm::sqrt(d2) / d1);
+							float mf = 40.0f*(float)(glm::sqrt(d2) / d1);
+							/*if (units[i]->GetTag() == 2)
+							{
+								mf *= 0.2f;
+							}*/
 							f.x *= mf;
 							f.y *= mf;
 							f.z *= mf;
@@ -128,22 +147,28 @@ void Zombie::Update(double deltaTime)
 				}
 			}
 		}
-		resultant.y = 0.0f;
-		m_orient[2] = glm::vec4(glm::normalize(resultant), 0.0f);
-		m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-		m_orient[0] = (glm::vec4(glm::normalize(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2]))), 0.0f));
+		if (resultant.x == 0.0f && resultant.z == 0.0f)
+		{
 
+		}
+		else
+		{
+			resultant.y = 0.0f;
+			m_orient[2] = glm::vec4(glm::normalize(resultant), 0.0f);
+			m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+			m_orient[0] = (glm::vec4(glm::normalize(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2]))), 0.0f));
+		}
 		if (distsq > 2500.0f)
 		{
-			if (this->IsWalking() == false) this->Walk();
+			if (this->IsWalking() == false && this->m_state != ZOMBIE_FLINCH) this->Walk();
 		}
-		else if (this->IsAttacking() == false) this->Attack();
+		else if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
 	}
 	bool posChanged = false;
 	switch (m_state)
 	{
 	case ZOMBIE_WALK:
-		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 40.0f * m_walkspeed; posChanged = true;
+		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f * m_walkspeed; posChanged = true;
 		if (m_a_snoise)
 		{
 			m_a_snoise->setPosition(irrklang::vec3df(m_position.x, m_position.y, m_position.z));
@@ -184,7 +209,6 @@ void Zombie::Draw()
 void Zombie::Die()
 {
 	if (m_a_snoise) m_a_snoise->stop();
-
 	m_model->Transition(m_animation, ZOMBIE_DEATH, 0.08);
 	m_state = ZOMBIE_DEATH;
 }
@@ -241,6 +265,10 @@ void Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
 		/*m_orient[2] = glm::vec4(glm::normalize(hitdirection - GetBoundCenter()), 0.0f);
 		m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 		m_orient[0] = glm::normalize(glm::vec4(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2])), 0.0f));*/
+		m_position += glm::normalize(hitdirection)*20.0f;
+		UpdateBoundVolume();
+
+	//	UpdateBoundVolume();
 
 		if (m_health > 0)
 		{
@@ -262,6 +290,7 @@ void Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
 				m_a_pain->setMaxDistance(2000.0f);
 			}
 			//m_position -= glm::normalize(hitdirection - GetBoundCenter()) * 20.0f;
+			Flinch();
 		}
 		else
 		{

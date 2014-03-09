@@ -14,6 +14,7 @@ private:
 	bool m_avoidingObstacle;
 	int GetRand(int range){ return rand() % range; }
 	bool m_isstruck;
+	bool m_attacked;
 public:
 	Zombie();
 	void Update(double timeDelta);
@@ -29,6 +30,13 @@ public:
 	bool IsAttacking();
 	bool IsIdle();
 	bool IsWalking();
+	bool IsFlinching();
 	void SetSpeed(float walkspeed, float attackspeed = 1.0f) { m_walkspeed = walkspeed; m_attackspeed = attackspeed; }
+	bool Attacked()
+	{
+		bool temp = m_attacked;
+		m_attacked = false;
+		return temp;
+	}
 };
 
