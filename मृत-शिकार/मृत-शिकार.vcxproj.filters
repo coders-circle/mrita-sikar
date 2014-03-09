@@ -186,6 +186,9 @@
     <ClInclude Include="graphics\stdinc.h">
       <Filter>Header Files\graphics</Filter>
     </ClInclude>
+    <ClInclude Include="graphics\SkyBox.h">
+      <Filter>Header Files\graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Mesh.cpp">
@@ -239,6 +242,9 @@
     <ClCompile Include="audio\audio.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="graphics\SkyBox.cpp">
+      <Filter>Source Files\graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\fs_normal3d.glsl">
@@ -263,6 +269,12 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="shaders\fs_depthmap.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\fs_sky.glsl">
+      <Filter>shaders</Filter>
+    </None>
+    <None Include="shaders\vs_sky.glsl">
       <Filter>shaders</Filter>
     </None>
   </ItemGroup>

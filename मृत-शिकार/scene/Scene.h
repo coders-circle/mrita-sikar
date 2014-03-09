@@ -15,9 +15,11 @@ private:
 	QuadTree m_quadTree;
 	bool m_firstPass;
 
+	SkyBox m_skybox;
+
 public:
 	Scene(Renderer * renderer = NULL);
-	void SetRenderer(Renderer * renderer) { m_renderer = renderer; }
+	void SetRenderer(Renderer * renderer) { m_renderer = renderer; m_skybox.SetRenderer(m_renderer); }
 	Renderer* GetRenderer() { return m_renderer; }
 
 	bool IsFirstPass() { return m_firstPass; }

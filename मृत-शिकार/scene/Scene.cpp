@@ -1,11 +1,12 @@
 #include "LiveUnit.h"
 
-Scene::Scene(Renderer * renderer) : m_renderer(renderer)
+Scene::Scene(Renderer * renderer) : m_renderer(renderer), m_skybox(renderer)
 {}
 
 void Scene::Initialize(const Rect &area)
 {
 	m_quadTree.Initialize(0, area);
+	m_skybox.Initialize();
 }
 
 void Scene::Resize(float width, float height)
@@ -52,6 +53,8 @@ void Scene::Draw()
 			m_units[i]->Draw();
 	}
 
+	m_skybox.Draw(glm::vec3(camInverse[3]));
+
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 		m_unit2ds[i]->Draw();
 
@@ -62,6 +65,7 @@ void Scene::CleanUp()
 {
 	m_units.clear();
 	m_unit2ds.clear();
+	m_skybox.CleanUp();
 }
 
 bool Scene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const

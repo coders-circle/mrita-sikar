@@ -89,6 +89,7 @@ void Initialize()
 	{
 		g_zombies[i].InitAudio();
 	}
+
 }
 
 void CleanUp()
@@ -96,7 +97,7 @@ void CleanUp()
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
-
+	
 	g_player.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
 		g_zombies[i].CleanUp();

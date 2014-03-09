@@ -80,6 +80,8 @@ void Renderer::InitShaders()
 		{ GL_VERTEX_SHADER, "shaders\\vs_depthmap_skin.glsl" },
 		{ GL_FRAGMENT_SHADER, "shaders\\fs_depthmap.glsl" },
 		{ GL_VERTEX_SHADER, "shaders\\vs_depthmap_normal.glsl" },
+		{ GL_VERTEX_SHADER, "shaders\\vs_sky.glsl" },
+		{ GL_FRAGMENT_SHADER, "shaders\\fs_sky.glsl" },
 	};
 
 	std::vector<ProgramInfo> programs = { 
@@ -88,6 +90,7 @@ void Renderer::InitShaders()
 		{ { 3, 4 }, &m_techniques.sprite.program },
 		{ { 5, 6 }, &m_techniques.depthMapSkin.program },
 		{ { 6, 7 }, &m_techniques.depthMapNormal.program },
+		{ { 8, 9 }, &m_techniques.sky.program },
 	};
 	CreatePrograms(shaders, programs);
 
@@ -96,6 +99,7 @@ void Renderer::InitShaders()
 	m_techniques.sprite.Init();
 	m_techniques.depthMapNormal.Init();
 	m_techniques.depthMapSkin.Init();
+	m_techniques.sky.Init();
 }
 
 void Renderer::BeginRender(unsigned int pass)

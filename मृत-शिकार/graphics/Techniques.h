@@ -87,6 +87,18 @@ struct Technique_Sprite : Technique
 	}
 };
 
+// Technique to draw skybox
+struct Technique_Sky : Technique
+{
+	unsigned int mvp;
+	unsigned int texture_sample;
+	void Init()
+	{
+		mvp = GetUniform("mvp");
+		texture_sample = GetUniform("texture_sample");
+	}
+};
+
 // A set of techniques grouped together
 struct Techniques
 {
@@ -95,4 +107,5 @@ struct Techniques
 	Technique_Sprite sprite;
 	Technique_DepthMapNormal depthMapNormal;
 	Technique_DepthMapSkin depthMapSkin;
+	Technique_Sky sky;
 };
