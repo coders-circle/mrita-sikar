@@ -72,7 +72,6 @@ void Zombie::Update(double deltaTime)
 
 	if (end)
 	{
-		// To do anything when animation reached the end, do it here
 		if (m_state == ZOMBIE_ATTACK1 || m_state == ZOMBIE_ATTACK2)
 		{
 			m_attacked = true;
