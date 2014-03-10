@@ -34,7 +34,7 @@ public:
 	void SetRenderer(Renderer * renderer) { m_renderer = renderer; }
 	void CleanUp();
 
-	void Animate(SpriteAnimation &spriteAnimation, double deltaTime);
+	void Animate(SpriteAnimation &spriteAnimation, double deltaTime, bool loop = true, bool * end = NULL);
 	void LoadSprite(std::string filename, float width, float height, float offsetX = 0.0f, float offsetY = 0.0f, int numCols = 1, int numRows = 1, double animationSpeed = 1.0);
 	void DrawSprite(unsigned imageid, float posX, float posY);
 	void DrawBillboard(unsigned imageid, const glm::mat4 &transform);
