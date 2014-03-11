@@ -14,7 +14,7 @@ public:
 	WorldMap()
 	{
 	}
-	void Initialize(std::string mapfilename, Renderer* renderer, Scene* scene)
+	void Initialize(std::string mapfilename, Renderer* renderer, GameScene* scene)
 	{
 		
 		std::ifstream is;

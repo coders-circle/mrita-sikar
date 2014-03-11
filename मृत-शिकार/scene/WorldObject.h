@@ -16,7 +16,7 @@ public:
 	{
 		m_defaultrotation = defaultrotation;
 	}
-	void AddToScene(Scene* scene)
+	void AddToScene(GameScene* scene)
 	{
 		scene->AddUnit(this);
 	}

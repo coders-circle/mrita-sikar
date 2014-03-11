@@ -7,6 +7,7 @@
 #include "scene/TPCamera.h"
 #include "scene/Unit2d.h"
 #include "scene/WorldMap.h"
+#include "scene/Blood.h"
 
 #include "audio/audio.h"
 
@@ -20,14 +21,14 @@ int g_width = 900;
 int g_height = 650;
 
 
-Scene g_scene(&g_renderer);
+GameScene g_scene(&g_renderer);
 TPCamera g_camera;
 Model g_humanmodel(&g_renderer), g_zombiemodel(&g_renderer);
 Player g_player;
 WorldMap g_testmap;
 
 Sprite g_bloodspr(&g_renderer);
-SpriteAnimation g_bloodAnim;
+Blood g_blood;
 
 #define MAX_ZOMBIES 15
 Zombie g_zombies[MAX_ZOMBIES];
@@ -47,6 +48,7 @@ void Initialize()
 	g_scene.SetCamera(&g_camera);
 	
 	g_bloodspr.LoadSprite("blood2.png", 128, 128, 0.0f, 0.0f, 6, 1);
+	g_blood.Initialize(&g_bloodspr);
 
 	g_humanmodel.LoadModel("human.mdl");
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
@@ -74,6 +76,9 @@ void Initialize()
 	g_cross.Initialize(&g_crossspr, glm::vec2(g_width/2.0f, g_height/2.0f));
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
+	g_scene.AddUnit(&g_blood);
+	g_scene.AddUnit(&g_cross);
+
 	g_camera.Initialize(&g_player, 90.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
@@ -95,6 +100,8 @@ void Initialize()
 void CleanUp()
 {
 	g_bloodspr.CleanUp();
+	g_blood.CleanUp();
+
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
@@ -159,12 +166,9 @@ void Update(double totalTime, double deltaTime)
 					// (Note that there is another child box (3) that can be checked against the player to see if the attack
 					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
 					static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2]));
+					
 					if (position == 0 || position == 1 || position == 2)
-					{
-						g_drawBlood = true;
-						g_bloodPos = pickRay.GetOrigin() + pickRay.GetDirection() * tmin;
-						g_bloodAnim.imageid = 0; g_bloodAnim.time = 0.0;
-					}
+						g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
 				}
 			}
 		}
@@ -210,20 +214,12 @@ void Update(double totalTime, double deltaTime)
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_cross.SetPosition(glm::vec2(g_width/2 - 50, g_height/2 - 50));
 
-	if (g_drawBlood) {
-		bool end; g_bloodspr.Animate(g_bloodAnim, deltaTime * 10, false, &end); if (end) g_drawBlood = false;
-	}
 	g_scene.Update(deltaTime);
 }
 
 void Render()
 {
 	g_scene.Draw();
-	if (g_drawBlood)
-		g_bloodspr.DrawBillboard(g_bloodAnim, glm::translate(glm::mat4(), g_bloodPos));
-
-	g_cross.Draw();
-	g_renderer.EndRender();
 }
 
 void Resize(int width, int height)

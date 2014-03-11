@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.h"
+#include "GameScene.h"
 
 class LiveUnit : public Unit
 {

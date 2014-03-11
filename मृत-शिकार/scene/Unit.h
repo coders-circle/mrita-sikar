@@ -1,13 +1,13 @@
 #pragma once
 #include "../graphics/graphics.h"
 
-class Scene;
+class GameScene;
 class Unit
 {
 protected:
 	Model * m_model;
 	glm::mat4 m_orient;
-	Scene * m_scene;
+	GameScene * m_scene;
 
 	glm::vec3 m_position;
 
@@ -57,7 +57,7 @@ public:
 	}
 
 	int GetTag() const { return m_tag; }
-	void SetScene(Scene * scene) { m_scene = scene; };
+	void SetScene(GameScene * scene) { m_scene = scene; };
 
 	const Box &GetBoundParent() const { return m_boundVolume.parent; }
 	const Box &GetBoundChild(unsigned int i) const { return m_boundVolume.children[i]; }
