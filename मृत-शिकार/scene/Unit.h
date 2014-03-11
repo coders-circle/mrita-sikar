@@ -17,6 +17,8 @@ protected:
 	BoundVolume m_boundVolume;	//Copy of bound volume, to be updated according to position of unit
 	Rect m_rect;
 
+	int GetRand(int range){ return rand() % range; }
+
 
 	void UpdateBoundVolume()
 	{

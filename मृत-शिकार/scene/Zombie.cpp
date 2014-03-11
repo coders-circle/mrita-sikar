@@ -113,21 +113,23 @@ void Zombie::Update(double deltaTime)
 						glm::vec3 r = (this->GetBoundCenter() - units[i]->GetBoundCenter());
 						float d1 = glm::dot(r, r);
 						float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
-						if (m_avoidingObstacle == true && (d2 + 100000.0f > d1) && (d2 + 10000.0f <= d1))
-						{
-							glm::vec3 f = glm::normalize(r);
-							float mf = 55.0f*(float)(glm::sqrt(d2) / d1);
-							
-							f.x *= mf;
-							f.y *= mf;
-							f.z *= mf;
-							resultant += f;
+						//if (m_avoidingObstacle == true && (d2 + 100000.0f > d1) && (d2 + 10000.0f <= d1))
+						//{
+						//	glm::vec3 f = glm::normalize(r);
+						//	float mf = 30.0f*(float)(glm::sqrt(d2) / d1);
+						//	//float mf = (float)(glm::sqrt(d2) / glm::sqrt(d1));
+						//	f.x *= mf;
+						//	f.y *= mf;
+						//	f.z *= mf;
+						//	resultant += f;
 
-						}
-						else if (d2 + 10000.0f > d1)
+						//}
+						//else 
+						if (d2 + 10000.0f > d1)
 						{
 							glm::vec3 f = glm::normalize(r);
-							float mf = 40.0f*(float)(glm::sqrt(d2) / d1);
+							float mf = 50.0f*(float)(glm::sqrt(d2) / d1);
+							//float mf = (float)(glm::sqrt(d2) / glm::sqrt(d1));
 							/*if (units[i]->GetTag() == 2)
 							{
 								mf *= 0.2f;
@@ -153,11 +155,11 @@ void Zombie::Update(double deltaTime)
 		else
 		{
 			resultant.y = 0.0f;
-			m_orient[2] = glm::vec4(glm::normalize(resultant), 0.0f);
+			m_orient[2] = glm::vec4(glm::normalize(glm::vec3(m_orient[2]) + resultant*0.08f), 0.0f);
 			m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 			m_orient[0] = (glm::vec4(glm::normalize(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2]))), 0.0f));
 		}
-		if (distsq > 2500.0f)
+		if (distsq > 1600.0f)
 		{
 			if (this->IsWalking() == false && this->m_state != ZOMBIE_FLINCH) this->Walk();
 		}

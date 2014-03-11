@@ -39,14 +39,14 @@ void main()
 	float visibility = 1.0;
 	// the loop takes care of neighbouring samples as well
 	// larger spread means much nearer samples
-	float spread = 1200.0f;
+	float spread = 2000.0f;
 	for (int i = 0; i<7; i++){ //i<4
 		int index = i;
 		//0.2 *
-		visibility -= 0.08*(1.0 - texture(texture_depthmap,
+		visibility -= 0.14*(1.0 - texture(texture_depthmap,
 			vec3((fShadowCoord.xy / fShadowCoord.w) + poissonDisk[index] / spread,
 			(fShadowCoord.z) / fShadowCoord.w)));
 	}
 
-    fColor = vec4(vec3(0.5+fDiffuseIntensity*visibility), 1.0) * fTexColor;
+    fColor = vec4(vec3(0.4+fDiffuseIntensity*visibility), 1.0) * fTexColor;
 }

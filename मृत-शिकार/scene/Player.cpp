@@ -15,6 +15,14 @@ enum PlayerStates {
 	PLAYER_SLEFTAIMING, PLAYER_SRIGHTAIMING,
 };
 
+enum PlayerSounds {
+	SND_PLAYER_RUN = 0,
+	SND_PLAYER_ENDRUN,
+	SND_PLAYER_SHOOT,
+	SND_PLAYER_HIT1, SND_PLAYER_HIT2, SND_PLAYER_HIT3,
+	SND_PLAYER_DIE1, SND_PLAYER_DIE2, SND_PLAYER_DIE3
+};
+
 inline void Player::ChangeState(int x)
 {
 	switch (x)
@@ -51,20 +59,29 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
-
-	
 }
 
 void Player::InitAudio()
 {
+
+	m_sound.Initialize(g_audioengine, m_position);
+	m_sound.AddSource("sound/player/player_run.flac");
+	m_sound.AddSource("sound/player/player_endrun.flac");
+
+
 	m_a_run = g_audioengine->addSoundSourceFromFile("sound/player/player_run.flac", irrklang::ESM_AUTO_DETECT, true);
 	if (m_a_run) m_a_run->setDefaultVolume(0.2f);
 	m_a_endrun = g_audioengine->addSoundSourceFromFile("sound/player/player_endrun.flac", irrklang::ESM_AUTO_DETECT, true);
 	if (m_a_endrun) m_a_endrun->setDefaultVolume(0.2f);
 	m_a_shootdelayed = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shootdelayed.flac", irrklang::ESM_AUTO_DETECT, true);
 	m_a_shoot = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shoot.flac", irrklang::ESM_AUTO_DETECT, true);
-	m_a_hit = g_audioengine->addSoundSourceFromFile("sound/player/player_hit.mp3", irrklang::ESM_AUTO_DETECT, true);
+
+	m_a_hit1 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit1.mp3", irrklang::ESM_AUTO_DETECT, true);
+	m_a_hit2 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit2.mp3", irrklang::ESM_AUTO_DETECT, true);
+	m_a_hit3 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit3.mp3", irrklang::ESM_AUTO_DETECT, true);
+
 	m_a_breath = g_audioengine->addSoundSourceFromFile("sound/player/player_breath.mp3", irrklang::ESM_AUTO_DETECT, true);
+	//m_a_pain = g_audioengine->addSoundSourceFromFile("sound/player/player_pain.mp3", irrklang::ESM_AUTO_DETECT, true);
 	if (m_a_breath) m_a_breath->setDefaultVolume(0.1f);
 	if (m_a_shoot) m_a_shoot->setDefaultVolume(0.2f);
 	if (m_a_shootdelayed) m_a_shootdelayed->setDefaultVolume(0.2f);
@@ -344,6 +361,11 @@ void Player::Draw()
 
 void Player::TakeHit()
 {
-	m_health -= 10;
-	g_audioengine->play2D(m_a_hit);
+	m_health -= 0;
+	switch (GetRand(3))
+	{
+	case 0: g_audioengine->play2D(m_a_hit1); break;
+	case 1: g_audioengine->play2D(m_a_hit2); break;
+	default: g_audioengine->play2D(m_a_hit3);
+	}
 }

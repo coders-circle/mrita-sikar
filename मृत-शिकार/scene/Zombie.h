@@ -12,7 +12,6 @@ private:
 	float m_walkspeed;
 	float m_attackspeed;
 	bool m_avoidingObstacle;
-	int GetRand(int range){ return rand() % range; }
 	bool m_isstruck;
 	bool m_attacked;
 public:

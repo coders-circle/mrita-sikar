@@ -27,7 +27,7 @@ Player g_player;
 WorldMap g_testmap;
 
 
-#define MAX_ZOMBIES 5
+#define MAX_ZOMBIES 15
 Zombie g_zombies[MAX_ZOMBIES];
 
 Sprite g_crossspr(&g_renderer);
@@ -141,9 +141,9 @@ void Update(double totalTime, double deltaTime)
 				{
 					float tmin;
 					int position;
-					if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(1), glm::mat3(ClickedUnit->GetOrient()), tmin))
+					if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(0), glm::mat3(ClickedUnit->GetOrient()), tmin))
 						position = 1;
-					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(0), glm::mat3(ClickedUnit->GetOrient()), tmin))
+					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(1), glm::mat3(ClickedUnit->GetOrient()), tmin))
 						position = 0;
 					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(2), glm::mat3(ClickedUnit->GetOrient()), tmin))
 						position = 2;
