@@ -20,7 +20,7 @@ private:
 	Techniques m_techniques;
 	void InitShaders();
 
-	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_viewProjectionBB, m_lightViewProjection;
+	glm::mat4 m_projection, m_viewProjection3d, m_projection2d, m_lightViewProjection, m_rotationBB;
 	unsigned int m_pass;
 
 	GLuint m_depthFBO, m_depthTexture;
@@ -33,7 +33,7 @@ public:
 	void UpdateView(const glm::mat4 &view)
 	{
 		m_viewProjection3d = m_projection * view;
-		m_viewProjectionBB = m_projection * glm::mat4(glm::vec4(1.0f, 0.0f, 0.0f, 0.0f), glm::vec4(0.0f, 1.0f, 0.0f, 0.0f), glm::vec4(0.0f, 0.0f, 1.0f, 0.0f), view[3]);
+		m_rotationBB = glm::mat4(glm::mat3(glm::inverse(view)));
 	}
 
 	void UpdateLightMatrix(const glm::mat4 &lightViewProjection)
@@ -60,7 +60,7 @@ public:
 
 	Techniques& GetTechniques(){ return m_techniques; }
 	const glm::mat4& GetViewProjection3d() { return m_viewProjection3d; }
-	const glm::mat4& GetViewProjectionBB() { return m_viewProjectionBB; }
+	const glm::mat4& GetBillboardRotation() { return m_rotationBB; }
 	const glm::mat4& GetProjection2d() { return m_projection2d; }
 	const glm::mat4& GetLightViewProjection() { return m_lightViewProjection; }
 

@@ -22,8 +22,6 @@ void Scene::Update(double deltaTime)
 
 	for (unsigned i = 0; i < m_units.size(); ++i)
 		m_units[i]->Update(deltaTime);
-	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
-		m_unit2ds[i]->Update(deltaTime);
 }
 
 void Scene::Draw()
@@ -54,17 +52,11 @@ void Scene::Draw()
 	}
 
 	m_skybox.Draw(glm::vec3(camInverse[3]));
-
-	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
-		m_unit2ds[i]->Draw();
-
-	m_renderer->EndRender();
 }
 
 void Scene::CleanUp()
 {
 	m_units.clear();
-	m_unit2ds.clear();
 	m_skybox.CleanUp();
 }
 
