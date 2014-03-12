@@ -1,20 +1,21 @@
 #pragma once
 #include "../graphics/graphics.h"
 
-class Scene;
+class GameScene;
 class Unit
 {
 protected:
 	Model * m_model;
 	glm::mat4 m_orient;
-	Scene * m_scene;
+	GameScene * m_scene;
 
 	glm::vec3 m_position;
 
 	unsigned char m_tag; // A number to denote the type of unit (e.g: player: 1, zombie: 2, obstacles: 3, Ground: 4)
 	bool m_liveUnit;	 // Is a live unit?
 
-	BoundVolume m_boundVolume;	//Copy of bound volume, to be updated according to position of unit
+	BoundVolume m_boundVolume;	// Copy of bound volume, to be updated according to position of unit
+	std::vector<unsigned int> m_ignoreChildren;	// List of children-box indices to ignore while testing for collision
 	Rect m_rect;
 
 	int GetRand(int range){ return rand() % range; }
@@ -57,10 +58,12 @@ public:
 	}
 
 	int GetTag() const { return m_tag; }
-	void SetScene(Scene * scene) { m_scene = scene; };
+	void SetScene(GameScene * scene) { m_scene = scene; };
 
 	const Box &GetBoundParent() const { return m_boundVolume.parent; }
 	const Box &GetBoundChild(unsigned int i) const { return m_boundVolume.children[i]; }
+	unsigned int GetChildrenSize() const { return m_boundVolume.children.size(); }
+	const std::vector<unsigned int> & GetIgnoreChildren() const { return m_ignoreChildren; }
 	const Rect &GetRect() const	{ return m_rect; }
 
 	const glm::mat4 &GetOrient() const { return m_orient; }

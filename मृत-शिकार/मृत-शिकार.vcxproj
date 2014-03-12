@@ -111,7 +111,10 @@
     <ClInclude Include="graphics\timer.h" />
     <ClInclude Include="graphics\utils.h" />
     <ClInclude Include="graphics\Window.h" />
+    <ClInclude Include="scene\Billboard.h" />
+    <ClInclude Include="scene\Blood.h" />
     <ClInclude Include="scene\Camera.h" />
+    <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Ground.h" />
     <ClInclude Include="scene\LiveUnit.h" />
     <ClInclude Include="scene\Player.h" />
@@ -135,6 +138,8 @@
     <ClCompile Include="graphics\utils.cpp" />
     <ClCompile Include="graphics\Window.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\Billboard.cpp" />
+    <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\Ground.cpp" />
     <ClCompile Include="scene\LiveUnit.cpp" />
     <ClCompile Include="scene\Player.cpp" />

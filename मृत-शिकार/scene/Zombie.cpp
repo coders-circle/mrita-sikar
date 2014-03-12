@@ -18,6 +18,8 @@ Zombie::Zombie() : m_state(ZOMBIE_IDLE)
 	m_avoidingObstacle = false;
 	m_isstruck = false;
 	m_attacked = false;
+	m_ignoreChildren.push_back(3);	//ignore attack collision box
+	m_ignoreChildren.push_back(4);	//ignore dead collision box
 }
 
 irrklang::ISoundSource* g_a_noise;
@@ -179,6 +181,9 @@ void Zombie::Update(double deltaTime)
 
 	if (posChanged) UpdateBoundVolume();
 
+	
+	if (m_state == ZOMBIE_DEATH && !end) return;
+
 	m_isstruck = false;
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
@@ -212,6 +217,11 @@ void Zombie::Die()
 	if (m_a_snoise) m_a_snoise->stop();
 	m_model->Transition(m_animation, ZOMBIE_DEATH, 0.08);
 	m_state = ZOMBIE_DEATH;
+
+	m_boundVolume.parent = m_boundVolume.children[4];
+	m_aabb.SetCenter(m_boundVolume.parent.GetCenter());
+	m_aabb.SetExtents(glm::vec3(glm::length(m_boundVolume.parent.GetExtents())));
+	m_rect = m_aabb.GetRect();
 }
 void Zombie::Walk()
 {
@@ -252,9 +262,9 @@ bool Zombie::IsWalking()
 	return m_state == ZOMBIE_WALK;
 }
 
-void Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
+bool Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
 {
-	if (m_state != ZOMBIE_DEATH)
+	if (m_state != ZOMBIE_DEATH && (hitposition == 0 || hitposition == 1 || hitposition == 2))
 	{
 		switch (hitposition)
 		{
@@ -297,6 +307,8 @@ void Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
 		{
 			Die();
 		}
+		return true;
 	}
+	return false;
 
 }
