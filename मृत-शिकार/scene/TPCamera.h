@@ -27,7 +27,7 @@ public:
 	{
 		float prevRotY = m_totalYRot;
 		m_totalYRot += deltaY;
-		if (m_totalYRot > 35.0f) { m_totalYRot = 35.0f; }
+		if (m_totalYRot > 30.0f) { m_totalYRot = 30.0f; }
 		else if (m_totalYRot < -40.0f) { m_totalYRot = -40.0f; }
 	}
 

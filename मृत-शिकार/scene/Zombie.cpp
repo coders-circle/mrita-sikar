@@ -179,6 +179,9 @@ void Zombie::Update(double deltaTime)
 
 	if (posChanged) UpdateBoundVolume();
 
+	
+	if (m_state == ZOMBIE_DEATH && !end) return;
+
 	m_isstruck = false;
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
