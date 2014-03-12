@@ -192,10 +192,10 @@
     <ClInclude Include="scene\GameScene.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
-    <ClInclude Include="scene\Blood.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="scene\Billboard.h">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="scene\Blood.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
   </ItemGroup>
@@ -256,9 +256,6 @@
     </ClCompile>
     <ClCompile Include="scene\GameScene.cpp">
       <Filter>Source Files\scene</Filter>
-    </ClCompile>
-    <ClCompile Include="scene\Blood.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="scene\Billboard.cpp">
       <Filter>Source Files\scene</Filter>

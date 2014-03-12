@@ -139,7 +139,6 @@
     <ClCompile Include="graphics\Window.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="scene\Billboard.cpp" />
-    <ClCompile Include="scene\Blood.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\Ground.cpp" />
     <ClCompile Include="scene\LiveUnit.cpp" />

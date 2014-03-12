@@ -5,7 +5,7 @@ class Blood : public Billboard
 private:
 	bool m_draw;
 public:
-	Blood(const glm::vec3& position = glm::vec3());
+	Blood(const glm::vec3& position = glm::vec3()) : Billboard(position), m_draw(false) {}
 
 	void Start(const glm::vec3& position) {
 		m_draw = true; 
@@ -17,7 +17,7 @@ public:
 	{
 		if (m_draw)
 		{
-			bool end; m_sprite->Animate(m_sprAnim, deltaTime * 10, false, &end); if (end) m_draw = false;
+			bool end; m_sprite->Animate(m_sprAnim, deltaTime * 17, false, &end); if (end) m_draw = false;
 		}
 	}
 	void Draw() {
