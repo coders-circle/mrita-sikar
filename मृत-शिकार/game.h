@@ -1,6 +1,5 @@
 #include "graphics/graphics.h"
 
-#include "scene/Scene.h"
 #include "scene/Player.h"
 #include "scene/Zombie.h"
 #include "scene/Ground.h"
@@ -83,7 +82,6 @@ void Initialize()
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_window.ShowMouseCursor(false);
 
-
 	g_audioengine = irrklang::createIrrKlangDevice(); 
 	//up vector is just opposite 
 	g_audioengine->setListenerPosition(irrklang::vec3df(g_player.GetPosition().x, g_player.GetPosition().y, g_player.GetPosition().z),
@@ -118,12 +116,13 @@ void CleanUp()
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
 }
-
+/*
 std::ostream & operator << (std::ostream & os, const glm::vec3&v)
 {
 	os << v.x << " " << v.y << " " << v.z;
 	return os;
 }
+*/
 
 bool g_justDown = false;
 glm::vec3 g_bloodPos; bool g_drawBlood = false;
@@ -150,11 +149,11 @@ void Update(double totalTime, double deltaTime)
 				if (ClickedUnit->GetTag() == 2)
 				{
 					float tmin;
-					int position;
+					int position; 
 					if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(0), glm::mat3(ClickedUnit->GetOrient()), tmin))
-						position = 1;
-					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(1), glm::mat3(ClickedUnit->GetOrient()), tmin))
 						position = 0;
+					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(1), glm::mat3(ClickedUnit->GetOrient()), tmin))
+						position = 1;
 					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(2), glm::mat3(ClickedUnit->GetOrient()), tmin))
 						position = 2;
 					
@@ -165,9 +164,7 @@ void Update(double totalTime, double deltaTime)
 					//	2 for bottom
 					// (Note that there is another child box (3) that can be checked against the player to see if the attack
 					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
-					static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2]));
-					
-					if (position == 0 || position == 1 || position == 2)
+					if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
 						g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
 				}
 			}
@@ -208,8 +205,7 @@ void Update(double totalTime, double deltaTime)
 	int newx, newy;
 	g_window.GetMousePos(newx, newy);
 	g_player.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
-	g_camera.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
-	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);
+	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);	// just rotate the camera not the player vertically
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_cross.SetPosition(glm::vec2(g_width/2 - 50, g_height/2 - 50));

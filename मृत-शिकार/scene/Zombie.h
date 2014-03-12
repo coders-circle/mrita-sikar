@@ -21,7 +21,7 @@ public:
 	void InitAudio();
 	void SetDestination(glm::vec3);
 	void Die();
-	void TakeHit(int hitposition, glm::vec3 hitdirection);
+	bool TakeHit(int hitposition, glm::vec3 hitdirection);
 	void Walk();
 	void Idle();
 	void Attack();
@@ -30,6 +30,7 @@ public:
 	bool IsIdle();
 	bool IsWalking();
 	bool IsFlinching();
+	bool IsDead();
 	void SetSpeed(float walkspeed, float attackspeed = 1.0f) { m_walkspeed = walkspeed; m_attackspeed = attackspeed; }
 	bool Attacked()
 	{

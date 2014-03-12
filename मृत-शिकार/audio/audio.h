@@ -57,14 +57,14 @@ public:
 	}
 	void Play(int index)
 	{
-		if (m_audioengine != 0 && index >= 0 && m_sources.size() > index)
+		if (m_audioengine != 0 && index >= 0 && static_cast<int>(m_sources.size()) > index)
 		{
 			m_audioengine->play3D(m_sources[index], m_position);
 		}
 	}
 	irrklang::ISound* PlayTrack(int index)
 	{
-		if (m_audioengine != 0 && index >= 0 && m_sources.size() > index)
+		if (m_audioengine != 0 && index >= 0 && static_cast<int>(m_sources.size()) > index)
 		{
 			return m_audioengine->play3D(m_sources[index], m_position, false, false, true);
 		}

@@ -36,6 +36,8 @@ public:
 	void AddUnit(Billboard * billboard) { m_billboards.push_back(billboard); }
 
 	const std::vector<Unit*> &GetUnits() const { return m_units; }
+	const std::vector<Unit2d*> &GetUnit2ds() const { return m_unit2ds; }
+	const std::vector<Billboard*> &GetBillboards() const { return m_billboards; }
 
 	Unit* GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit = NULL) const;
 	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const;

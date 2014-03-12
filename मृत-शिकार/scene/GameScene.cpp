@@ -58,10 +58,10 @@ void GameScene::Draw()
 			m_units[i]->Draw();
 	}
 
+	m_skybox.Draw(glm::vec3(camInverse[3]));
+
 	for (unsigned i = 0; i < m_billboards.size(); ++i)
 		m_billboards[i]->Draw();
-
-	m_skybox.Draw(glm::vec3(camInverse[3]));
 
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 		m_unit2ds[i]->Draw();
@@ -72,6 +72,8 @@ void GameScene::Draw()
 void GameScene::CleanUp()
 {
 	m_units.clear();
+	m_unit2ds.clear();
+	m_billboards.clear();
 	m_skybox.CleanUp();
 }
 

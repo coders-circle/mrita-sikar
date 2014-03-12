@@ -9,10 +9,11 @@ private:
 	float m_distance;
 
 	glm::mat4 m_orient;
-	float m_totalYRot;		//record to limit yrotation
+	float m_totalYRot;		//limit yrotation
 public:
 	void UpdateView(double deltaTime)
 	{
+		m_orient = glm::rotate(m_target->GetOrient(), m_totalYRot, glm::vec3(1.0f, 0.0f, 0.0f));
 		glm::vec3 tpos = m_target->GetPosition();
 		tpos = glm::vec3(tpos.x, tpos.y + 50.0f, tpos.z);
 		m_view = LookAt(
@@ -22,25 +23,18 @@ public:
 			);
 	}
 
-	void RotateX(float deltaX)
-	{
-		m_orient = glm::rotate(glm::mat4(), -deltaX, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient;
-	}
-
 	void RotateY(float deltaY)
 	{
+		float prevRotY = m_totalYRot;
 		m_totalYRot += deltaY;
-		if (m_totalYRot > 35.0f) m_totalYRot = 35.0f;
-		else if (m_totalYRot < -40.0f) m_totalYRot = -40.0f;
-		else m_orient = glm::rotate(m_orient, deltaY, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (m_totalYRot > 35.0f) { m_totalYRot = 35.0f; }
+		else if (m_totalYRot < -40.0f) { m_totalYRot = -40.0f; }
 	}
-
 
 	void Initialize(LiveUnit * target, float distance)
 	{
 		m_totalYRot = 0.0f;
 		RotateY(10.0f);
-		m_orient = target->GetOrient();
 		m_target = target; m_distance = distance;
 	}
 
