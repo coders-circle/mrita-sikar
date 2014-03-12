@@ -29,7 +29,7 @@ WorldMap g_testmap;
 Sprite g_bloodspr(&g_renderer);
 SpriteAnimation g_bloodAnim;
 
-#define MAX_ZOMBIES 15
+#define MAX_ZOMBIES 5
 Zombie g_zombies[MAX_ZOMBIES];
 
 Sprite g_crossspr(&g_renderer);

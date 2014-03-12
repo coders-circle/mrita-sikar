@@ -64,9 +64,10 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 void Player::InitAudio()
 {
 
-	m_sound.Initialize(g_audioengine, m_position);
+	/*m_sound.Initialize(g_audioengine, m_position);
 	m_sound.AddSource("sound/player/player_run.flac");
 	m_sound.AddSource("sound/player/player_endrun.flac");
+	m_sound.AddSource("sound/player/player_hit1.mp3");*/
 
 
 	m_a_run = g_audioengine->addSoundSourceFromFile("sound/player/player_run.flac", irrklang::ESM_AUTO_DETECT, true);
@@ -76,12 +77,11 @@ void Player::InitAudio()
 	m_a_shootdelayed = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shootdelayed.flac", irrklang::ESM_AUTO_DETECT, true);
 	m_a_shoot = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_shoot.flac", irrklang::ESM_AUTO_DETECT, true);
 
-	m_a_hit1 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit1.mp3", irrklang::ESM_AUTO_DETECT, true);
+	//m_a_hit1 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit1.mp3", irrklang::ESM_AUTO_DETECT, true);
 	m_a_hit2 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit2.mp3", irrklang::ESM_AUTO_DETECT, true);
 	m_a_hit3 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit3.mp3", irrklang::ESM_AUTO_DETECT, true);
 
 	m_a_breath = g_audioengine->addSoundSourceFromFile("sound/player/player_breath.mp3", irrklang::ESM_AUTO_DETECT, true);
-	//m_a_pain = g_audioengine->addSoundSourceFromFile("sound/player/player_pain.mp3", irrklang::ESM_AUTO_DETECT, true);
 	if (m_a_breath) m_a_breath->setDefaultVolume(0.1f);
 	if (m_a_shoot) m_a_shoot->setDefaultVolume(0.2f);
 	if (m_a_shootdelayed) m_a_shootdelayed->setDefaultVolume(0.2f);

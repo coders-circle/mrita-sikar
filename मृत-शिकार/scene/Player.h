@@ -27,7 +27,7 @@ private:
 
 	irrklang::vec3df m_a_pos;
 
-	SoundSource m_sound;
+	//SoundSource m_sound;
 
 
 public:

@@ -55,16 +55,16 @@ public:
 			m_sources[m_sources.size() - 1]->setDefaultMaxDistance(maxDist);
 		}
 	}
-	void Play(int index)
+	void Play(unsigned int index)
 	{
-		if (m_audioengine != 0 && index >= 0 && m_sources.size() > index)
+		if (m_audioengine != 0 && m_sources.size() > index)
 		{
 			m_audioengine->play3D(m_sources[index], m_position);
 		}
 	}
-	irrklang::ISound* PlayTrack(int index)
+	irrklang::ISound* PlayTrack(unsigned int index)
 	{
-		if (m_audioengine != 0 && index >= 0 && m_sources.size() > index)
+		if (m_audioengine != 0 && m_sources.size() > index)
 		{
 			return m_audioengine->play3D(m_sources[index], m_position, false, false, true);
 		}
