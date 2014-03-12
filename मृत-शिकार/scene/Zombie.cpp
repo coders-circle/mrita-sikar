@@ -18,6 +18,8 @@ Zombie::Zombie() : m_state(ZOMBIE_IDLE)
 	m_avoidingObstacle = false;
 	m_isstruck = false;
 	m_attacked = false;
+	m_ignoreChildren.push_back(3);	//ignore attack collision box
+	m_ignoreChildren.push_back(4);	//ignore dead collision box
 }
 
 irrklang::ISoundSource* g_a_noise;

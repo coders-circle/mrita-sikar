@@ -40,6 +40,7 @@ public:
 	const std::vector<Billboard*> &GetBillboards() const { return m_billboards; }
 
 	Unit* GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit = NULL) const;
+	Unit* GetNearestIntersection(const Ray &ray, int &child, float &tmin, const Unit * ignoreUnit = NULL) const;
 	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const;
 	void GetPotentialCollisions(Unit * unit, UnitCollections &unitCollections) const
 	{ m_quadTree.GetPotentialCollisions(unit, unitCollections); }

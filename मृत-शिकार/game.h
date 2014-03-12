@@ -143,20 +143,13 @@ void Update(double totalTime, double deltaTime)
 			Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
 			pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	//don't start ray till the distance from camera to player
 
-			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, &g_player);
+			int position; float tmin;
+			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
 			if (ClickedUnit)
 			{
 				if (ClickedUnit->GetTag() == 2)
 				{
-					float tmin;
-					int position; 
-					if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(0), glm::mat3(ClickedUnit->GetOrient()), tmin))
-						position = 0;
-					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(1), glm::mat3(ClickedUnit->GetOrient()), tmin))
-						position = 1;
-					else if (pickRay.IntersectBox(ClickedUnit->GetBoundChild(2), glm::mat3(ClickedUnit->GetOrient()), tmin))
-						position = 2;
-					
+					std::cout << position << std::endl;
 					//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
 					//  xxx = 
 					//	0 for head

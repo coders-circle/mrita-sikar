@@ -125,3 +125,53 @@ Unit* GameScene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit)
 	}
 	return nearestUnit;
 }
+
+Unit* GameScene::GetNearestIntersection(const Ray &ray, int &child, float &tmin, const Unit * ignoreUnit) const
+{
+	UnitCollections unitCollections;
+	m_quadTree.GetPotentialCollisions(ray, unitCollections);
+	Unit * nearestUnit = NULL;
+	tmin = FLT_MAX;
+	for (unsigned int i = 0; i < unitCollections.size(); ++i)
+	{
+		Unit * testUnit = unitCollections[i];
+		if (testUnit == ignoreUnit) continue;
+		bool test; float t;
+		if (testUnit->IsLiveUnit())
+			test = ray.IntersectBox(testUnit->GetBoundParent(), static_cast<glm::mat3>(testUnit->GetOrient()), t);
+		else
+			test = ray.IntersectBox(testUnit->GetBoundParent(), t);
+
+		if (test && t < tmin)
+		{
+			if (testUnit->GetChildrenSize() == 0)
+			{
+				nearestUnit = testUnit;
+				tmin = t;
+				child = -1;
+			}
+			else
+			for (unsigned int i = 0; i < testUnit->GetChildrenSize(); ++i)
+			{
+				bool tocheck = true;
+				for (unsigned int j = 0; j < testUnit->GetIgnoreChildren().size(); ++j)
+					if (testUnit->GetIgnoreChildren()[j] == i) tocheck = false;
+				if (!tocheck) continue;
+
+				if (testUnit->IsLiveUnit())
+					test = ray.IntersectBox(testUnit->GetBoundChild(i), static_cast<glm::mat3>(testUnit->GetOrient()), t);
+				else
+					test = ray.IntersectBox(testUnit->GetBoundChild(i), t);
+
+				if (test && t < tmin)
+				{
+					nearestUnit = testUnit;
+					tmin = t;
+					child = static_cast<int>(i);
+				}
+			}
+		}
+		
+	}
+	return nearestUnit;
+}
