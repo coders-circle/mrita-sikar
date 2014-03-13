@@ -92,7 +92,6 @@ void Initialize()
 	{
 		g_zombies[i].InitAudio();
 	}
-
 }
 
 void CleanUp()

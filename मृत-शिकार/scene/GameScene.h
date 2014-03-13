@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Unit.h"
-#include "Unit2d.h"
 #include "Billboard.h"
 #include "Camera.h"
 #include "../collision/QuadTree.h"
@@ -15,7 +14,6 @@ private:
 
 	Camera * m_camera;
 	std::vector<Unit*> m_units;
-	std::vector<Unit2d*> m_unit2ds;
 	std::vector<Billboard*> m_billboards;
 	SkyBox m_skybox;
 public:
@@ -32,11 +30,10 @@ public:
 	void SetCamera(Camera * camera) { m_camera = camera; }
 	void AddUnit(Unit * unit) { m_units.push_back(unit); unit->SetScene(this);  m_quadTree.Insert(unit); }
 	void Reinsert(Unit * unit) { m_quadTree.Remove(unit); m_quadTree.Insert(unit); }
-	void AddUnit(Unit2d * unit2d) { m_unit2ds.push_back(unit2d); }
 	void AddUnit(Billboard * billboard) { m_billboards.push_back(billboard); }
+	void AddUnit(Unit2d * unit2d) { Scene::AddUnit(unit2d); }
 
 	const std::vector<Unit*> &GetUnits() const { return m_units; }
-	const std::vector<Unit2d*> &GetUnit2ds() const { return m_unit2ds; }
 	const std::vector<Billboard*> &GetBillboards() const { return m_billboards; }
 
 	Unit* GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit = NULL) const;

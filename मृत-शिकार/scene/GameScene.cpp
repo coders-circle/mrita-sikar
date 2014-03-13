@@ -2,15 +2,15 @@
 #include "LiveUnit.h"
 
 GameScene::GameScene(Renderer * renderer) : Scene(renderer), m_skybox(renderer)
-{}
-
+{
+}
 
 void GameScene::Initialize(const Rect &area)
 {
+	Scene::Initialize();
 	m_quadTree.Initialize(0, area);
 	m_skybox.Initialize();
 }
-
 
 void GameScene::Resize(float width, float height)
 {
@@ -65,14 +65,15 @@ void GameScene::Draw()
 
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 		m_unit2ds[i]->Draw();
+	DrawTexts();
 
 	m_renderer->EndRender();
 }
 
 void GameScene::CleanUp()
 {
+	Scene::CleanUp();
 	m_units.clear();
-	m_unit2ds.clear();
 	m_billboards.clear();
 	m_skybox.CleanUp();
 }
