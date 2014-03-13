@@ -69,7 +69,7 @@ void Sprite::LoadSprite(std::string filename, float width, float height, float o
 	m_texture = LoadTexture("sprites\\" + filename);
 }
 
-void Sprite::DrawSprite(unsigned imageid, float posX, float posY)
+void Sprite::DrawSprite(unsigned imageid, float posX, float posY, float scale)
 {
 	if (!m_renderer) return;
 	if (!m_loaded) return;
@@ -82,7 +82,7 @@ void Sprite::DrawSprite(unsigned imageid, float posX, float posY)
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 
 	glUseProgram(techniques.sprite.program);
-	glUniformMatrix4fv(techniques.sprite.mvp, 1, GL_FALSE, glm::value_ptr(m_renderer->GetProjection2d() * glm::translate(glm::mat4(), glm::vec3(posX, posY, 0.0f))));
+	glUniformMatrix4fv(techniques.sprite.mvp, 1, GL_FALSE, glm::value_ptr(m_renderer->GetProjection2d() * glm::translate(glm::mat4(), glm::vec3(posX, posY, 0.0f)) * glm::scale(glm::mat4(), glm::vec3(scale))));
 	glUniform2fv(techniques.sprite.uv, 1, glm::value_ptr(uv));
 	glUniform1f(techniques.sprite.texture_sample, 0);
 

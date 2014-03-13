@@ -36,11 +36,11 @@ public:
 
 	void Animate(SpriteAnimation &spriteAnimation, double deltaTime, bool loop = true, bool * end = NULL);
 	void LoadSprite(std::string filename, float width, float height, float offsetX = 0.0f, float offsetY = 0.0f, int numCols = 1, int numRows = 1, double animationSpeed = 1.0);
-	void DrawSprite(unsigned imageid, float posX, float posY);
+	void DrawSprite(unsigned imageid, float posX, float posY, float scale=1.0f);
 	void DrawBillboard(unsigned imageid, const glm::mat4 &transform);
 
-	void DrawSprite(const SpriteAnimation &spriteAnimation, float posX, float posY) 
-	{ DrawSprite(spriteAnimation.imageid, posX, posY); }
+	void DrawSprite(const SpriteAnimation &spriteAnimation, float posX, float posY, float scale = 1.0f)
+	{ DrawSprite(spriteAnimation.imageid, posX, posY, scale); }
 	void DrawBillboard(const SpriteAnimation &spriteAnimation, const glm::mat4 &transform) 
 	{ DrawBillboard(spriteAnimation.imageid, transform); }
 };
