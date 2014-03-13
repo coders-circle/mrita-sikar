@@ -141,7 +141,7 @@ void Update(double totalTime, double deltaTime)
 
 			glm::mat4 camInverse = glm::inverse(g_camera.GetView());
 			Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
-			pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	//don't start ray till the distance from camera to player
+			pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	// don't start ray till the distance from camera to player
 
 			int position; float tmin;
 			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
