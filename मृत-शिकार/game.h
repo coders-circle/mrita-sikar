@@ -12,6 +12,8 @@
 
 #include "glm/gtx/vector_angle.hpp"
 
+#include <sstream>
+
 Window g_window;
 Renderer g_renderer(&g_window);
 
@@ -92,6 +94,8 @@ void Initialize()
 	{
 		g_zombies[i].InitAudio();
 	}
+
+	g_scene.AddText(Text("Dead Zombies: 0", 20, 50, 0.85f));
 }
 
 void CleanUp()
@@ -125,6 +129,7 @@ std::ostream & operator << (std::ostream & os, const glm::vec3&v)
 
 bool g_justDown = false;
 glm::vec3 g_bloodPos; bool g_drawBlood = false;
+int g_deadZombies = 0;
 void Update(double totalTime, double deltaTime)
 {
 	if (g_window.CheckMButton(MOUSE_LEFT) || g_window.CheckKey(' '))
@@ -157,7 +162,16 @@ void Update(double totalTime, double deltaTime)
 						// (Note that there is another child box (3) that can be checked against the player to see if the attack
 						// is successfull when the zombie is in ZOMBIE_ATTACK mode)
 						if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
+						{
 							g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+							if (static_cast<Zombie*>(ClickedUnit)->IsDead())
+							{
+								++g_deadZombies;
+								std::stringstream str;
+								str << "Dead Zombies: " << g_deadZombies;
+								g_scene.ChangeText(0, str.str());
+							}
+						}
 					}
 				}
 			}
