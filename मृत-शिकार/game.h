@@ -132,32 +132,33 @@ void Update(double totalTime, double deltaTime)
 		if (!g_justDown)
 		{
 			g_justDown = true;
-			g_player.Shoot();
-
-
-			int mx, my;
-			g_window.GetMousePos(mx, my);
-
-			glm::mat4 camInverse = glm::inverse(g_camera.GetView());
-			Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
-			pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	//don't start ray till the distance from camera to player
-
-			int position; float tmin;
-			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
-			if (ClickedUnit)
+			if (g_player.Shoot())
 			{
-				if (ClickedUnit->GetTag() == 2)
+
+				int mx, my;
+				g_window.GetMousePos(mx, my);
+
+				glm::mat4 camInverse = glm::inverse(g_camera.GetView());
+				Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
+				pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	//don't start ray till the distance from camera to player
+
+				int position; float tmin;
+				Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
+				if (ClickedUnit)
 				{
-					std::cout << position << std::endl;
-					//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
-					//  xxx = 
-					//	0 for head
-					//  1 for chest
-					//	2 for bottom
-					// (Note that there is another child box (3) that can be checked against the player to see if the attack
-					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
-					if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
-						g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+					if (ClickedUnit->GetTag() == 2)
+					{
+						std::cout << position << std::endl;
+						//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
+						//  xxx = 
+						//	0 for head
+						//  1 for chest
+						//	2 for bottom
+						// (Note that there is another child box (3) that can be checked against the player to see if the attack
+						// is successfull when the zombie is in ZOMBIE_ATTACK mode)
+						if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
+							g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+					}
 				}
 			}
 		}

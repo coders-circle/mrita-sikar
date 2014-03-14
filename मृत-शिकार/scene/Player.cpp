@@ -214,7 +214,7 @@ void Player::EndStrafeRight()
 	}
 }
 
-void Player::Shoot()
+bool Player::Shoot()
 {
 	switch (m_state)
 	{
@@ -250,7 +250,10 @@ void Player::Shoot()
 		ChangeState(PLAYER_SRIGHTSHOOTING);
 		g_audioengine->play2D(m_a_shoot);
 		break;
+	default:
+		return false;
 	}
+	return true;
 }
 
 void Player::Update(double deltaTime)

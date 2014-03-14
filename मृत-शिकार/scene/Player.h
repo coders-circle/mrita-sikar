@@ -39,7 +39,7 @@ public:
 	void BackRun(); void EndBackRun();
 	void StrafeLeft(); void EndStrafeLeft();
 	void StrafeRight(); void EndStrafeRight();
-	void Shoot();
+	bool Shoot();
 	void InitAudio();
 
 	void RotateX(float deltaX)

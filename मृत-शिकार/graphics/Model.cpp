@@ -108,7 +108,8 @@ void Model::LoadModel(std::string filename)
 		READ_FILE(data);
 		READ_FILE_EX(str, data); 
 		str[data] = '\0';
-		m_meshes[i].SetTexture(LoadTexture("textures\\" +std::string(str)));
+		if (data!=0)
+			m_meshes[i].SetTexture(LoadTexture("textures\\" +std::string(str)));
 		m_meshes[i].SetRenderer(m_renderer);
 	}
 
