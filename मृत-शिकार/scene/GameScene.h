@@ -36,7 +36,7 @@ public:
 	const std::vector<Unit*> &GetUnits() const { return m_units; }
 	const std::vector<Billboard*> &GetBillboards() const { return m_billboards; }
 
-	Unit* GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit = NULL) const;
+	Unit* GetNearestIntersection(const Ray &ray, float * tmin = NULL, const Unit * ignoreUnit = NULL) const;
 	Unit* GetNearestIntersection(const Ray &ray, int &child, float &tmin, const Unit * ignoreUnit = NULL) const;
 	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const;
 	void GetPotentialCollisions(Unit * unit, UnitCollections &unitCollections) const

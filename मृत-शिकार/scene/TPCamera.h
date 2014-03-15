@@ -38,6 +38,13 @@ public:
 		m_target = target; m_distance = distance;
 	}
 
+	void SetDistance(float distance)
+	{
+		m_distance = distance;
+	}
+
+	float GetDistance() { return m_distance; }
+
 	glm::vec3 GetPosition() {
 		glm::vec3 tpos = m_target->GetPosition();
 		tpos = glm::vec3(tpos.x, tpos.y + 50.0f, tpos.z);

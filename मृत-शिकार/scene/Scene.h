@@ -31,7 +31,7 @@ protected:
 				else
 				{
 					m_font.DrawSprite(m_texts[i].text[j], m_texts[i].x + px, py, m_texts[i].size);
-					px += 32.0f * m_texts[i].size;
+					px += (32.0f - 7.0f) * m_texts[i].size;
 				}
 			}
 		}

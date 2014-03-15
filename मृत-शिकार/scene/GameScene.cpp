@@ -101,7 +101,7 @@ bool GameScene::CheckPotentialCollision(const Unit * unit1, const Unit * unit2) 
 
 
 
-Unit* GameScene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit) const
+Unit* GameScene::GetNearestIntersection(const Ray &ray, float * ttmin, const Unit * ignoreUnit) const
 {
 	UnitCollections unitCollections;
 	m_quadTree.GetPotentialCollisions(ray, unitCollections);
@@ -124,6 +124,7 @@ Unit* GameScene::GetNearestIntersection(const Ray &ray, const Unit * ignoreUnit)
 			tmin = t;
 		}
 	}
+	if (ttmin) *ttmin = tmin;
 	return nearestUnit;
 }
 

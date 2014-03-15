@@ -12,6 +12,8 @@
 
 #include "glm/gtx/vector_angle.hpp"
 
+#include <sstream>
+
 Window g_window;
 Renderer g_renderer(&g_window);
 
@@ -43,7 +45,7 @@ irrklang::ISoundEngine* g_audioengine = 0;
 void Initialize()
 {
 	g_renderer.Initialize();
-	g_scene.Initialize(Rect(-5000, -5000, 10000, 10000));	// quadtree needs limits of the world
+	g_scene.Initialize(Rect(-5000, -5000, 10000, 10000));	// quadtree needs limits of the world, send it through scene
 	g_scene.SetCamera(&g_camera);
 	
 	g_bloodspr.LoadSprite("blood2.png", 128, 128, 0.0f, 0.0f, 6, 1);
@@ -92,6 +94,8 @@ void Initialize()
 	{
 		g_zombies[i].InitAudio();
 	}
+
+	g_scene.AddText(Text("Dead Zombies: 0", 20, 50, 0.85f));
 }
 
 void CleanUp()
@@ -115,16 +119,16 @@ void CleanUp()
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
 }
-/*
+
 std::ostream & operator << (std::ostream & os, const glm::vec3&v)
 {
 	os << v.x << " " << v.y << " " << v.z;
 	return os;
 }
-*/
+
 
 bool g_justDown = false;
-glm::vec3 g_bloodPos; bool g_drawBlood = false;
+int g_deadZombies = 0;	
 void Update(double totalTime, double deltaTime)
 {
 	if (g_window.CheckMButton(MOUSE_LEFT) || g_window.CheckKey(' '))
@@ -132,38 +136,59 @@ void Update(double totalTime, double deltaTime)
 		if (!g_justDown)
 		{
 			g_justDown = true;
-			g_player.Shoot();
-
-
-			int mx, my;
-			g_window.GetMousePos(mx, my);
-
-			glm::mat4 camInverse = glm::inverse(g_camera.GetView());
-			Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
-			pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	// don't start ray till the distance from camera to player
-		
-			int position; float tmin;
-			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
-			if (ClickedUnit)
+			// the g_player.Shoot() returns true only when the timing to shoot is right (synchronizes with animation)
+			if (g_player.Shoot())
 			{
-				if (ClickedUnit->GetTag() == 2)
+				// Create a pickray from camera's position and direction
+				glm::mat4 camInverse = glm::inverse(g_camera.GetView());
+				Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
+				pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * g_camera.GetDistance());	// don't start ray till the distance from camera to player
+
+				int position; float tmin;
+				Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
+				// If there was a nearest intersection...
+				if (ClickedUnit)
 				{
-					std::cout << position << std::endl;
-					//  pickRay.Intersect(ClickedUnit->GetChildBox(xxx), glm::mat3(ClickedUnit->GetOrient()));
-					//  xxx = 
-					//	0 for head
-					//  1 for chest
-					//	2 for bottom
-					// (Note that there is another child box (3) that can be checked against the player to see if the attack
-					// is successfull when the zombie is in ZOMBIE_ATTACK mode)
-					if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
-						g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+					// ...and the nearest intersection was a zombie unit
+					if (ClickedUnit->GetTag() == 2)
+					{
+						// let the zombie take a hit, returns true only if the one of the three children (0,1,2) is hit
+						if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
+						{
+							g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+							if (static_cast<Zombie*>(ClickedUnit)->IsDead())
+							{
+								++g_deadZombies;
+								std::stringstream str;
+								str << "Dead Zombies: " << g_deadZombies;
+								g_scene.ChangeText(0, str.str());	// 0 is the index of the only text added
+							}
+						}
+					}
 				}
 			}
 		}
 	}
 	else
 		g_justDown = false;
+
+	// If anything blocks player from the camera, then move camera towards the player
+	// Start a ray from the PLAYER towards it's back
+	Ray pickRay(glm::vec3(g_player.GetPosition().x, 0.0f, g_player.GetPosition().z), -glm::vec3(g_player.GetOrient()[2]));
+	float tmin; int position;
+	// If anything intersects the ray...
+	if (Unit * testunit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player))
+	{
+		// ...and the nearest intersection was less than the maximum camera distance
+		// set the new distance
+		if (tmin < 90.0f)
+			g_camera.SetDistance(tmin);
+		else
+			g_camera.SetDistance(90.0f);
+	}
+	else
+		g_camera.SetDistance(90.0f);
+	
 
 	if (g_window.CheckKey('a'))	g_player.StrafeLeft();
 	else g_player.EndStrafeLeft();
@@ -176,8 +201,6 @@ void Update(double totalTime, double deltaTime)
 
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
-
-	if (g_window.CheckKey('r')) g_player.Reload();
 
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{

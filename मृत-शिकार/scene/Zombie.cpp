@@ -241,6 +241,11 @@ bool Zombie::IsWalking()
 	return m_state == ZOMBIE_WALK;
 }
 
+bool Zombie::IsDead()
+{
+	return m_state == ZOMBIE_DEATH;
+}
+
 bool Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
 {
 	if (m_state != ZOMBIE_DEATH && (hitposition == 0 || hitposition == 1 || hitposition == 2))

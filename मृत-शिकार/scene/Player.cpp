@@ -59,10 +59,6 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
-
-	m_totalAmmo = 35;
-	m_ammoCapacity = 7;
-	m_ammoLeft = 7;
 }
 
 void Player::InitAudio()
@@ -99,8 +95,6 @@ bool Player::IsRunning()
 
 void Player::Run()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_state != PLAYER_IDLEAIM && m_state != PLAYER_SHOOT)
 		m_run = true;
 	if (m_backrun) { m_backrun = false; }
@@ -117,9 +111,6 @@ void Player::Run()
 
 void Player::EndRun()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
-
 	if (m_backrun) return;
 	m_run = false;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
@@ -136,8 +127,6 @@ void Player::EndRun()
 
 void Player::BackRun()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_state != PLAYER_IDLEAIM && m_state != PLAYER_SHOOT)
 		m_backrun = true;
 	if (m_run) {  m_run = false; }
@@ -153,8 +142,6 @@ void Player::BackRun()
 
 void Player::EndBackRun()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_run) return;
 	m_backrun = false;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
@@ -172,8 +159,6 @@ void Player::EndBackRun()
 
 void Player::StrafeLeft()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
 		ChangeState(PLAYER_STRAFELEFT);
 	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
@@ -185,8 +170,6 @@ void Player::StrafeLeft()
 }
 void Player::EndStrafeLeft()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_state == PLAYER_STRAFELEFT) ChangeState(PLAYER_RUN);
 	else if (m_state == PLAYER_SLEFTSHOOTING) ChangeState(PLAYER_RUNSHOOTING);
 	else if (m_state == PLAYER_SLEFTAIMING) ChangeState(PLAYER_RUNAIMING);
@@ -204,8 +187,6 @@ void Player::EndStrafeLeft()
 }
 void Player::StrafeRight()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
 		ChangeState(PLAYER_STRAFERIGHT);
 	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
@@ -217,8 +198,6 @@ void Player::StrafeRight()
 }
 void Player::EndStrafeRight()
 {
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	if (m_state == PLAYER_STRAFERIGHT) ChangeState(PLAYER_RUN);
 	else if (m_state == PLAYER_SRIGHTSHOOTING) ChangeState(PLAYER_RUNSHOOTING);
 	else if (m_state == PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RUNAIMING);
@@ -235,19 +214,8 @@ void Player::EndStrafeRight()
 	}
 }
 
-
-void Player::Reload()
+bool Player::Shoot()
 {
-	if (m_totalAmmo > 0)
-	{
-		ChangeState(PLAYER_GUNRELOAD);
-	}
-}
-
-void Player::Shoot()
-{
-	if (m_state == PLAYER_GUNRELOAD)
-		return;
 	switch (m_state)
 	{
 	case PLAYER_IDLE:
@@ -282,9 +250,11 @@ void Player::Shoot()
 		ChangeState(PLAYER_SRIGHTSHOOTING);
 		g_audioengine->play2D(m_a_shoot);
 		break;
+	default:
+		return false;
 	}
+	return true;
 }
-
 
 void Player::Update(double deltaTime)
 {
@@ -321,8 +291,6 @@ void Player::Update(double deltaTime)
 			ChangeState(PLAYER_STRAFELEFT);		break;
 		case PLAYER_SRIGHTAIMING:
 			ChangeState(PLAYER_STRAFERIGHT);	break;
-		case PLAYER_GUNRELOAD:
-			ChangeState(PLAYER_IDLE); break;
 		}
 	}
 
