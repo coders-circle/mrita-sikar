@@ -141,7 +141,7 @@ void Update(double totalTime, double deltaTime)
 			glm::mat4 camInverse = glm::inverse(g_camera.GetView());
 			Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
 			pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * 90.0f);	// don't start ray till the distance from camera to player
-
+		
 			int position; float tmin;
 			Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
 			if (ClickedUnit)
@@ -176,6 +176,8 @@ void Update(double totalTime, double deltaTime)
 
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
+
+	if (g_window.CheckKey('r')) g_player.Reload();
 
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
