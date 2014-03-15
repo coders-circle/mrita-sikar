@@ -86,6 +86,7 @@ void Zombie::Update(double deltaTime)
 	}
 
 
+	bool posChanged = false;
 	if (m_state != ZOMBIE_DEATH)
 	{
 		glm::vec3 dist = m_destination - this->GetBoundCenter();
@@ -139,6 +140,7 @@ void Zombie::Update(double deltaTime)
 			m_orient[2] = glm::vec4(glm::normalize(glm::vec3(m_orient[2]) + resultant*0.08f), 0.0f);
 			m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 			m_orient[0] = (glm::vec4(glm::normalize(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2]))), 0.0f));
+			posChanged = true;
 		}
 		if (distsq > 1600.0f)
 		{
@@ -146,7 +148,6 @@ void Zombie::Update(double deltaTime)
 		}
 		else if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
 	}
-	bool posChanged = false;
 	switch (m_state)
 	{
 	case ZOMBIE_WALK:

@@ -174,10 +174,10 @@ void Update(double totalTime, double deltaTime)
 
 	// If anything blocks player from the camera, then move camera towards the player
 	// Start a ray from the PLAYER towards it's back
-	Ray pickRay(glm::vec3(g_player.GetPosition().x, 0.0f, g_player.GetPosition().z), -glm::vec3(g_player.GetOrient()[2]));
+	Ray cameraRay(glm::vec3(g_player.GetPosition().x, 0.0f, g_player.GetPosition().z), -glm::vec3(g_player.GetOrient()[2]));
 	float tmin; int position;
 	// If anything intersects the ray...
-	if (Unit * testunit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player))
+	if (Unit * testunit = g_scene.GetNearestIntersection(cameraRay, position, tmin, &g_player))
 	{
 		// ...and the nearest intersection was less than the maximum camera distance
 		// set the new distance
