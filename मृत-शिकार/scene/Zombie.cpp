@@ -115,36 +115,15 @@ void Zombie::Update(double deltaTime)
 						glm::vec3 r = (this->GetBoundCenter() - units[i]->GetBoundCenter());
 						float d1 = glm::dot(r, r);
 						float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
-						//if (m_avoidingObstacle == true && (d2 + 100000.0f > d1) && (d2 + 10000.0f <= d1))
-						//{
-						//	glm::vec3 f = glm::normalize(r);
-						//	float mf = 30.0f*(float)(glm::sqrt(d2) / d1);
-						//	//float mf = (float)(glm::sqrt(d2) / glm::sqrt(d1));
-						//	f.x *= mf;
-						//	f.y *= mf;
-						//	f.z *= mf;
-						//	resultant += f;
-
-						//}
-						//else 
 						if (d2 + 10000.0f > d1)
 						{
 							glm::vec3 f = glm::normalize(r);
-							float mf = 50.0f*(float)(glm::sqrt(d2) / d1);
-							//float mf = (float)(glm::sqrt(d2) / glm::sqrt(d1));
-							/*if (units[i]->GetTag() == 2)
-							{
-								mf *= 0.2f;
-							}*/
+							float mf = (float)(d2 / d1);
 							f.x *= mf;
 							f.y *= mf;
 							f.z *= mf;
 							resultant += f;
-							m_avoidingObstacle = true;
-						}
-						else
-						{
-							m_avoidingObstacle = false;
+							//m_avoidingObstacle = true;
 						}
 					}
 				}
