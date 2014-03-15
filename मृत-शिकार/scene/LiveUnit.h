@@ -101,4 +101,24 @@ public:
 	virtual int GetHealthStatus(){ return m_health; }
 	const Box& GetAABB() const { return m_aabb; }
 
+	bool IsInView(float fovAngle, float maxdistance, Unit * unit)
+	{
+		glm::vec3 v1 = glm::normalize(unit->GetPosition() - m_position);
+		glm::vec3 v2 = (glm::vec3)m_orient[2];
+		if (glm::dot(v1, v1) <= maxdistance)
+		if (glm::dot(v1, v2) >= glm::cos(glm::radians(fovAngle)))
+			return true;
+		return false;
+	}
+	bool CanSee(float fovAngle, float maxdistance, Unit * unit)
+	{
+		if (!IsInView(fovAngle, maxdistance, unit)) return false;
+		Ray ray(glm::vec3(m_position.x, 0.0f, m_position.z), (glm::vec3)m_orient[2]);
+		float tmin; int position;
+		if (Unit * testunit = g_scene.GetNearestIntersection(ray, position, tmin, this))
+		if (testunit != unit) return false;
+		
+		return true;
+	}
+
 };
