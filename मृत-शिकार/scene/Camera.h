@@ -34,6 +34,7 @@ public:
 
 	bool IntersectBox(const Box &box)
 	{
+		m_frustum.FromMatrix(m_projection * m_view);
 		return m_frustum.BoxInFrustum(box);
 	}
 
