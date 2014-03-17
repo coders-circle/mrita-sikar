@@ -110,12 +110,12 @@ public:
 			return true;
 		return false;
 	}
-	bool CanSee(float fovAngle, float maxdistance, Unit * unit)
+	bool CanSee(float fovAngle, float maxdistance, Unit * unit, GameScene* scene)
 	{
 		if (!IsInView(fovAngle, maxdistance, unit)) return false;
 		Ray ray(glm::vec3(m_position.x, 0.0f, m_position.z), (glm::vec3)m_orient[2]);
 		float tmin; int position;
-		if (Unit * testunit = g_scene.GetNearestIntersection(ray, position, tmin, this))
+		if (Unit * testunit = scene->GetNearestIntersection(ray, position, tmin, this))
 		if (testunit != unit) return false;
 		
 		return true;

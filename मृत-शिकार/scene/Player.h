@@ -22,10 +22,12 @@ private:
 	irrklang::ISoundSource* m_a_breath;
 	irrklang::ISoundSource* m_a_pain;
 	irrklang::ISound* m_a_breathing;
-
-
-
+	
 	irrklang::vec3df m_a_pos;
+
+	int m_totalAmmo;
+	int m_currentAmmo;
+	int m_ammoCapacity;
 
 	//SoundSource m_sound;
 
@@ -41,12 +43,15 @@ public:
 	void StrafeRight(); void EndStrafeRight();
 	bool Shoot();
 	void InitAudio();
-
+	bool Reload();
+	bool IsReloading();
 	void RotateX(float deltaX)
 	{
 		m_orient = glm::rotate(glm::mat4(), -deltaX, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient;
 	}
 	bool IsRunning();
 	void TakeHit();
+	std::string GetPlayerHealthString();
+	std::string GetAmmoStatusString();
 };
 

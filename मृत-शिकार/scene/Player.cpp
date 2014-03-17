@@ -59,6 +59,9 @@ Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
+	m_totalAmmo = 35;
+	m_currentAmmo = 7;
+	m_ammoCapacity = 7;
 }
 
 void Player::InitAudio()
@@ -214,8 +217,14 @@ void Player::EndStrafeRight()
 	}
 }
 
+
+
 bool Player::Shoot()
 {
+	if (m_currentAmmo == 0)
+	{
+		return false;
+	}
 	switch (m_state)
 	{
 	case PLAYER_IDLE:
@@ -253,7 +262,21 @@ bool Player::Shoot()
 	default:
 		return false;
 	}
+	--m_currentAmmo;
 	return true;
+}
+
+bool Player::Reload()
+{
+	if (IsReloading() == false && m_ammoCapacity > 0 && m_currentAmmo != 7)
+	{
+		ChangeState(PLAYER_GUNRELOAD);
+	}
+}
+
+bool Player::IsReloading()
+{
+	return m_state == PLAYER_GUNRELOAD;
 }
 
 void Player::Update(double deltaTime)
@@ -270,7 +293,7 @@ void Player::Update(double deltaTime)
 		{
 		case PLAYER_RUNIDLE:
 		case PLAYER_AIMIDLE:
-			ChangeState(PLAYER_IDLE);			break; 
+			ChangeState(PLAYER_IDLE);			break;
 		case PLAYER_IDLERUN:
 		case PLAYER_RUNAIMING:
 			ChangeState(PLAYER_RUN);			break;
@@ -279,7 +302,7 @@ void Player::Update(double deltaTime)
 		case PLAYER_IDLEAIM:
 		case PLAYER_SHOOT:
 			ChangeState(PLAYER_AIM);			break;
-		
+
 		case PLAYER_RUNSHOOTING:
 			ChangeState(PLAYER_RUNAIMING);		break;
 		case PLAYER_SLEFTSHOOTING:
@@ -291,6 +314,15 @@ void Player::Update(double deltaTime)
 			ChangeState(PLAYER_STRAFELEFT);		break;
 		case PLAYER_SRIGHTAIMING:
 			ChangeState(PLAYER_STRAFERIGHT);	break;
+		case PLAYER_GUNRELOAD:
+			{
+				ChangeState(PLAYER_IDLE);
+				int delAmmo = m_ammoCapacity - m_currentAmmo;
+				delAmmo = glm::min(delAmmo, m_totalAmmo);
+				m_currentAmmo += delAmmo;
+				m_totalAmmo -= delAmmo;
+			}
+			break;
 		}
 	}
 
@@ -364,11 +396,27 @@ void Player::Draw()
 
 void Player::TakeHit()
 {
-	m_health -= 0;
+	m_health -= 10;
 	switch (GetRand(3))
 	{
 	case 0: g_audioengine->play2D(m_a_hit1); break;
 	case 1: g_audioengine->play2D(m_a_hit2); break;
 	default: g_audioengine->play2D(m_a_hit3);
 	}
+}
+
+#include <sstream>
+
+std::string Player::GetPlayerHealthString()
+{
+	std::stringstream temp;
+	temp << "Health - "<< m_health;
+	return temp.str();
+}
+
+std::string Player::GetAmmoStatusString()
+{
+	std::stringstream temp;
+	temp << "Ammo - "<< m_currentAmmo << "/" << m_totalAmmo;
+	return temp.str();
 }
