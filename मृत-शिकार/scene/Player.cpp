@@ -55,7 +55,7 @@ inline void Player::ChangeState(int x)
 		m_inTransition = false;
 }
 
-Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
+Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_camera(NULL)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
@@ -365,6 +365,7 @@ void Player::Draw()
 void Player::TakeHit()
 {
 	m_health -= 0;
+	if (m_camera) m_camera->Shake();
 	switch (GetRand(3))
 	{
 	case 0: g_audioengine->play2D(m_a_hit1); break;

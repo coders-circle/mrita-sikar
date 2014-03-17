@@ -6,6 +6,7 @@
 #endif
 
 #include "game.h"
+#include <ctime>
 
 int main(int argc, char* argv[])
 {
@@ -23,6 +24,7 @@ int main(int argc, char* argv[])
 	g_window.UpdateFunc(Update);
 	g_window.ResizeFunc(Resize);
 
+	srand(static_cast<int>(time(NULL)));
 	Initialize();
 	Resize(g_width, g_height);
 
