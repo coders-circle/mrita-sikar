@@ -105,19 +105,24 @@ A plane
 class Plane
 {
 private:
-	glm::vec3 m_point;
 	glm::vec3 m_normal;
+	float m_dist;
 public:
-	Plane(const glm::vec3 &point = glm::vec3(0.0f), const glm::vec3 &normal = glm::vec3(0.0f)) : m_point(point), m_normal(normal) {}
+	Plane(float distance = 0.0f, const glm::vec3 &normal = glm::vec3(0.0f)) : m_dist(distance), m_normal(normal) {}
 	
-	const glm::vec3 &GetPoint() const { return m_point; }
+	//const glm::vec3 &GetPoint() const { return m_point; }
+	float GetDistance() const { return m_dist; }
 	const glm::vec3 &GetNormal() const { return m_normal; }
-	void SetPoint(const glm::vec3 &point) { m_point = point; }
+	//void SetPoint(const glm::vec3 &point) { m_point = point; }
+	void SetDistance(float distance) { m_dist = distance; }
 	void SetNormal(const glm::vec3 &normal) { m_normal = normal; }
-	void SetNormalAndPoint(const glm::vec3 &normal, const glm::vec3 &point) { m_point = point; m_normal = normal; }
+	//void SetNormalAndPoint(const glm::vec3 &normal, const glm::vec3 &point) { m_point = point; m_normal = normal; }
+	void SetNormalAndPoint(const glm::vec3 &normal, const glm::vec3 &point) { m_normal = normal; m_dist = -glm::dot(normal, point); }
+	void SetPlane(const glm::vec3 &normal, float distance) { m_normal = normal; m_dist = distance; }
+	void SetPlane(const glm::vec4 &plane) { m_normal = glm::vec3(plane); m_dist = plane[3]; }
 
 	// Get distance from a point to this plane
-	float GetDistance(const glm::vec3 &point) { return glm::dot(point-m_point, m_normal); }
+	float GetDistance(const glm::vec3 &point) { return glm::dot(point, m_normal) + m_dist; }
 
 };
 
@@ -160,6 +165,8 @@ private:
 		return p;
 	}*/
 public:
+	void FromMatrix(const glm::mat4 &matrix);
+
 	void SetCamInternals(float angle, float ratio, float nearD, float farD) {
 
 		// store the information
@@ -177,7 +184,6 @@ public:
 	}
 
 	void SetCamDef(glm::vec3 &p, glm::vec3 &l, glm::vec3 &u) {
-
 		glm::vec3 dir, nc, fc, X, Y, Z;
 
 		Z = glm::normalize(p - l);
@@ -213,8 +219,11 @@ public:
 
 	// Check if a box intersects a frustum
 	bool BoxInFrustum(const Box &box) {
-		//for each plane do ...
+		//*/for each plane do ...
 		for (int i = 0; i < 6; i++) {
+			// first do a sphere-frustum test
+			if (m_planes[i].GetDistance(box.GetCenter()) < -glm::length(box.GetExtents()))
+				return false;
 
 			// is the positive vertex outside?
 			if (m_planes[i].GetDistance(PositiveVertexBox(box, m_planes[i].GetNormal())) < 0)

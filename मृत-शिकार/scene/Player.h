@@ -1,5 +1,6 @@
 #pragma once
 #include "LiveUnit.h"
+#include "TPCamera.h"
 #include "../audio/audio.h"
 
 class Player : public LiveUnit
@@ -12,6 +13,8 @@ private:
 	inline void ChangeState(int x);
 
 	bool m_run, m_backrun;
+
+	TPCamera * m_camera;
 
 	irrklang::ISoundSource* m_a_run;
 	irrklang::ISound* m_a_running;
@@ -34,6 +37,7 @@ private:
 
 public:
 	Player();
+	void SetCamera(TPCamera * camera) { m_camera = camera; }
 	void Update(double deltaTime);
 	void Draw();
 

@@ -17,7 +17,7 @@ protected:
 	{
 		m_frustum.SetCamInternals(angle, aspect, nearD, farD);
 		return glm::perspective(angle, aspect, nearD, farD);
-	}
+	} 
 public:
 	virtual void UpdateView(double deltaTime)
 	{
@@ -26,9 +26,9 @@ public:
 
 	virtual void UpdateProjection(float width, float height)
 	{
-		m_projection = Perspective(45.0f, width / height, 0.1f, 5000.0f);
+		m_projection = Perspective(45.0f, width / height, 0.1f, 10000.0f);
 	}
-
+	
 	const glm::mat4& GetView()			{ return m_view; }
 	const glm::mat4& GetProjection()	{ return m_projection; }
 

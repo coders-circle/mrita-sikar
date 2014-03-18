@@ -53,6 +53,7 @@ void Initialize()
 
 	g_humanmodel.LoadModel("human.mdl");
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
+	g_player.SetCamera(&g_camera);
 	g_testmap.Initialize("testmap.map", &g_renderer, &g_scene);
 
 	g_zombiemodel.LoadModel("zombie.mdl");
@@ -202,6 +203,8 @@ void Update(double totalTime, double deltaTime)
 
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
+
+	if (g_window.CheckKey('r')) g_player.Reload();
 
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{

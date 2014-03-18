@@ -13,6 +13,7 @@ enum PlayerStates {
 	PLAYER_RUNSHOOTING, PLAYER_RUNAIMING,
 	PLAYER_SLEFTSHOOTING, PLAYER_SRIGHTSHOOTING, 
 	PLAYER_SLEFTAIMING, PLAYER_SRIGHTAIMING,
+	PLAYER_RELOADRUN, PLAYER_RELOADSLEFT, PLAYER_RELOADSRIGHT
 };
 
 enum PlayerSounds {
@@ -55,7 +56,7 @@ inline void Player::ChangeState(int x)
 		m_inTransition = false;
 }
 
-Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false)
+Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_camera(NULL)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
@@ -107,7 +108,14 @@ void Player::Run()
 		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
 		{
 			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
-			//m_a_running = g_audioengine->play3D(m_a_run, irrklang::vec3df(m_position.x, m_position.y, m_position.z), true, false, true);
+		}
+	}
+	else if (IsReloading())
+	{
+		ChangeState(PLAYER_RELOADRUN);
+		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
+		{
+			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
 		}
 	}
 }
@@ -272,11 +280,12 @@ bool Player::Reload()
 	{
 		ChangeState(PLAYER_GUNRELOAD);
 	}
+	return true;
 }
 
 bool Player::IsReloading()
 {
-	return m_state == PLAYER_GUNRELOAD;
+	return (m_state == PLAYER_GUNRELOAD) | (m_state == PLAYER_RELOADRUN) | (m_state == PLAYER_RELOADSLEFT) | (m_state == PLAYER_RELOADSRIGHT);
 }
 
 void Player::Update(double deltaTime)
@@ -293,7 +302,7 @@ void Player::Update(double deltaTime)
 		{
 		case PLAYER_RUNIDLE:
 		case PLAYER_AIMIDLE:
-			ChangeState(PLAYER_IDLE);			break;
+			ChangeState(PLAYER_IDLE);			break; 
 		case PLAYER_IDLERUN:
 		case PLAYER_RUNAIMING:
 			ChangeState(PLAYER_RUN);			break;
@@ -302,7 +311,7 @@ void Player::Update(double deltaTime)
 		case PLAYER_IDLEAIM:
 		case PLAYER_SHOOT:
 			ChangeState(PLAYER_AIM);			break;
-
+		
 		case PLAYER_RUNSHOOTING:
 			ChangeState(PLAYER_RUNAIMING);		break;
 		case PLAYER_SLEFTSHOOTING:
@@ -396,7 +405,8 @@ void Player::Draw()
 
 void Player::TakeHit()
 {
-	m_health -= 10;
+	m_health -= 0;
+	if (m_camera) m_camera->Shake();
 	switch (GetRand(3))
 	{
 	case 0: g_audioengine->play2D(m_a_hit1); break;

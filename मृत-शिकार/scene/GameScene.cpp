@@ -37,11 +37,28 @@ void GameScene::Draw()
 
 	m_firstPass = true;
 	glm::mat4 camInverse = glm::inverse(m_camera->GetView());
-	glm::vec3 target = glm::vec3(camInverse[3] - camInverse[2]);
-	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 1000, 500, -10000, 100000);
+	glm::vec3 target = glm::vec3(camInverse[3]);// -camInverse[2]);
+	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 2000, 1000, -1000, 1000000);
+
+
 	m_renderer->BeginRender(Renderer::SHADOW_PASS);
 	for (unsigned i = 0; i < m_units.size(); ++i)
-		m_units[i]->Draw();
+			m_units[i]->Draw();
+	/*
+	// For frustum-culling during depth-map rendering
+	Frustum m_shadowfrustum;
+	m_shadowfrustum.FromMatrix(m_renderer->GetLightViewProjection());
+	for (unsigned i = 0; i < m_units.size(); ++i)
+	{
+		bool toDraw;
+		if (m_units[i]->IsLiveUnit())
+			toDraw = m_shadowfrustum.BoxInFrustum(static_cast<LiveUnit*>(m_units[i])->GetAABB());
+		else
+			toDraw = m_shadowfrustum.BoxInFrustum(m_units[i]->GetBoundParent());
+		if (toDraw)
+			m_units[i]->Draw();
+	}
+	*/
 
 	m_firstPass = false;
 	m_renderer->UpdateView(m_camera->GetView());
