@@ -105,6 +105,7 @@ void Initialize()
 	}
 
 	g_scene.AddText(Text("Dead Zombies: 0", 20, 50, 0.85f));
+	g_scene.AddText(Text(g_player.GetPlayerHealthString(), 1000, 40));
 }
 
 void CleanUp()
@@ -214,6 +215,8 @@ void Update(double totalTime, double deltaTime)
 	if (g_window.CheckKey('s')) g_player.BackRun();
 	else g_player.EndBackRun();
 
+	if (g_window.CheckKey('r')) g_player.Reload();
+
 	for (int i = 0; i < MAX_ZOMBIES; i++)
 	{
 		g_zombies[i].SetDestination(g_player.GetBoundCenter());
@@ -239,6 +242,7 @@ void Update(double totalTime, double deltaTime)
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_cross.SetPosition(glm::vec2(g_width/2 - 50, g_height/2 - 50));
+	g_scene.ChangeText(1, g_player.GetPlayerHealthString());
 
 	g_scene.Update(deltaTime);
 }
