@@ -82,6 +82,8 @@ public:
 	void Advance(ModelAnimation &modelAnimation, double deltaTime, bool * animationEnded = NULL);
 	void Animate(ModelAnimation &modelAnimation, bool loop = true);
 
+	double GetAnimationDuration(unsigned int set) { return m_animationtree->animations[set].duration; }
+
 	const BoundVolume& GetBoundVolume() const 
 	{ return m_boundvolume; }
 

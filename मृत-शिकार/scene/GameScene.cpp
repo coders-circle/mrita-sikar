@@ -80,8 +80,10 @@ void GameScene::Draw()
 	for (unsigned i = 0; i < m_billboards.size(); ++i)
 		m_billboards[i]->Draw();
 
+	m_renderer->DisableDepth();
 	for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 		m_unit2ds[i]->Draw();
+	m_renderer->EnableDepth();
 	DrawTexts();
 
 	m_renderer->EndRender();

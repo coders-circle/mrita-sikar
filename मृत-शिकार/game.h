@@ -7,6 +7,7 @@
 #include "scene/Unit2d.h"
 #include "scene/WorldMap.h"
 #include "scene/Blood.h"
+#include "scene/BloodSplash.h"
 
 #include "audio/audio.h"
 
@@ -31,6 +32,9 @@ WorldMap g_testmap;
 Sprite g_bloodspr(&g_renderer);
 Blood g_blood;
 
+Sprite g_bloodsplashspr(&g_renderer);
+BloodSplash g_bloodsplash;
+
 #define MAX_ZOMBIES 5
 Zombie g_zombies[MAX_ZOMBIES];
 
@@ -50,6 +54,9 @@ void Initialize()
 	
 	g_bloodspr.LoadSprite("blood2.png", 128, 128, 0.0f, 0.0f, 6, 1);
 	g_blood.Initialize(&g_bloodspr);
+
+	g_bloodsplashspr.LoadSprite("bloodsplash.png", 150, 150, 0.0f, 0.0f, 3, 3);
+	g_bloodsplash.Initialize(&g_bloodsplashspr);
 
 	g_humanmodel.LoadModel("human.mdl");
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
@@ -79,6 +86,7 @@ void Initialize()
 	g_scene.AddUnit(&g_player);
 	g_scene.AddUnit(&g_ground);
 	g_scene.AddUnit(&g_blood);
+	g_scene.AddUnit(&g_bloodsplash);
 	g_scene.AddUnit(&g_cross);
 
 	g_camera.Initialize(&g_player, 90.0f);
@@ -102,8 +110,6 @@ void Initialize()
 
 void CleanUp()
 {
-	g_bloodspr.CleanUp();
-	g_blood.CleanUp();
 
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
@@ -117,6 +123,11 @@ void CleanUp()
 	g_crossspr.CleanUp();
 	g_cross.CleanUp();
 
+	g_bloodspr.CleanUp();
+	g_blood.CleanUp();
+
+	g_bloodsplashspr.CleanUp();
+	g_bloodsplash.CleanUp();
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
@@ -212,6 +223,7 @@ void Update(double totalTime, double deltaTime)
 		if (g_zombies[i].Attacked())
 		{
 			g_player.TakeHit();
+			g_bloodsplash.AddSplash();
 			if (g_player.GetHealthStatus() <= 0)
 			{
 				g_window.Exit();
