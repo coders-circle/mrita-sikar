@@ -278,7 +278,7 @@ bool Player::Reload()
 {
 	if (IsReloading() == false && m_ammoCapacity > 0 && m_currentAmmo != 7)
 	{
-		ChangeState(PLAYER_GUNRELOAD);
+		ChangeState(PLAYER_GUNRELOAD); //
 	}
 	return true;
 }
