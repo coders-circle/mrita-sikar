@@ -113,6 +113,7 @@
     <ClInclude Include="graphics\Window.h" />
     <ClInclude Include="scene\Billboard.h" />
     <ClInclude Include="scene\Blood.h" />
+    <ClInclude Include="scene\BloodSplash.h" />
     <ClInclude Include="scene\Camera.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Ground.h" />

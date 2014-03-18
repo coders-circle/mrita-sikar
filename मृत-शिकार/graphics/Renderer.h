@@ -67,6 +67,7 @@ public:
 	unsigned int GetRenderPass() { return m_pass; }
 	GLuint GetDepthTexture() { return m_depthTexture; }
 
-	
+	void DisableDepth() { glDisable(GL_DEPTH_TEST); }
+	void EnableDepth() { glEnable(GL_DEPTH_TEST); }
 };
 

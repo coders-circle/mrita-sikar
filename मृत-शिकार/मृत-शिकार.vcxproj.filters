@@ -198,6 +198,9 @@
     <ClInclude Include="scene\Blood.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="scene\BloodSplash.h">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Mesh.cpp">
