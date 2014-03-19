@@ -38,7 +38,7 @@ public:
 		Splash splash;
 		splash.imageId = rand() % 9;
 		splash.position.x = rand() % 5 * 90.0f + 400.0f;//(rand() % ((windowWidth - 400) / 80)) * 80.0f + windowWidth / 2.0f - 600.0f;
-		splash.position.y = rand() % 6 * 90.0f + 270.0f;//(rand() % ((windowHeight - 400) / 80)) * 80.0f + windowHeight / 2.0f - 200.0f;
+		splash.position.y = rand() % 6 * 90.0f + 240.0f;//(rand() % ((windowHeight - 400) / 80)) * 80.0f + windowHeight / 2.0f - 200.0f;
 		splash.time = 0.0;
 		m_splashes.push_back(splash);
 	}

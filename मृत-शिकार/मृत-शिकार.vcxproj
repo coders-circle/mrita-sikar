@@ -118,6 +118,7 @@
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\Ground.h" />
     <ClInclude Include="scene\LiveUnit.h" />
+    <ClInclude Include="scene\People.h" />
     <ClInclude Include="scene\Player.h" />
     <ClInclude Include="scene\Scene.h" />
     <ClInclude Include="scene\TPCamera.h" />
@@ -143,6 +144,7 @@
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="scene\Ground.cpp" />
     <ClCompile Include="scene\LiveUnit.cpp" />
+    <ClCompile Include="scene\People.cpp" />
     <ClCompile Include="scene\Player.cpp" />
     <ClCompile Include="scene\Scene.cpp" />
     <ClCompile Include="scene\Unit.cpp" />

@@ -53,6 +53,28 @@ public:
 	{
 		return Rect(m_center.x-m_extents.x, m_center.z-m_extents.z, m_extents.x*2.0f, m_extents.z*2.0f);
 	}
+
+	// Get nearest point to the box from a point
+	glm::vec3 GetNearestPoint(const glm::vec3 &point)
+	{
+		glm::vec3 pt;
+		glm::vec3 sc = point - m_center;
+		float rx = m_extents[0], ry = m_extents[1], rz = m_extents[2];
+
+		if (sc.x < -rx) pt.x = -rx;
+		else if (sc.x > rx) pt.x = rx;
+		else pt.x = sc.x;
+
+		if (sc.y < -ry) pt.y = -ry;
+		else if (sc.y > ry) pt.y = ry;
+		else pt.y = sc.y;
+
+		if (sc.z < -rz) pt.z = -rz;
+		else if (sc.z > rz) pt.z = rz;
+		else pt.z = sc.z;
+
+		return pt + m_center;
+	}
 };
 
 /*

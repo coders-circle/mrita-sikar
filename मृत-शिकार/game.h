@@ -8,6 +8,7 @@
 #include "scene/WorldMap.h"
 #include "scene/Blood.h"
 #include "scene/BloodSplash.h"
+#include "scene/People.h"
 
 #include "audio/audio.h"
 
@@ -35,6 +36,9 @@ Blood g_blood;
 Sprite g_bloodsplashspr(&g_renderer);
 BloodSplash g_bloodsplash;
 
+/*Sprite g_bigbloodspr(&g_renderer);
+Unit2d g_bigblood;*/
+
 #define MAX_ZOMBIES 5
 Zombie g_zombies[MAX_ZOMBIES];
 
@@ -43,6 +47,9 @@ Unit2d g_cross;
 
 Model g_groundmodel(&g_renderer);
 Ground g_ground;
+
+Model g_people1model(&g_renderer);
+People g_people1;
 
 irrklang::ISoundEngine* g_audioengine = 0;
 
@@ -58,10 +65,18 @@ void Initialize()
 	g_bloodsplashspr.LoadSprite("bloodsplash.png", 150, 150, 0.0f, 0.0f, 3, 3);
 	g_bloodsplash.Initialize(&g_bloodsplashspr);
 
+	/*g_bigbloodspr.LoadSprite("bloodsplash_big.png", 600, 600);
+	g_bigblood.Initialize(&g_bigbloodspr, glm::vec2(g_width / 2.0f - 600 / 2.0f, g_height / 2.0f - 600 / 2.0f + 100.0f));
+	g_bigblood.SetVisible(false);*/
+
 	g_humanmodel.LoadModel("human.mdl");
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
 	g_player.SetCamera(&g_camera);
 	g_testmap.Initialize("testmap.map", &g_renderer, &g_scene);
+
+	g_people1model.LoadModel("people1.mdl");
+	g_people1model.SetScale(0.28f);
+	g_people1.Initialize(&g_people1model, glm::vec3(-5.0f, -45.0f, 250.0f));
 
 	g_zombiemodel.LoadModel("zombie.mdl");
 	float x = 200.0f, z= -400.0f;
@@ -88,6 +103,8 @@ void Initialize()
 	g_scene.AddUnit(&g_blood);
 	g_scene.AddUnit(&g_bloodsplash);
 	g_scene.AddUnit(&g_cross);
+	g_scene.AddUnit(&g_people1);
+	//g_scene.AddUnit(&g_bigblood);
 
 	g_camera.Initialize(&g_player, 90.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
@@ -111,7 +128,7 @@ void Initialize()
 
 void CleanUp()
 {
-
+	g_people1model.CleanUp();
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
@@ -119,6 +136,7 @@ void CleanUp()
 	g_player.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
 		g_zombies[i].CleanUp();
+	g_people1.CleanUp();
 	g_ground.CleanUp();
 
 	g_crossspr.CleanUp();
@@ -129,6 +147,9 @@ void CleanUp()
 
 	g_bloodsplashspr.CleanUp();
 	g_bloodsplash.CleanUp();
+
+	/*g_bigbloodspr.CleanUp();
+	g_bigblood.CleanUp();*/
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();
@@ -145,46 +166,58 @@ bool g_justDown = false;
 int g_deadZombies = 0;	
 void Update(double totalTime, double deltaTime)
 {
-	if (g_window.CheckMButton(MOUSE_LEFT) || g_window.CheckKey(' '))
+	if (!g_player.IsDead())
 	{
-		if (!g_justDown)
+		if (g_window.CheckMButton(MOUSE_LEFT) || g_window.CheckKey(' '))
 		{
-			g_justDown = true;
-			// the g_player.Shoot() returns true only when the timing to shoot is right (synchronizes with animation)
-			if (g_player.Shoot())
+			if (!g_justDown)
 			{
-				// Create a pickray from camera's position and direction
-				glm::mat4 camInverse = glm::inverse(g_camera.GetView());
-				Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
-				pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * g_camera.GetDistance());	// don't start ray till the distance from camera to player
-
-				int position; float tmin;
-				Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
-				// If there was a nearest intersection...
-				if (ClickedUnit)
+				g_justDown = true;
+				// the g_player.Shoot() returns true only when the timing to shoot is right (synchronizes with animation)
+				if (!g_player.IsDead() && g_player.Shoot())
 				{
-					// ...and the nearest intersection was a zombie unit
-					if (ClickedUnit->GetTag() == 2)
+					// Create a pickray from camera's position and direction
+					glm::mat4 camInverse = glm::inverse(g_camera.GetView());
+					Ray pickRay(glm::vec3(camInverse[3]), -glm::vec3(camInverse[2]));
+					pickRay.SetOrigin(pickRay.GetOrigin() + pickRay.GetDirection() * g_camera.GetDistance());	// don't start ray till the distance from camera to player
+
+					int position; float tmin;
+					Unit * ClickedUnit = g_scene.GetNearestIntersection(pickRay, position, tmin, &g_player);
+					// If there was a nearest intersection...
+					if (ClickedUnit)
 					{
-						// let the zombie take a hit, returns true only if the one of the three children (0,1,2) is hit
-						if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
+						// ...and the nearest intersection was a zombie unit
+						if (ClickedUnit->GetTag() == 2)
 						{
-							g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
-							if (static_cast<Zombie*>(ClickedUnit)->IsDead())
+							// let the zombie take a hit, returns true only if the one of the three children (0,1,2) is hit
+							if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
 							{
-								++g_deadZombies;
-								std::stringstream str;
-								str << "Dead Zombies: " << g_deadZombies;
-								g_scene.ChangeText(0, str.str());	// 0 is the index of the only text added
+								g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+								if (static_cast<Zombie*>(ClickedUnit)->IsDead())
+								{
+									++g_deadZombies;
+									std::stringstream str;
+									str << "Dead Zombies: " << g_deadZombies;
+									g_scene.ChangeText(0, str.str());	// 0 is the index of the only text added
+								}
+							}
+						}
+						else if (ClickedUnit->GetTag() == 10)
+						{
+							People * people = static_cast<People*>(ClickedUnit);
+							if (!people->IsDead())
+							{
+								people->Die();
+								g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
 							}
 						}
 					}
 				}
 			}
 		}
+		else
+			g_justDown = false;
 	}
-	else
-		g_justDown = false;
 
 	// If anything blocks player from the camera, then move camera towards the player
 	// Start a ray from the PLAYER towards it's back
@@ -203,31 +236,35 @@ void Update(double totalTime, double deltaTime)
 	else
 		g_camera.SetDistance(90.0f);
 	
-
-	if (g_window.CheckKey('a'))	g_player.StrafeLeft();
-	else g_player.EndStrafeLeft();
-
-	if (g_window.CheckKey('d')) g_player.StrafeRight();
-	else g_player.EndStrafeRight();
-
-	if (g_window.CheckKey('w'))	g_player.Run();
-	else g_player.EndRun();
-
-	if (g_window.CheckKey('s')) g_player.BackRun();
-	else g_player.EndBackRun();
-
-	if (g_window.CheckKey('r')) g_player.Reload();
-
-	for (int i = 0; i < MAX_ZOMBIES; i++)
+	if (!g_player.IsDead())
 	{
-		g_zombies[i].SetDestination(g_player.GetBoundCenter());
-		if (g_zombies[i].Attacked())
+		if (g_window.CheckKey('a'))	g_player.StrafeLeft();
+		else g_player.EndStrafeLeft();
+
+		if (g_window.CheckKey('d')) g_player.StrafeRight();
+		else g_player.EndStrafeRight();
+
+		if (g_window.CheckKey('w'))	g_player.Run();
+		else g_player.EndRun();
+
+		if (g_window.CheckKey('s')) g_player.BackRun();
+		else g_player.EndBackRun();
+
+		if (g_window.CheckKey('r')) g_player.Reload();
+
+		for (int i = 0; i < MAX_ZOMBIES; i++)
 		{
-			g_player.TakeHit();
-			g_bloodsplash.AddSplash();
-			if (g_player.GetHealthStatus() <= 0)
+			g_zombies[i].SetDestination(g_player.GetBoundCenter());
+			if (g_zombies[i].Attacked())
 			{
-				g_window.Exit();
+				g_player.TakeHit();
+				g_bloodsplash.AddSplash();
+				if (g_player.GetHealthStatus() <= 0)
+				{
+					g_player.Die();
+					g_camera.Die();
+					//g_bigblood.SetVisible(true);
+				}
 			}
 		}
 	}
@@ -239,7 +276,7 @@ void Update(double totalTime, double deltaTime)
 	int newx, newy;
 	g_window.GetMousePos(newx, newy);
 	g_player.RotateX((float)deltaTime * (newx - g_width / 2) * 2.8f);
-	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);	// just rotate the camera not the player vertically
+	g_camera.RotateY((float)deltaTime * (newy - g_height / 2) * 2.8f);
 
 	g_window.SetMousePos(g_width / 2, g_height / 2);
 	g_cross.SetPosition(glm::vec2(g_width/2 - 50, g_height/2 - 50));

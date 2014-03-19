@@ -56,7 +56,7 @@ inline void Player::ChangeState(int x)
 		m_inTransition = false;
 }
 
-Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_camera(NULL)
+Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_camera(NULL), m_isdead(false)
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 	m_tag = 1;
@@ -111,7 +111,7 @@ bool Player::IsRunning()
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SRIGHTAIMING:
 		return true;
-	}
+}
 	return false;
 }
 
@@ -325,8 +325,18 @@ bool Player::IsReloading()
 	return (m_state == PLAYER_GUNRELOAD) | (m_state == PLAYER_RELOADRUN) | (m_state == PLAYER_RELOADSLEFT) | (m_state == PLAYER_RELOADSRIGHT);
 }
 
+float g_rotation = 0.0f;
 void Player::Update(double deltaTime)
 {
+	if (m_isdead)
+	{
+		if (g_rotation > glm::radians(215.0f)) return;
+		g_rotation += float(deltaTime) * 5;
+		m_dieOrient = glm::rotate(glm::mat4(), -0.07f, glm::vec3(0.0f,0.0f, 1.0f)) *glm::rotate(m_dieOrient, -g_rotation, glm::vec3(1.0f, 0.0f, 0.0f));
+		if (!m_dieAnimation)
+			return;
+	}
+
 	bool end = false;
 	if (m_inTransition)
 		m_model->Advance(m_animation, deltaTime * 3, &end);		
@@ -335,6 +345,7 @@ void Player::Update(double deltaTime)
 
 	if (end)
 	{	
+		if (m_isdead) { m_dieAnimation = false; }
 		switch (m_state)
 		{
 		case PLAYER_RUNIDLE:
@@ -371,6 +382,7 @@ void Player::Update(double deltaTime)
 			break;
 		}
 	}
+	if (m_isdead) return;
 
 	const float deltaPos = 90.0f;
 
@@ -428,21 +440,29 @@ void Player::Update(double deltaTime)
 				Collide(other);
 		}
 	}
-	
 }
 
 static glm::mat4 g_globaltransform = glm::scale(glm::mat4(), glm::vec3(1/4.0f));
 void Player::Draw()
 {
-	m_model->SetTransform(glm::translate(glm::mat4(), m_position)  * m_orient * g_globaltransform
+	if (m_isdead)
+	{
+		m_model->SetTransform(glm::translate(glm::mat4(), m_position + glm::vec3(0.0f, 0.23f*g_rotation, 0.0f)) * m_orient * g_globaltransform
+			* glm::translate(glm::mat4(), m_offset) * m_offsetorient * m_dieOrient);
+	}
+	else
+	{
+		m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient * g_globaltransform
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
+	}
 	m_model->Animate(m_animation);
 	m_model->Draw();	
 }
 
 void Player::TakeHit()
 {
-	m_health -= 10;
+	m_health -= 8;
+	if (m_health < 0) m_health = 0;
 	if (m_camera) m_camera->Shake();
 	switch (GetRand(3))
 	{
@@ -450,6 +470,13 @@ void Player::TakeHit()
 	case 1: g_audioengine->play2D(m_a_hit2); break;
 	default: g_audioengine->play2D(m_a_hit3);
 	}
+}
+
+void Player::Die()
+{
+	m_isdead = true;
+	ChangeState(PLAYER_IDLE);
+	m_dieAnimation = true;
 }
 
 #include <sstream>
