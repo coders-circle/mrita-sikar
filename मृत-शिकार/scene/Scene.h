@@ -4,9 +4,10 @@
 
 struct Text
 {
-	Text(std::string text, float posX, float posY, float size=1.0f) { this->text = text; x = posX; y = posY; this->size = size; }
+	Text(std::string text, float posX, float posY, float size = 1.0f, bool visible = true) { this->text = text; x = posX; y = posY; this->size = size; this->visible = visible; }
 	std::string text;
 	float x, y, size;
+	bool visible;
 };
 
 class Scene
@@ -21,6 +22,7 @@ protected:
 	{
 		for (unsigned i = 0; i < m_texts.size(); ++i)
 		{
+			if (!m_texts[i].visible) continue;
 			float py = m_texts[i].y, px = 0.0f;;
 			for (unsigned j = 0; j < m_texts[i].text.size(); ++j)
 			{
@@ -48,6 +50,7 @@ public:
 	unsigned int AddText(const Text &text) { m_texts.push_back(text); return m_texts.size() - 1; }
 	void ChangeText(unsigned int index, std::string text) { m_texts[index].text = text; }
 	void RemoveText(unsigned int index) { m_texts.erase(m_texts.begin() + index); }
+	void SetTextVisible(unsigned int index, bool visible) { m_texts[index].visible = false; }
 
 	void Initialize()
 	{
