@@ -258,7 +258,7 @@ void Update(double totalTime, double deltaTime)
 			if (g_zombies[i].Attacked())
 			{
 				g_player.TakeHit();
-				// 5 seconds to fade
+				// 8 seconds to fade
 				g_bloodsplash.AddSplash(8.0f);
 				if (g_player.GetHealthStatus() <= 0)
 				{
