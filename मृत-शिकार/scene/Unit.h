@@ -81,5 +81,5 @@ public:
 	glm::vec3 GetBoundExtents(){ return m_boundVolume.parent.GetExtents(); }
 
 	void SetVisible(bool visible) { m_visible = visible; }
-	void GetVisible() { return m_visible; }
+	bool GetVisible() { return m_visible; }
 };

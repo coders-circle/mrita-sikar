@@ -78,11 +78,13 @@ struct Technique_Sprite : Technique
 {
 	unsigned int mvp;
 	unsigned int uv;
+	unsigned int visiblity;
 	unsigned int texture_sample;
 	void Init()
 	{
 		mvp = GetUniform("mvp");
 		uv = GetUniform("uv");
+		visiblity = GetUniform("visibility");
 		texture_sample = GetUniform("texture_sample");
 	}
 };
