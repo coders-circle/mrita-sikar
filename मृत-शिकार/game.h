@@ -8,6 +8,7 @@
 #include "scene/WorldMap.h"
 #include "scene/Blood.h"
 #include "scene/BloodSplash.h"
+#include "scene/People.h"
 
 #include "audio/audio.h"
 
@@ -47,6 +48,9 @@ Unit2d g_cross;
 Model g_groundmodel(&g_renderer);
 Ground g_ground;
 
+Model g_people1model(&g_renderer);
+People g_people1;
+
 irrklang::ISoundEngine* g_audioengine = 0;
 
 void Initialize()
@@ -69,6 +73,10 @@ void Initialize()
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
 	g_player.SetCamera(&g_camera);
 	g_testmap.Initialize("testmap.map", &g_renderer, &g_scene);
+
+	g_people1model.LoadModel("people1.mdl");
+	g_people1model.SetScale(0.28f);
+	g_people1.Initialize(&g_people1model, glm::vec3(-5.0f, -45.0f, 250.0f));
 
 	g_zombiemodel.LoadModel("zombie.mdl");
 	float x = 200.0f, z= -400.0f;
@@ -95,6 +103,7 @@ void Initialize()
 	g_scene.AddUnit(&g_blood);
 	g_scene.AddUnit(&g_bloodsplash);
 	g_scene.AddUnit(&g_cross);
+	g_scene.AddUnit(&g_people1);
 	//g_scene.AddUnit(&g_bigblood);
 
 	g_camera.Initialize(&g_player, 90.0f);
@@ -118,7 +127,7 @@ void Initialize()
 
 void CleanUp()
 {
-
+	g_people1model.CleanUp();
 	g_humanmodel.CleanUp();
 	g_zombiemodel.CleanUp();
 	g_groundmodel.CleanUp();
@@ -126,6 +135,7 @@ void CleanUp()
 	g_player.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
 		g_zombies[i].CleanUp();
+	g_people1.CleanUp();
 	g_ground.CleanUp();
 
 	g_crossspr.CleanUp();
@@ -189,6 +199,15 @@ void Update(double totalTime, double deltaTime)
 									str << "Dead Zombies: " << g_deadZombies;
 									g_scene.ChangeText(0, str.str());	// 0 is the index of the only text added
 								}
+							}
+						}
+						else if (ClickedUnit->GetTag() == 10)
+						{
+							People * people = static_cast<People*>(ClickedUnit);
+							if (!people->IsDead())
+							{
+								people->Die();
+								g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
 							}
 						}
 					}
