@@ -63,6 +63,7 @@ public:
 	virtual void Draw() {
 		m_renderer->BeginRender(Renderer::NORMAL_PASS);
 
+		m_renderer->DisableDepth();
 		for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 			m_unit2ds[i]->Draw();
 		DrawTexts();

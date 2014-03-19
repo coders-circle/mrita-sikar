@@ -34,6 +34,9 @@ private:
 
 	//SoundSource m_sound;
 
+	bool m_isdead; glm::mat4 m_dieOrient;
+	bool m_dieAnimation;
+
 
 public:
 	Player();
@@ -51,10 +54,14 @@ public:
 	bool IsReloading();
 	void RotateX(float deltaX)
 	{
+		if (m_isdead) return;
 		m_orient = glm::rotate(glm::mat4(), -deltaX, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient;
 	}
 	bool IsRunning();
 	void TakeHit();
+	void Die();
+	bool IsDead() { return m_isdead; }
+
 	std::string GetPlayerHealthString();
 	std::string GetAmmoStatusString();
 };

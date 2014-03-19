@@ -26,7 +26,7 @@ public:
 
 	virtual void UpdateProjection(float width, float height)
 	{
-		m_projection = Perspective(45.0f, width / height, 0.1f, 10000.0f);
+		m_projection = Perspective(45.0f, width / height, 0.1f, 1000000.0f);
 	}
 	
 	const glm::mat4& GetView()			{ return m_view; }

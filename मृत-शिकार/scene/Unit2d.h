@@ -9,6 +9,7 @@ protected:
 	bool m_animate;
 
 	glm::vec2 m_position;
+	bool m_visible;
 public:
 	Unit2d(const glm::vec2 &position = glm::vec2());
 
@@ -21,11 +22,13 @@ public:
 	virtual void Update(double deltaTime) { if (m_animate) m_sprite->Animate(m_sprAnim, deltaTime); }
 	virtual void Draw()
 	{
-		m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y);
+		if (m_visible)
+			m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y);
 	}
 
 	void SetPosition(const glm::vec2 &position) { m_position = position; }
 	const glm::vec2 &GetPosition() { return m_position; }
 
+	void SetVisible(bool visible) { m_visible = visible; }
 };
 
