@@ -85,7 +85,7 @@ public:
 		return tpos - (glm::vec3)m_orient[2] * m_distance;
 	}
 
-	void Shake() { m_isShaking = true; m_amplitude = 3.0f; m_timeElapsed = 0.0f; }
+	void Shake() { m_isShaking = true; m_amplitude = 8.0f; m_timeElapsed = 0.0f; }
 
 	void Die() { m_isdead = true; m_justDied = true; }
 };
