@@ -18,6 +18,8 @@ protected:
 	std::vector<unsigned int> m_ignoreChildren;	// List of children-box indices to ignore while testing for collision
 	Rect m_rect;
 
+	bool m_visible;
+
 	int GetRand(int range){ return rand() % range; }
 
 
@@ -78,4 +80,6 @@ public:
 	glm::vec3 GetBoundCenter(){ return m_boundVolume.parent.GetCenter(); }
 	glm::vec3 GetBoundExtents(){ return m_boundVolume.parent.GetExtents(); }
 
+	void SetVisible(bool visible) { m_visible = visible; }
+	void GetVisible() { return m_visible; }
 };

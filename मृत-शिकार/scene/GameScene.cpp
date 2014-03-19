@@ -71,6 +71,8 @@ void GameScene::Draw()
 			toDraw = m_camera->IntersectBox(static_cast<LiveUnit*>(m_units[i])->GetAABB());
 		else
 			toDraw = m_camera->IntersectBox(m_units[i]->GetBoundParent());
+
+		m_units[i]->SetVisible(toDraw);
 		if (toDraw)
 			m_units[i]->Draw();
 	}
