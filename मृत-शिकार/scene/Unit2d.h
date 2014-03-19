@@ -6,7 +6,6 @@ class Unit2d
 protected:
 	struct FadeEffect
 	{
-		bool end; 
 		double time; 
 		double elapsedtime;
 	};
@@ -40,7 +39,7 @@ public:
 	{
 		if (!m_visible) return;
 		if (m_fade)
-			m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y, 1.0f, static_cast<float>(m_fade->elapsedtime/m_fade->time));
+			m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y, 1.0f, 1.0f - static_cast<float>(m_fade->elapsedtime/m_fade->time));
 		else
 			m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y);
 	}
@@ -53,8 +52,8 @@ public:
 	{
 		m_fade = new FadeEffect;
 		m_fade->elapsedtime = 0.0;
-		m_fade->end = false;
 		m_fade->time = time;
 	}
+	bool IsFading() { return (m_fade!=NULL); }
 };
 

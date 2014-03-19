@@ -84,9 +84,8 @@ void Sprite::DrawSprite(unsigned imageid, float posX, float posY, float scale, f
 	glUseProgram(techniques.sprite.program);
 	glUniformMatrix4fv(techniques.sprite.mvp, 1, GL_FALSE, glm::value_ptr(m_renderer->GetProjection2d() * glm::translate(glm::mat4(), glm::vec3(posX, posY, 0.0f)) * glm::scale(glm::mat4(), glm::vec3(scale))));
 	glUniform2fv(techniques.sprite.uv, 1, glm::value_ptr(uv));
-	glUniform1f(techniques.sprite.texture_sample, 0);
-	glm::vec3 visible(visibility);
-	glUniform4fv(techniques.sprite.visiblity, 1, &visible[0]);
+	glUniform1i(techniques.sprite.texture_sample, 0);
+	glUniform1f(techniques.sprite.visiblity, visibility);
 
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_QUADS, 0, 4);
@@ -110,9 +109,8 @@ void Sprite::DrawBillboard(unsigned imageid, const glm::mat4 &transform, float v
 	glUniformMatrix4fv(techniques.sprite.mvp, 1, GL_FALSE,
 		glm::value_ptr(m_renderer->GetViewProjection3d() * transform * m_renderer->GetBillboardRotation() * m_bbTransform));
 	glUniform2fv(techniques.sprite.uv, 1, glm::value_ptr(uv));
-	glm::vec3 visible(visibility);
-	glUniform4fv(techniques.sprite.visiblity, 1, &visible[0]);
-	glUniform1f(techniques.sprite.texture_sample, 0);
+	glUniform1i(techniques.sprite.texture_sample, 0);
+	glUniform1f(techniques.sprite.visiblity, visibility);
 
 	glBindVertexArray(m_vao);
 	glDrawArrays(GL_QUADS, 0, 4);
