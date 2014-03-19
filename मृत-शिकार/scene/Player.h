@@ -24,6 +24,8 @@ private:
 	irrklang::ISoundSource* m_a_hit1, *m_a_hit2, *m_a_hit3;
 	irrklang::ISoundSource* m_a_breath;
 	irrklang::ISoundSource* m_a_pain;
+	irrklang::ISoundSource* m_a_reload;
+	irrklang::ISoundSource* m_a_pinpull;
 	irrklang::ISound* m_a_breathing;
 	
 	irrklang::vec3df m_a_pos;

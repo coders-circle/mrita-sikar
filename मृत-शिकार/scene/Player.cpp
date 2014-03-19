@@ -86,6 +86,9 @@ void Player::InitAudio()
 	m_a_hit3 = g_audioengine->addSoundSourceFromFile("sound/player/player_hit3.mp3", irrklang::ESM_AUTO_DETECT, true);
 
 	m_a_breath = g_audioengine->addSoundSourceFromFile("sound/player/player_breath.mp3", irrklang::ESM_AUTO_DETECT, true);
+	m_a_reload = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_reload.mp3", irrklang::ESM_AUTO_DETECT, true);
+	m_a_pinpull = g_audioengine->addSoundSourceFromFile("sound/weapon/pistol_pinpull.mp3", irrklang::ESM_AUTO_DETECT, true);
+
 	if (m_a_breath) m_a_breath->setDefaultVolume(0.1f);
 	if (m_a_shoot) m_a_shoot->setDefaultVolume(0.2f);
 	if (m_a_shootdelayed) m_a_shootdelayed->setDefaultVolume(0.2f);
@@ -94,11 +97,27 @@ void Player::InitAudio()
 
 bool Player::IsRunning()
 {
-	return m_state == PLAYER_RUN;
+	switch (m_state)
+	{
+	case PLAYER_RUN:
+	case PLAYER_STRAFELEFT:
+	case PLAYER_STRAFERIGHT:
+	case PLAYER_IDLERUN:
+	case PLAYER_RUNIDLE:
+	case PLAYER_RUNSHOOTING:
+	case PLAYER_RUNAIMING:
+	case PLAYER_SLEFTSHOOTING:
+	case PLAYER_SRIGHTSHOOTING:
+	case PLAYER_SLEFTAIMING:
+	case PLAYER_SRIGHTAIMING:
+		return true;
+	}
+	return false;
 }
 
 void Player::Run()
 {
+	if (IsReloading()) return;
 	if (m_state != PLAYER_IDLEAIM && m_state != PLAYER_SHOOT)
 		m_run = true;
 	if (m_backrun) { m_backrun = false; }
@@ -122,6 +141,7 @@ void Player::Run()
 
 void Player::EndRun()
 {
+	if (IsReloading()) return;
 	if (m_backrun) return;
 	m_run = false;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
@@ -138,6 +158,7 @@ void Player::EndRun()
 
 void Player::BackRun()
 {
+	if (IsReloading()) return;
 	if (m_state != PLAYER_IDLEAIM && m_state != PLAYER_SHOOT)
 		m_backrun = true;
 	if (m_run) {  m_run = false; }
@@ -153,6 +174,7 @@ void Player::BackRun()
 
 void Player::EndBackRun()
 {
+	if (IsReloading()) return;
 	if (m_run) return;
 	m_backrun = false;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
@@ -170,6 +192,7 @@ void Player::EndBackRun()
 
 void Player::StrafeLeft()
 {
+	if (IsReloading()) return;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
 		ChangeState(PLAYER_STRAFELEFT);
 	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
@@ -181,6 +204,7 @@ void Player::StrafeLeft()
 }
 void Player::EndStrafeLeft()
 {
+	if (IsReloading()) return;
 	if (m_state == PLAYER_STRAFELEFT) ChangeState(PLAYER_RUN);
 	else if (m_state == PLAYER_SLEFTSHOOTING) ChangeState(PLAYER_RUNSHOOTING);
 	else if (m_state == PLAYER_SLEFTAIMING) ChangeState(PLAYER_RUNAIMING);
@@ -198,6 +222,7 @@ void Player::EndStrafeLeft()
 }
 void Player::StrafeRight()
 {
+	if (IsReloading()) return;
 	if (m_state == PLAYER_RUN || m_state == PLAYER_RUNSHOOTING || m_state == PLAYER_RUNAIMING)
 		ChangeState(PLAYER_STRAFERIGHT);
 	else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
@@ -209,6 +234,7 @@ void Player::StrafeRight()
 }
 void Player::EndStrafeRight()
 {
+	if (IsReloading()) return;
 	if (m_state == PLAYER_STRAFERIGHT) ChangeState(PLAYER_RUN);
 	else if (m_state == PLAYER_SRIGHTSHOOTING) ChangeState(PLAYER_RUNSHOOTING);
 	else if (m_state == PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RUNAIMING);
@@ -229,8 +255,13 @@ void Player::EndStrafeRight()
 
 bool Player::Shoot()
 {
+	if (IsReloading()) return false;
 	if (m_currentAmmo == 0)
 	{
+		g_audioengine->play2D(m_a_pinpull);
+		if (IsRunning()) ChangeState(PLAYER_RUNAIMING);
+		else if (m_state == PLAYER_AIM)	ChangeState(PLAYER_AIM);
+		else ChangeState(PLAYER_IDLEAIM);
 		return false;
 	}
 	switch (m_state)
@@ -276,9 +307,15 @@ bool Player::Shoot()
 
 bool Player::Reload()
 {
-	if (IsReloading() == false && m_ammoCapacity > 0 && m_currentAmmo != 7)
+	if (IsRunning())
+	{
+		return false;
+	}
+
+	if (IsReloading() == false && m_totalAmmo > 0 && m_currentAmmo != 7)
 	{
 		ChangeState(PLAYER_GUNRELOAD); //
+		g_audioengine->play2D(m_a_reload);
 	}
 	return true;
 }
@@ -405,7 +442,7 @@ void Player::Draw()
 
 void Player::TakeHit()
 {
-	m_health -= 0;
+	m_health -= 10;
 	if (m_camera) m_camera->Shake();
 	switch (GetRand(3))
 	{

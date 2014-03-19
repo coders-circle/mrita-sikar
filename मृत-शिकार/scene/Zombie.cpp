@@ -116,14 +116,7 @@ void Zombie::Update(double deltaTime)
 						{
 							glm::vec3 f = glm::normalize(r);
 							float mf = (float)(d2 / d1);
-							if (units[i]->GetTag() == 3)
-							{
-								mf *= 2.0f;
-							}
-							else
-							{
-								mf *= 0.6f;
-							}
+							
 							f.x *= mf;
 							f.y *= mf;
 							f.z *= mf;
