@@ -217,6 +217,7 @@ void Update(double totalTime, double deltaTime)
 		}
 		else
 			g_justDown = false;
+
 	}
 
 	// If anything blocks player from the camera, then move camera towards the player
