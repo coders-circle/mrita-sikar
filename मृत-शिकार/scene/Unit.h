@@ -77,8 +77,8 @@ public:
 	void RotateY(float yangle) { m_orient = glm::rotate(glm::mat4(), yangle, glm::vec3(0.0f, 1.0f, 0.0f)) * m_orient; UpdateBoundVolume(); }
 	void RotateZ(float zangle) { m_orient = glm::rotate(glm::mat4(), zangle, glm::vec3(0.0f, 0.0f, 1.0f)) * m_orient; UpdateBoundVolume(); }
 
-	glm::vec3 GetBoundCenter(){ return m_boundVolume.parent.GetCenter(); }
-	glm::vec3 GetBoundExtents(){ return m_boundVolume.parent.GetExtents(); }
+	glm::vec3 GetBoundCenter() const { return m_boundVolume.parent.GetCenter(); }
+	glm::vec3 GetBoundExtents() const { return m_boundVolume.parent.GetExtents(); }
 
 	void SetVisible(bool visible) { m_visible = visible; }
 	bool GetVisible() { return m_visible; }
