@@ -132,7 +132,7 @@ void Initialize()
 		g_zombies[i].InitAudio();
 	}
 
-	g_scene.AddText(Text("Dead Zombies: 0", 215, 45, 0.85f));
+	g_scene.AddText(Text("Zombies Killed: 0", 20, 680, 0.85f));
 	g_scene.AddText(Text(g_player.GetPlayerHealthString(), 1000, 40));
 	g_scene.AddText(Text(g_player.GetAmmoStatusString(), 1000, 680));
 }
