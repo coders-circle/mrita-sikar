@@ -59,7 +59,7 @@ void Initialize()
 	g_scene.Initialize(Rect(-5000, -5000, 10000, 10000));	// quadtree needs limits of the world, send it through scene
 	g_scene.SetCamera(&g_camera);
 	
-	g_bloodspr.LoadSprite("blood2.png", 128, 128, 0.0f, 0.0f, 6, 1);
+	g_bloodspr.LoadSprite("blood2.png", 512, 512, 0.0f, 0.0f, 6, 1);
 	g_blood.Initialize(&g_bloodspr);
 
 	g_bloodsplashspr.LoadSprite("bloodsplash.png", 150, 150, 0.0f, 0.0f, 3, 3);
@@ -124,6 +124,8 @@ void Initialize()
 	g_scene.AddText(Text("Dead Zombies: 0", 20, 50, 0.85f));
 	g_scene.AddText(Text(g_player.GetPlayerHealthString(), 1000, 40));
 	g_scene.AddText(Text(g_player.GetAmmoStatusString(), 1000, 680));
+	g_scene.AddText(Text("Reload", 550, 220, 1.5f));
+	g_scene.SetTextVisible(3, false);
 }
 
 void CleanUp()
@@ -221,6 +223,11 @@ void Update(double totalTime, double deltaTime)
 
 	}
 
+	if (g_player.GetCurrentAmmoStatus() == 0)
+	{
+		g_scene.SetTextVisible(3, true);
+	}
+
 	// If anything blocks player from the camera, then move camera towards the player
 	// Start a ray from the PLAYER towards it's back
 	Ray cameraRay(glm::vec3(g_player.GetPosition().x, 0.0f, g_player.GetPosition().z), -glm::vec3(g_player.GetOrient()[2]));
@@ -252,7 +259,11 @@ void Update(double totalTime, double deltaTime)
 		if (g_window.CheckKey('s')) g_player.BackRun();
 		else g_player.EndBackRun();
 
-		if (g_window.CheckKey('r')) g_player.Reload();
+		if (g_window.CheckKey('r'))
+		{
+			if(g_player.Reload())
+				g_scene.SetTextVisible(3, false);
+		}
 
 		for (int i = 0; i < MAX_ZOMBIES; i++)
 		{

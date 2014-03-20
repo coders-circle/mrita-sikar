@@ -2,6 +2,7 @@
 #include "Scene.h"
 
 #include "../glm/gtx/vector_angle.hpp"
+#include "People.h"
 
 enum ZombieStates{
 	ZOMBIE_IDLE = 0,
@@ -20,6 +21,7 @@ Zombie::Zombie() : m_state(ZOMBIE_IDLE)
 	m_attacked = false;
 	m_ignoreChildren.push_back(3);	//ignore attack collision box
 	m_ignoreChildren.push_back(4);	//ignore dead collision box
+	m_isAttakcingPlayer = false;
 }
 
 irrklang::ISoundSource* g_a_noise;
@@ -69,20 +71,21 @@ void Zombie::Update(double deltaTime)
 	{
 		m_model->Advance(m_animation, deltaTime * m_attackspeed, &end);
 	}
-	else
-	m_model->Advance(m_animation, deltaTime*1.0f, &end);
+	else m_model->Advance(m_animation, deltaTime*1.0f, &end);
 
 	if (end)
 	{
-		if (m_state == ZOMBIE_ATTACK1 || m_state == ZOMBIE_ATTACK2)
+		if (m_state == ZOMBIE_ATTACK1 )
 		{
-			m_attacked = true;
+			if (m_isAttakcingPlayer == true)
+			{
+				m_attacked = true;
+			}
 		}
 		if (m_state == ZOMBIE_FLINCH)
 		{
 			Idle();
 		}
-
 	}
 
 
@@ -99,6 +102,7 @@ void Zombie::Update(double deltaTime)
 		fa.z *= fmf;
 		glm::vec3 resultant = fa;
 
+		float distsqWithNearestPeople = 0.0f;
 
 		if (IsWalking())
 		{
@@ -107,12 +111,12 @@ void Zombie::Update(double deltaTime)
 			{
 				if (units[i] != this)
 				{
-					if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2)
+					if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2) //other zombies and obstacles
 					{
 						glm::vec3 r = (this->GetBoundCenter() - units[i]->GetBoundCenter());
 						float d1 = glm::dot(r, r);
 						float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
-						if (d2 + 10000.0f > d1)
+						if (d2 +10000.0f > d1)
 						{
 							glm::vec3 f = glm::normalize(r);
 							float mf = (float)(d2 / d1);
@@ -123,9 +127,39 @@ void Zombie::Update(double deltaTime)
 							resultant += f;
 						}
 					}
+					else if (units[i]->GetTag() == 10) // peoples
+					{
+						if (!static_cast<People*>(units[i])->IsDead())
+						{
+							glm::vec3 r = (units[i]->GetBoundCenter() - this->GetBoundCenter());
+							float d1 = glm::dot(r, r);
+							if (distsqWithNearestPeople == 0 || d1 < distsqWithNearestPeople) 
+								distsqWithNearestPeople = d1;
+							float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
+							if (d2 + 40000.0f > d1)
+							{
+								glm::vec3 f = glm::normalize(r);
+								float mf = 2.0f*(float)(d2 / d1);
+								f.x *= mf;
+								f.y *= mf;
+								f.z *= mf;
+								resultant += f;
+							}
+							if (d1 < 1600.0f)
+							{
+								//static_cast<People*>(units[i])->Die();
+							}
+						}
+					}
 				}
 			}
 		}
+		//if (distsqWithNearestPeople == 0.0f) distsqWithNearestPeople = distsq;
+		if (distsqWithNearestPeople != 0 &&  distsqWithNearestPeople <= distsq)
+		{
+			resultant -= fa;
+		}
+
 		if (resultant.x == 0.0f && resultant.z == 0.0f)
 		{
 
@@ -133,16 +167,26 @@ void Zombie::Update(double deltaTime)
 		else
 		{
 			resultant.y = 0.0f;
-			m_orient[2] = glm::vec4(glm::normalize(glm::vec3(m_orient[2]) + resultant*0.08f), 0.0f);
+			m_orient[2] = glm::vec4(glm::normalize(glm::vec3(m_orient[2]) + resultant*0.06f), 0.0f);
 			m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
 			m_orient[0] = (glm::vec4(glm::normalize(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2]))), 0.0f));
 			posChanged = true;
 		}
-		if (distsq > 1600.0f)
+
+		if (distsqWithNearestPeople != 0 && distsqWithNearestPeople < 4000.0f)
 		{
-			if (this->IsWalking() == false && this->m_state != ZOMBIE_FLINCH) this->Walk();
+			m_isAttakcingPlayer = false;
+			if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
 		}
-		else if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
+
+		else if (distsq < 1600.0f)
+		{
+			if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
+			m_isAttakcingPlayer = true;
+
+		}	
+		
+		else if (this->IsWalking() == false && this->m_state != ZOMBIE_FLINCH) this->Walk();
 	}
 	switch (m_state)
 	{
@@ -160,7 +204,7 @@ void Zombie::Update(double deltaTime)
 	
 	if (m_state == ZOMBIE_DEATH && !end) return;
 
-	m_isstruck = false;
+	//m_isstruck = false;
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	for (unsigned int i = 0; i < collisions.size(); ++i)
