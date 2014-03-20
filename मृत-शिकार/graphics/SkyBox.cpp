@@ -76,7 +76,7 @@ void SkyBox::Draw(const glm::vec3 &center)
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 
 	glUseProgram(techniques.sky.program);
-	glUniformMatrix4fv(techniques.sky.mvp, 1, GL_FALSE, glm::value_ptr(m_renderer->GetViewProjection3d() * glm::translate(glm::mat4(), center)));
+	glUniformMatrix4fv(techniques.sky.mvp, 1, GL_FALSE, glm::value_ptr(m_renderer->GetViewProjection3d() * glm::translate(glm::mat4(), center) * glm::scale(glm::mat4(), glm::vec3(10.0f))));
 	glUniform1i(techniques.sky.texture_sample, 0);
 
 	glBindVertexArray(m_vao);
