@@ -461,7 +461,7 @@ void Player::Draw()
 
 void Player::TakeHit()
 {
-	m_health -= 8;
+	m_health -= 0;
 	if (m_health < 0) m_health = 0;
 	if (m_camera) m_camera->Shake();
 	switch (GetRand(3))

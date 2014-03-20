@@ -13,7 +13,6 @@ private:
 	inline void ChangeState(int x);
 
 	bool m_run, m_backrun;
-
 	TPCamera * m_camera;
 
 	irrklang::ISoundSource* m_a_run;
@@ -63,6 +62,7 @@ public:
 	void TakeHit();
 	void Die();
 	bool IsDead() { return m_isdead; }
+	int GetCurrentAmmoStatus(){ return m_currentAmmo; }
 
 	std::string GetPlayerHealthString();
 	std::string GetAmmoStatusString();

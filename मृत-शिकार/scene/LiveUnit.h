@@ -32,12 +32,14 @@ protected:
 				for (unsigned i = 0; i < other->GetChildrenSize(); ++i)
 				if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other->GetBoundChild(i), glm::mat3(), &out))
 				{
+					out.y = 0;
 					m_position += out;
 					UpdateBoundVolume(); ret = true;
 				}
 			}
 			else
 			{
+				out.y = 0;
 				m_position += out;
 				UpdateBoundVolume(); ret = true;
 			}
@@ -51,6 +53,7 @@ protected:
 		glm::vec3 out;
 		if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other->GetBoundParent(), glm::mat3(((LiveUnit*)other)->GetOrient()), &out))
 		{
+			out.y = 0;
 			m_position += out; UpdateBoundVolume(); ret = true;
 		}
 		return ret;
@@ -62,6 +65,7 @@ protected:
 		glm::vec3 out;
 		if (GetBoundParent().IntersectBox(glm::mat3(m_orient), other, otherOrient, &out))
 		{
+			out.y = 0;
 			m_position += out; UpdateBoundVolume(); ret = true;
 		}
 		return ret;

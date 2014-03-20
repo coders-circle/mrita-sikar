@@ -14,6 +14,7 @@ private:
 	bool m_avoidingObstacle;
 	bool m_isstruck;
 	bool m_attacked;
+	bool m_isAttakcingPlayer;
 public:
 	Zombie();
 	void Update(double timeDelta);
