@@ -202,13 +202,14 @@ void Update(double totalTime, double deltaTime)
 								}
 							}
 						}
+						// if the ray intersected a people unit, kill it too
 						else if (ClickedUnit->GetTag() == 10)
 						{
 							People * people = static_cast<People*>(ClickedUnit);
-							if (!people->IsDead())
+							if (!people->IsDead())	// unless it is dead
 							{
-								people->Die();
-								g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
+								people->Die();	// kill it
+								g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);	// show blood as well
 							}
 						}
 					}
@@ -259,7 +260,8 @@ void Update(double totalTime, double deltaTime)
 			if (g_zombies[i].Attacked())
 			{
 				g_player.TakeHit();
-				g_bloodsplash.AddSplash();
+				// 8 seconds to fade
+				g_bloodsplash.AddSplash(8.0f);
 				if (g_player.GetHealthStatus() <= 0)
 				{
 					g_player.Die();
