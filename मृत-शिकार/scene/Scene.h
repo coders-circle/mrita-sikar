@@ -42,7 +42,7 @@ protected:
 public:
 	Scene(Renderer * renderer = NULL);
 	virtual void SetRenderer(Renderer * renderer) { m_renderer = renderer; m_font.SetRenderer(renderer); }
-	Renderer* GetRenderer() { return m_renderer; }
+	Renderer* GetRenderer() const { return m_renderer; }
 
 	void AddUnit(Unit2d * unit2d) { m_unit2ds.push_back(unit2d); }
 	const std::vector<Unit2d*> &GetUnit2ds() const { return m_unit2ds; }

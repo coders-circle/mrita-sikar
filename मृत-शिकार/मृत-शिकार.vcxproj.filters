@@ -204,6 +204,9 @@
     <ClInclude Include="scene\People.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="scene\Radar.h">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Mesh.cpp">
@@ -267,6 +270,9 @@
       <Filter>Source Files\scene</Filter>
     </ClCompile>
     <ClCompile Include="scene\People.cpp">
+      <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="scene\Radar.cpp">
       <Filter>Source Files\scene</Filter>
     </ClCompile>
   </ItemGroup>

@@ -9,6 +9,7 @@
 #include "scene/Blood.h"
 #include "scene/BloodSplash.h"
 #include "scene/People.h"
+#include "scene/Radar.h"
 
 #include "audio/audio.h"
 
@@ -39,6 +40,9 @@ BloodSplash g_bloodsplash;
 /*Sprite g_bigbloodspr(&g_renderer);
 Unit2d g_bigblood;*/
 
+Sprite g_radarspr(&g_renderer);
+Radar g_radar;
+
 #define MAX_ZOMBIES 5
 Zombie g_zombies[MAX_ZOMBIES];
 
@@ -64,6 +68,12 @@ void Initialize()
 
 	g_bloodsplashspr.LoadSprite("bloodsplash.png", 150, 150, 0.0f, 0.0f, 3, 3);
 	g_bloodsplash.Initialize(&g_bloodsplashspr);
+
+	g_radarspr.LoadSprite("radar.png", 200, 200);
+	g_radar.Initialize(&g_radarspr, glm::vec2(20, 10));
+	g_radar.SetRadarRadius(1000.0f);
+	g_radar.SetPlayer(&g_player);
+	g_radar.SetScene(&g_scene);
 
 	/*g_bigbloodspr.LoadSprite("bloodsplash_big.png", 600, 600);
 	g_bigblood.Initialize(&g_bigbloodspr, glm::vec2(g_width / 2.0f - 600 / 2.0f, g_height / 2.0f - 600 / 2.0f + 100.0f));
@@ -104,6 +114,7 @@ void Initialize()
 	g_scene.AddUnit(&g_bloodsplash);
 	g_scene.AddUnit(&g_cross);
 	g_scene.AddUnit(&g_people1);
+	g_scene.AddUnit(&g_radar);
 	//g_scene.AddUnit(&g_bigblood);
 
 	g_camera.Initialize(&g_player, 90.0f);
@@ -121,7 +132,7 @@ void Initialize()
 		g_zombies[i].InitAudio();
 	}
 
-	g_scene.AddText(Text("Dead Zombies: 0", 20, 50, 0.85f));
+	g_scene.AddText(Text("Dead Zombies: 0", 215, 45, 0.85f));
 	g_scene.AddText(Text(g_player.GetPlayerHealthString(), 1000, 40));
 }
 

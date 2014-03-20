@@ -43,5 +43,8 @@ public:
 	{ DrawSprite(spriteAnimation.imageid, posX, posY, scale, visibility); }
 	void DrawBillboard(const SpriteAnimation &spriteAnimation, const glm::mat4 &transform, float visibility=1.0f)
 	{ DrawBillboard(spriteAnimation.imageid, transform, visibility); }
+
+	float GetWidth() { return m_width; }
+	float GetHeight() { return m_height; }
 };
 

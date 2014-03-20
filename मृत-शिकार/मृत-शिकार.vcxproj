@@ -120,6 +120,7 @@
     <ClInclude Include="scene\LiveUnit.h" />
     <ClInclude Include="scene\People.h" />
     <ClInclude Include="scene\Player.h" />
+    <ClInclude Include="scene\Radar.h" />
     <ClInclude Include="scene\Scene.h" />
     <ClInclude Include="scene\TPCamera.h" />
     <ClInclude Include="scene\Unit.h" />
@@ -146,6 +147,7 @@
     <ClCompile Include="scene\LiveUnit.cpp" />
     <ClCompile Include="scene\People.cpp" />
     <ClCompile Include="scene\Player.cpp" />
+    <ClCompile Include="scene\Radar.cpp" />
     <ClCompile Include="scene\Scene.cpp" />
     <ClCompile Include="scene\Unit.cpp" />
     <ClCompile Include="scene\Unit2d.cpp" />
