@@ -34,6 +34,9 @@ inline void Player::ChangeState(int x)
 	case PLAYER_SRIGHTSHOOTING:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SRIGHTAIMING:
+	case PLAYER_RELOADRUN:
+	case PLAYER_RELOADSLEFT:
+	case PLAYER_RELOADSRIGHT:
 		m_offsetorient = glm::rotate(glm::mat4(), -1.5f, glm::vec3(0.0f, 1.0f, 0.0f)) *
 			glm::rotate(glm::mat4(), 18.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 		m_offset = glm::vec3(0.0f, 0.0f, -25.0f);
@@ -42,7 +45,8 @@ inline void Player::ChangeState(int x)
 		m_offsetorient = glm::mat4();	m_offset = glm::vec3();
 	}
 
-	if (x == PLAYER_STRAFELEFT || x == PLAYER_STRAFERIGHT)
+	if (x == PLAYER_STRAFELEFT || x == PLAYER_STRAFERIGHT || 
+		((m_state >= PLAYER_GUNRELOAD && m_state <= PLAYER_RELOADSRIGHT) && x!=PLAYER_IDLE))
 		m_model->Transition(m_animation, x, 0.18);
 	else
 		m_model->Transition(m_animation, x, 0.0);
@@ -307,15 +311,20 @@ bool Player::Shoot()
 
 bool Player::Reload()
 {
-	if (IsRunning())
+	/*if (IsRunning())
 	{
 		return false;
-	}
+	}*/
 
 	if (IsReloading() == false && m_totalAmmo > 0 && m_currentAmmo != 7)
 	{
-		ChangeState(PLAYER_GUNRELOAD); //
-		g_audioengine->play2D(m_a_reload);
+		bool Reload = true;
+		if (m_state == PLAYER_RUN || PLAYER_RUNAIMING) ChangeState(PLAYER_RELOADRUN);
+		else if (m_state == PLAYER_STRAFELEFT || PLAYER_SLEFTAIMING) ChangeState(PLAYER_RELOADSLEFT);
+		else if (m_state == PLAYER_STRAFERIGHT || PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RELOADSRIGHT);
+		else if (m_state == PLAYER_IDLE || PLAYER_IDLEAIM) ChangeState(PLAYER_GUNRELOAD);
+		else Reload = false;
+		if (Reload) g_audioengine->play2D(m_a_reload);
 	}
 	return true;
 }
@@ -323,6 +332,14 @@ bool Player::Reload()
 bool Player::IsReloading()
 {
 	return (m_state == PLAYER_GUNRELOAD) | (m_state == PLAYER_RELOADRUN) | (m_state == PLAYER_RELOADSLEFT) | (m_state == PLAYER_RELOADSRIGHT);
+}
+
+void Player::ReloadComplete()
+{
+	int delAmmo = m_ammoCapacity - m_currentAmmo;
+	delAmmo = glm::min(delAmmo, m_totalAmmo);
+	m_currentAmmo += delAmmo;
+	m_totalAmmo -= delAmmo;
 }
 
 float g_rotation = 0.0f;
@@ -372,13 +389,20 @@ void Player::Update(double deltaTime)
 		case PLAYER_SRIGHTAIMING:
 			ChangeState(PLAYER_STRAFERIGHT);	break;
 		case PLAYER_GUNRELOAD:
-			{
-				ChangeState(PLAYER_IDLE);
-				int delAmmo = m_ammoCapacity - m_currentAmmo;
-				delAmmo = glm::min(delAmmo, m_totalAmmo);
-				m_currentAmmo += delAmmo;
-				m_totalAmmo -= delAmmo;
-			}
+			ChangeState(PLAYER_IDLE);
+			ReloadComplete();
+			break;
+		case PLAYER_RELOADRUN:
+			ChangeState(PLAYER_RUN);
+			ReloadComplete();
+			break;
+		case PLAYER_RELOADSLEFT:
+			ChangeState(PLAYER_STRAFELEFT);
+			ReloadComplete();
+			break;
+		case PLAYER_RELOADSRIGHT:
+			ChangeState(PLAYER_STRAFERIGHT);
+			ReloadComplete();
 			break;
 		}
 	}

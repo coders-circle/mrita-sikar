@@ -164,6 +164,9 @@ void CleanUp()
 
 	/*g_bigbloodspr.CleanUp();
 	g_bigblood.CleanUp();*/
+	
+	g_radarspr.CleanUp();
+	g_radar.CleanUp();
 
 	g_renderer.CleanUp();
 	g_scene.CleanUp();

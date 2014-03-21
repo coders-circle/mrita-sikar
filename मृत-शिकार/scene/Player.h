@@ -38,7 +38,7 @@ private:
 	bool m_isdead; glm::mat4 m_dieOrient;
 	bool m_dieAnimation;
 
-
+	void ReloadComplete();
 public:
 	Player();
 	void SetCamera(TPCamera * camera) { m_camera = camera; }
