@@ -50,7 +50,7 @@ public:
 	unsigned int AddText(const Text &text) { m_texts.push_back(text); return m_texts.size() - 1; }
 	void ChangeText(unsigned int index, std::string text) { m_texts[index].text = text; }
 	void RemoveText(unsigned int index) { m_texts.erase(m_texts.begin() + index); }
-	void SetTextVisible(unsigned int index, bool visible) { m_texts[index].visible = false; }
+	void SetTextVisible(unsigned int index, bool visible) { m_texts[index].visible = visible; }
 
 	void Initialize()
 	{

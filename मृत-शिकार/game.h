@@ -43,7 +43,7 @@ Unit2d g_bigblood;*/
 Sprite g_radarspr(&g_renderer);
 Radar g_radar;
 
-#define MAX_ZOMBIES 5
+#define MAX_ZOMBIES 25
 Zombie g_zombies[MAX_ZOMBIES];
 
 Sprite g_crossspr(&g_renderer);
@@ -103,6 +103,7 @@ void Initialize()
 	}
 	
 	g_groundmodel.LoadModel("ground.mdl");
+	//g_groundmodel.SetScale(0.6f);
 	g_groundmodel.SetTexture(0, "ground.jpg");
 	g_ground.Initialize(&g_groundmodel, glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -237,6 +238,10 @@ void Update(double totalTime, double deltaTime)
 	if (g_player.GetCurrentAmmoStatus() == 0)
 	{
 		g_scene.SetTextVisible(3, true);
+	}
+	else
+	{
+		g_scene.SetTextVisible(3, false);
 	}
 
 	// If anything blocks player from the camera, then move camera towards the player
