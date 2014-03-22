@@ -33,10 +33,11 @@ public:
 	bool IsFlinching();
 	bool IsDead();
 	void SetSpeed(float walkspeed, float attackspeed = 1.0f) { m_walkspeed = walkspeed; m_attackspeed = attackspeed; }
-	bool Attacked()
+	bool Attacked(Unit * &hitunit)
 	{
 		bool temp = m_attacked;
 		m_attacked = false;
+		hitunit = m_attackunit;
 		return temp;
 	}
 };

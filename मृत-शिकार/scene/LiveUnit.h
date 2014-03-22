@@ -119,7 +119,7 @@ public:
 	{
 		if (!IsInView(fovAngle, maxdistance, unit)) return false;
 		Ray ray(glm::vec3(m_position.x, 0.0f, m_position.z), 
-			glm::normalize(glm::vec3(unit->GetPosition().x, 20.0f, unit->GetPosition().z) - glm::vec3(m_position.x, 20.0f, m_position.z))
+			glm::normalize(glm::vec3(unit->GetPosition().x, 10.0f, unit->GetPosition().z) - glm::vec3(m_position.x, 10.0f, m_position.z))
 			);
 		float tmin; int position;
 		if (Unit * testunit = m_scene->GetNearestIntersection(ray, position, tmin, this))

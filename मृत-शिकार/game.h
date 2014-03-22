@@ -286,16 +286,25 @@ void Update(double totalTime, double deltaTime)
 
 		for (int i = 0; i < MAX_ZOMBIES; i++)
 		{
-			if (g_zombies[i].Attacked())
+			Unit * hitunit;
+			if (g_zombies[i].Attacked(hitunit))
 			{
-				g_player.TakeHit();
-				// 8 seconds to fade
-				g_bloodsplash.AddSplash(8.0f);
-				if (g_player.GetHealthStatus() <= 0)
+				if (hitunit == &g_player)
 				{
-					g_player.Die();
-					g_camera.Die();
-					//g_bigblood.SetVisible(true);
+					g_player.TakeHit();
+					// 8 seconds to fade
+					g_bloodsplash.AddSplash(8.0f);
+					if (g_player.GetHealthStatus() <= 0)
+					{
+						g_player.Die();
+						g_camera.Die();
+						//g_bigblood.SetVisible(true);
+					}
+				}
+				else if (hitunit->GetTag() == 10)
+				{
+					static_cast<People*>(hitunit)->Die();	
+
 				}
 			}
 		}

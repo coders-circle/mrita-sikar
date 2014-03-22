@@ -69,47 +69,19 @@ void Zombie::Update(double deltaTime)
 			Idle();
 	}
 
+	if (IsIdle()) Walk();
+
 	bool posChanged = false;
 	if (m_state != ZOMBIE_DEATH)
 	{
-		if (IsIdle())
+		if (IsWalking())
 		{
-			if (m_chaseUnits.size() > 0 || rand() % 1000 == 0) Walk();
-
-			std::vector<Unit*> units = m_scene->GetUnits();
-			for (unsigned int i = 0; i < units.size(); i++)
-			if (units[i]->GetTag() == 1 || units[i]->GetTag() == 10)
-			{
-				glm::vec3 r = this->GetBoundCenter() - units[i]->GetBoundCenter();
-				float distsqr = glm::dot(r, r);
-
-				if (m_chaseUnits.find(units[i]) == m_chaseUnits.end())
-				{
-					if (static_cast<LiveUnit*>(units[i])->GetHealthStatus()>0)
-					if (CanSee(130.0f, 1000.0f, units[i]))
-						m_chaseUnits.insert(units[i]);
-				}
-				else
-				if (distsqr > 25000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
-					m_chaseUnits.erase(units[i]);
-
-				if (distsqr <= 1470.0f)
-				if (glm::dot(glm::normalize(-r), glm::vec3(m_orient[2])) > glm::cos(glm::radians(10.0f)))
-				{
-					Attack();
-					m_attackunit = static_cast<LiveUnit*>(units[i]);
-				}
-			}
-		}
-		else if (IsWalking())
-		{
-			if (m_chaseUnits.size() == 0 && rand() % 1000 == 0) Idle();
 			glm::vec3 resultant(0.0f);
 
 			std::vector<Unit*> units = m_scene->GetUnits();
 			/*UnitCollections units;
 			m_scene->GetPotentialCollisions(this, units);*/
-			for (unsigned int i = 0; i < units.size(); i++)
+			for (unsigned int i = 0; i < units.size(); ++i)
 			{
 				if (units[i] != this)
 				{
@@ -134,7 +106,7 @@ void Zombie::Update(double deltaTime)
 
 						if (m_chaseUnits.find(units[i]) == m_chaseUnits.end())
 						{
-							if (static_cast<LiveUnit*>(units[i])->GetHealthStatus()>0)
+							if (static_cast<LiveUnit*>(units[i])->GetHealthStatus() > 0)
 							if (CanSee(130.0f, 1000.0f, units[i]))
 								m_chaseUnits.insert(units[i]);
 						}
@@ -176,11 +148,9 @@ void Zombie::Update(double deltaTime)
 			m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f * m_walkspeed; posChanged = true;
 			if (m_a_snoise)
 				m_a_snoise->setPosition(irrklang::vec3df(m_position.x, m_position.y, m_position.z));
-			
 		}
 		else if (IsAttacking())
 		{
-			if (m_attackunit->GetTag() == 1)
 			if (m_animation.time / m_model->GetAnimationDuration(m_animation.set) >= 0.7f && m_reattack)
 			{
 				m_attacked = true;

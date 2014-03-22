@@ -133,14 +133,6 @@ void Player::Run()
 			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
 		}
 	}
-	else if (IsReloading())
-	{
-		ChangeState(PLAYER_RELOADRUN);
-		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
-		{
-			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
-		}
-	}
 }
 
 void Player::EndRun()
