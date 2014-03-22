@@ -319,10 +319,10 @@ bool Player::Reload()
 	if (IsReloading() == false && m_totalAmmo > 0 && m_currentAmmo != 7)
 	{
 		bool Reload = true;
-		if (m_state == PLAYER_RUN || PLAYER_RUNAIMING) ChangeState(PLAYER_RELOADRUN);
-		else if (m_state == PLAYER_STRAFELEFT || PLAYER_SLEFTAIMING) ChangeState(PLAYER_RELOADSLEFT);
-		else if (m_state == PLAYER_STRAFERIGHT || PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RELOADSRIGHT);
-		else if (m_state == PLAYER_IDLE || PLAYER_IDLEAIM) ChangeState(PLAYER_GUNRELOAD);
+		if (m_state == PLAYER_RUN || m_state == PLAYER_RUNAIMING) ChangeState(PLAYER_RELOADRUN);
+		else if (m_state == PLAYER_STRAFELEFT || m_state == PLAYER_SLEFTAIMING) ChangeState(PLAYER_RELOADSLEFT);
+		else if (m_state == PLAYER_STRAFERIGHT || m_state == PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RELOADSRIGHT);
+		else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM) ChangeState(PLAYER_GUNRELOAD);
 		else Reload = false;
 		if (Reload) g_audioengine->play2D(m_a_reload);
 	}
@@ -456,7 +456,7 @@ void Player::Update(double deltaTime)
 			if (other->IsLiveUnit())
 			{
 				Collide((LiveUnit*)other);
-			if (other->GetTag() == 2)
+				if (other->GetTag() == 2)
 				if (((Zombie*)other)->IsAttacking())
 					Collide(other->GetBoundChild(3), glm::mat3(other->GetOrient()));
 			}
