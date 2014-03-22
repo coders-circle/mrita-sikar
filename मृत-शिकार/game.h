@@ -37,9 +37,6 @@ Blood g_blood;
 Sprite g_bloodsplashspr(&g_renderer);
 BloodSplash g_bloodsplash;
 
-/*Sprite g_bigbloodspr(&g_renderer);
-Unit2d g_bigblood;*/
-
 Sprite g_radarspr(&g_renderer);
 Radar g_radar;
 
@@ -74,10 +71,6 @@ void Initialize()
 	g_radar.SetRadarRadius(1000.0f);
 	g_radar.SetPlayer(&g_player);
 	g_radar.SetScene(&g_scene);
-
-	/*g_bigbloodspr.LoadSprite("bloodsplash_big.png", 600, 600);
-	g_bigblood.Initialize(&g_bigbloodspr, glm::vec2(g_width / 2.0f - 600 / 2.0f, g_height / 2.0f - 600 / 2.0f + 100.0f));
-	g_bigblood.SetVisible(false);*/
 
 	g_humanmodel.LoadModel("human.mdl");
 	g_player.Initialize(&g_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
@@ -116,7 +109,6 @@ void Initialize()
 	g_scene.AddUnit(&g_cross);
 	g_scene.AddUnit(&g_people1);
 	g_scene.AddUnit(&g_radar);
-	//g_scene.AddUnit(&g_bigblood);
 
 	g_camera.Initialize(&g_player, 90.0f);
 	g_window.SetMousePos(g_width / 2, g_height / 2);
@@ -161,9 +153,6 @@ void CleanUp()
 
 	g_bloodsplashspr.CleanUp();
 	g_bloodsplash.CleanUp();
-
-	/*g_bigbloodspr.CleanUp();
-	g_bigblood.CleanUp();*/
 	
 	g_radarspr.CleanUp();
 	g_radar.CleanUp();
@@ -177,7 +166,6 @@ std::ostream & operator << (std::ostream & os, const glm::vec3&v)
 	os << v.x << " " << v.y << " " << v.z;
 	return os;
 }
-
 
 bool g_justDown = false;
 int g_deadZombies = 0;	
@@ -298,13 +286,18 @@ void Update(double totalTime, double deltaTime)
 					{
 						g_player.Die();
 						g_camera.Die();
-						//g_bigblood.SetVisible(true);
 					}
 				}
 				else if (hitunit->GetTag() == 10)
 				{
 					static_cast<People*>(hitunit)->Die();	
-
+					glm::vec3 dir = hitunit->GetPosition() - g_zombies[i].GetPosition();
+					dir.y = 0.5f;
+					Ray ray(glm::vec3(g_zombies[i].GetPosition().x, 0.5f, g_zombies[i].GetPosition().z),
+						glm::normalize(dir));
+					float tmin;
+					ray.IntersectBox(hitunit->GetBoundParent(), tmin);
+					g_blood.Start(ray.GetOrigin() + ray.GetDirection() * tmin);
 				}
 			}
 		}
