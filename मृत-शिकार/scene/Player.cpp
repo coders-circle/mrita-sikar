@@ -45,8 +45,8 @@ inline void Player::ChangeState(int x)
 		m_offsetorient = glm::mat4();	m_offset = glm::vec3();
 	}
 
-	if (x == PLAYER_STRAFELEFT || x == PLAYER_STRAFERIGHT || 
-		((m_state >= PLAYER_GUNRELOAD && m_state <= PLAYER_RELOADSRIGHT) && x!=PLAYER_IDLE))
+	if (x == PLAYER_STRAFELEFT || x == PLAYER_STRAFERIGHT
+		|| (m_state >= PLAYER_RELOADRUN && m_state <= PLAYER_RELOADSRIGHT) || m_state == PLAYER_GUNRELOAD)
 		m_model->Transition(m_animation, x, 0.18);
 	else
 		m_model->Transition(m_animation, x, 0.0);
@@ -128,14 +128,6 @@ void Player::Run()
 	if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM)
 	{
 		ChangeState(PLAYER_IDLERUN);
-		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
-		{
-			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
-		}
-	}
-	else if (IsReloading())
-	{
-		ChangeState(PLAYER_RELOADRUN);
 		if (!g_audioengine->isCurrentlyPlaying(m_a_run))
 		{
 			m_a_running = g_audioengine->play2D(m_a_run, true, false, true);
@@ -311,18 +303,13 @@ bool Player::Shoot()
 
 bool Player::Reload()
 {
-	/*if (IsRunning())
-	{
-		return false;
-	}*/
-
 	if (IsReloading() == false && m_totalAmmo > 0 && m_currentAmmo != 7)
 	{
 		bool Reload = true;
-		if (m_state == PLAYER_RUN || PLAYER_RUNAIMING) ChangeState(PLAYER_RELOADRUN);
-		else if (m_state == PLAYER_STRAFELEFT || PLAYER_SLEFTAIMING) ChangeState(PLAYER_RELOADSLEFT);
-		else if (m_state == PLAYER_STRAFERIGHT || PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RELOADSRIGHT);
-		else if (m_state == PLAYER_IDLE || PLAYER_IDLEAIM) ChangeState(PLAYER_GUNRELOAD);
+		if (m_state == PLAYER_RUN || m_state == PLAYER_RUNAIMING) ChangeState(PLAYER_RELOADRUN);
+		else if (m_state == PLAYER_STRAFELEFT || m_state == PLAYER_SLEFTAIMING) ChangeState(PLAYER_RELOADSLEFT);
+		else if (m_state == PLAYER_STRAFERIGHT || m_state == PLAYER_SRIGHTAIMING) ChangeState(PLAYER_RELOADSRIGHT);
+		else if (m_state == PLAYER_IDLE || m_state == PLAYER_AIM) ChangeState(PLAYER_GUNRELOAD);
 		else Reload = false;
 		if (Reload) g_audioengine->play2D(m_a_reload);
 	}
@@ -331,7 +318,7 @@ bool Player::Reload()
 
 bool Player::IsReloading()
 {
-	return (m_state == PLAYER_GUNRELOAD) | (m_state == PLAYER_RELOADRUN) | (m_state == PLAYER_RELOADSLEFT) | (m_state == PLAYER_RELOADSRIGHT);
+	return (m_state == PLAYER_GUNRELOAD) || (m_state == PLAYER_RELOADRUN) || (m_state == PLAYER_RELOADSLEFT) || (m_state == PLAYER_RELOADSRIGHT);
 }
 
 void Player::ReloadComplete()
@@ -361,7 +348,7 @@ void Player::Update(double deltaTime)
 		m_model->Advance(m_animation, deltaTime, &end);
 
 	if (end)
-	{	
+	{
 		if (m_isdead) { m_dieAnimation = false; }
 		switch (m_state)
 		{
@@ -418,12 +405,14 @@ void Player::Update(double deltaTime)
 	case PLAYER_STRAFELEFT:
 	case PLAYER_SLEFTAIMING:
 	case PLAYER_SLEFTSHOOTING:
+	case PLAYER_RELOADSLEFT:
 		m_position += orient3x3[0] * (float)deltaTime * deltaPos *posboost; posChanged = true;
 		break;
 
 	case PLAYER_STRAFERIGHT:
 	case PLAYER_SRIGHTAIMING:
 	case PLAYER_SRIGHTSHOOTING:
+	case PLAYER_RELOADSRIGHT:
 		m_position -= orient3x3[0] * (float)deltaTime * deltaPos*posboost; posChanged = true;
 		break;
 	}
@@ -456,7 +445,7 @@ void Player::Update(double deltaTime)
 			if (other->IsLiveUnit())
 			{
 				Collide((LiveUnit*)other);
-			if (other->GetTag() == 2)
+				if (other->GetTag() == 2)
 				if (((Zombie*)other)->IsAttacking())
 					Collide(other->GetBoundChild(3), glm::mat3(other->GetOrient()));
 			}
@@ -479,7 +468,7 @@ void Player::Draw()
 		m_model->SetTransform(glm::translate(glm::mat4(), m_position) * m_orient * g_globaltransform
 		* glm::translate(glm::mat4(), m_offset) * m_offsetorient);
 	}
-	m_model->Animate(m_animation);
+	m_model->Animate(m_animation, !m_inTransition);
 	m_model->Draw();	
 }
 

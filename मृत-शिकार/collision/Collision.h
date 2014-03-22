@@ -118,6 +118,7 @@ struct BoundVolume
 {
 	Box parent;
 	std::vector<Box> children;
+	float radius;	// maximum radius of bounding volume
 };
 
 /*

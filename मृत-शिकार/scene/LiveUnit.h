@@ -15,7 +15,7 @@ protected:
 			m_boundVolume.children[i].SetCenter(glm::mat3(m_orient) * m_model->GetBoundVolume().children[i].GetCenter() + m_position);
 
 		m_aabb.SetCenter(m_boundVolume.parent.GetCenter());
-		m_aabb.SetExtents(glm::vec3(glm::length(m_boundVolume.parent.GetExtents())));
+		m_aabb.SetExtents(glm::vec3(m_boundVolume.radius));
 		m_rect = m_aabb.GetRect();
 
 		if (m_scene) m_scene->Reinsert(this);
@@ -80,6 +80,7 @@ public:
 		m_model = model; m_position = position;
 		m_boundVolume.parent = m_model->GetBoundVolume().parent;
 		m_boundVolume.children = m_model->GetBoundVolume().children;
+		m_boundVolume.radius = m_model->GetBoundVolume().radius;
 		UpdateBoundVolume();
 	}
 
@@ -109,18 +110,21 @@ public:
 	{
 		glm::vec3 v1 = glm::normalize(unit->GetPosition() - m_position);
 		glm::vec3 v2 = (glm::vec3)m_orient[2];
-		if (glm::dot(v1, v1) <= maxdistance)
-		if (glm::dot(v1, v2) >= glm::cos(glm::radians(fovAngle)))
+		if (glm::dot(v1, v1) <= maxdistance*maxdistance)
+		if (glm::acos(glm::dot(v1, v2)) <= glm::radians(fovAngle/2.0f))
 			return true;
 		return false;
 	}
 	bool CanSee(float fovAngle, float maxdistance, Unit * unit)
 	{
 		if (!IsInView(fovAngle, maxdistance, unit)) return false;
-		Ray ray(glm::vec3(m_position.x, 0.0f, m_position.z), (glm::vec3)m_orient[2]);
+		Ray ray(glm::vec3(m_position.x, 0.0f, m_position.z), 
+			glm::normalize(glm::vec3(unit->GetPosition().x, 10.0f, unit->GetPosition().z) - glm::vec3(m_position.x, 10.0f, m_position.z))
+			);
 		float tmin; int position;
 		if (Unit * testunit = m_scene->GetNearestIntersection(ray, position, tmin, this))
-		if (testunit != unit) return false;
+		if (testunit != unit) 
+			return false;
 		
 		return true;
 	}

@@ -54,9 +54,9 @@ bool Ray::IntersectBox(const Box &box, float &tmin) const
 bool Ray::IntersectRect(const Rect &rect) const
 {
 	float tmin = 0.0f, tmax = FLT_MAX;
-	for (int i = 0; i < 2; i++) {
-		//float amin = (i == 0) ? rect.x : rect.y,	amax = (i == 0) ? rect.x + rect.width : rect.y + rect.height;
-		float amin = *(&(rect.x) + i), amax = *(&(rect.x) + i) + *(&(rect.width) + i);
+	for (int i = 0; i < 3; i+=2) {
+		float amin = (i == 0) ? rect.x : rect.y,	amax = (i == 0) ? rect.x + rect.width : rect.y + rect.height;
+		//float amin = *(&(rect.x) + i), amax = *(&(rect.x) + i) + *(&(rect.width) + i);
 
 		if (fabs(m_direction[i]) < FLT_EPSILON) {
 			if (m_origin[i] < amin || m_origin[i] > amax) return false;
