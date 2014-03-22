@@ -207,7 +207,7 @@ void Update(double totalTime, double deltaTime)
 						if (ClickedUnit->GetTag() == 2)
 						{
 							// let the zombie take a hit, returns true only if the one of the three children (0,1,2) is hit
-							if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2])))
+							if (static_cast<Zombie*>(ClickedUnit)->TakeHit(position, glm::vec3(g_player.GetOrient()[2]), &g_player))
 							{
 								g_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);
 								if (static_cast<Zombie*>(ClickedUnit)->IsDead())
@@ -286,7 +286,6 @@ void Update(double totalTime, double deltaTime)
 
 		for (int i = 0; i < MAX_ZOMBIES; i++)
 		{
-			g_zombies[i].SetDestination(g_player.GetBoundCenter());
 			if (g_zombies[i].Attacked())
 			{
 				g_player.TakeHit();

@@ -45,6 +45,7 @@ public:
 		m_model = model; m_position = position;
 		m_boundVolume.parent = m_model->GetBoundVolume().parent;
 		m_boundVolume.children = m_model->GetBoundVolume().children;
+		m_boundVolume.radius = m_model->GetBoundVolume().radius;
 		UpdateBoundVolume();
 	}
 	virtual void CleanUp() {}
@@ -79,6 +80,7 @@ public:
 
 	glm::vec3 GetBoundCenter() const { return m_boundVolume.parent.GetCenter(); }
 	glm::vec3 GetBoundExtents() const { return m_boundVolume.parent.GetExtents(); }
+	float GetRadius() const { return m_boundVolume.radius; }
 
 	void SetVisible(bool visible) { m_visible = visible; }
 	bool GetVisible() { return m_visible; }

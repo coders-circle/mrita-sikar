@@ -35,5 +35,6 @@ void People::Draw()
 
 void People::Die()
 {
+	m_health = 0;
 	m_dead = true;
 }

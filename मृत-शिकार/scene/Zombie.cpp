@@ -17,11 +17,10 @@ Zombie::Zombie() : m_state(ZOMBIE_IDLE)
 {
 	m_tag = 2;
 	m_avoidingObstacle = false;
-	m_isstruck = false;
 	m_attacked = false;
 	m_ignoreChildren.push_back(3);	//ignore attack collision box
 	m_ignoreChildren.push_back(4);	//ignore dead collision box
-	m_isAttakcingPlayer = false;
+	m_attackunit = NULL;
 }
 
 irrklang::ISoundSource* g_a_noise;
@@ -55,156 +54,153 @@ void Zombie::InitAudio()
 	
 }
 
-void Zombie::SetDestination(glm::vec3 destination)
-{
-	m_destination = destination;
-}
-
 void Zombie::Update(double deltaTime)
 {
 	bool end = false;
 	if (m_state == ZOMBIE_WALK)
-	{
 		m_model->Advance(m_animation, deltaTime * m_walkspeed, &end);
-	}
 	else if (m_state == ZOMBIE_ATTACK1 || m_state == ZOMBIE_ATTACK2)
-	{
 		m_model->Advance(m_animation, deltaTime * m_attackspeed, &end);
-	}
 	else m_model->Advance(m_animation, deltaTime*1.0f, &end);
 
 	if (end)
 	{
-		if (m_state == ZOMBIE_ATTACK1 )
-		{
-			if (m_isAttakcingPlayer == true)
-			{
-				m_attacked = true;
-			}
-		}
 		if (m_state == ZOMBIE_FLINCH)
-		{
 			Idle();
-		}
 	}
-
 
 	bool posChanged = false;
 	if (m_state != ZOMBIE_DEATH)
 	{
-		glm::vec3 dist = m_destination - this->GetBoundCenter();
-		float distsq = glm::dot(dist, dist);
-
-		glm::vec3 fa = glm::normalize(dist);
-		float fmf = 1.0f;
-		fa.x *= fmf;
-		fa.y *= fmf;
-		fa.z *= fmf;
-		glm::vec3 resultant = fa;
-
-		float distsqWithNearestPeople = 0.0f;
-
-		if (IsWalking())
+		if (IsIdle())
 		{
+			if (m_chaseUnits.size() > 0 || rand() % 1000 == 0) Walk();
+
 			std::vector<Unit*> units = m_scene->GetUnits();
+			for (unsigned int i = 0; i < units.size(); i++)
+			if (units[i]->GetTag() == 1 || units[i]->GetTag() == 10)
+			{
+				glm::vec3 r = this->GetBoundCenter() - units[i]->GetBoundCenter();
+				float distsqr = glm::dot(r, r);
+
+				if (m_chaseUnits.find(units[i]) == m_chaseUnits.end())
+				{
+					if (static_cast<LiveUnit*>(units[i])->GetHealthStatus()>0)
+					if (CanSee(130.0f, 1000.0f, units[i]))
+						m_chaseUnits.insert(units[i]);
+				}
+				else
+				if (distsqr > 25000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
+					m_chaseUnits.erase(units[i]);
+
+				if (distsqr <= 1470.0f)
+				if (glm::dot(glm::normalize(-r), glm::vec3(m_orient[2])) > glm::cos(glm::radians(10.0f)))
+				{
+					Attack();
+					m_attackunit = static_cast<LiveUnit*>(units[i]);
+				}
+			}
+		}
+		else if (IsWalking())
+		{
+			if (m_chaseUnits.size() == 0 && rand() % 1000 == 0) Idle();
+			glm::vec3 resultant(0.0f);
+
+			std::vector<Unit*> units = m_scene->GetUnits();
+			/*UnitCollections units;
+			m_scene->GetPotentialCollisions(this, units);*/
 			for (unsigned int i = 0; i < units.size(); i++)
 			{
 				if (units[i] != this)
 				{
-					if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2) //other zombies and obstacles
+					if (units[i]->GetTag() == 3 || units[i]->GetTag() == 2)
 					{
-						glm::vec3 r = (this->GetBoundCenter() - units[i]->GetBoundCenter());
-						float d1 = glm::dot(r, r);
-						float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
-						if (d2 +10000.0f > d1)
+						glm::vec3  r = this->GetBoundCenter() - units[i]->GetBoundCenter();
+						float rlength = glm::length(r);
+						float mindist = 500.0f;
+						if ((rlength - (this->GetRadius() + units[i]->GetRadius())) < mindist)
 						{
-							glm::vec3 f = glm::normalize(r);
-							float mf = (float)(d2 / d1);
-							
-							f.x *= mf;
-							f.y *= mf;
-							f.z *= mf;
-							resultant += f;
+							float  U, B, d;
+							B = 4200.0f;
+							d = rlength / GetRadius();
+							U = B / ((units[i]->GetTag() == 2) ? d*d*d : d*d);
+							resultant += r / rlength * U;
 						}
 					}
-					else if (units[i]->GetTag() == 10) // peoples
+					else if (units[i]->GetTag() == 1 || units[i]->GetTag() == 10)
 					{
-						if (!static_cast<People*>(units[i])->IsDead())
+						glm::vec3 r = this->GetBoundCenter() - units[i]->GetBoundCenter();
+						float distsqr = glm::dot(r, r);
+
+						if (m_chaseUnits.find(units[i]) == m_chaseUnits.end())
 						{
-							glm::vec3 r = (units[i]->GetBoundCenter() - this->GetBoundCenter());
-							float d1 = glm::dot(r, r);
-							if (distsqWithNearestPeople == 0 || d1 < distsqWithNearestPeople) 
-								distsqWithNearestPeople = d1;
-							float d2 = glm::dot(units[i]->GetBoundExtents(), units[i]->GetBoundExtents());
-							if (d2 + 40000.0f > d1)
-							{
-								glm::vec3 f = glm::normalize(r);
-								float mf = 2.0f*(float)(d2 / d1);
-								f.x *= mf;
-								f.y *= mf;
-								f.z *= mf;
-								resultant += f;
-							}
-							if (d1 < 1600.0f)
-							{
-								//static_cast<People*>(units[i])->Die();
-							}
+							if (static_cast<LiveUnit*>(units[i])->GetHealthStatus()>0)
+							if (CanSee(130.0f, 1000.0f, units[i]))
+								m_chaseUnits.insert(units[i]);
+						}
+						else
+						if (distsqr > 25000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
+							m_chaseUnits.erase(units[i]);
+
+						if (distsqr <= 1470.0f)
+						if (glm::dot(glm::normalize(-r), glm::vec3(m_orient[2])) > glm::cos(glm::radians(10.0f)))
+						{
+							Attack();
+							m_attackunit = static_cast<LiveUnit*>(units[i]);
 						}
 					}
 				}
 			}
+
+			for (std::unordered_set<Unit*>::iterator it = m_chaseUnits.begin(); it != m_chaseUnits.end(); ++it)
+			{
+				Unit * unit = *it;
+				glm::vec3  r = this->GetBoundCenter() - unit->GetBoundCenter();
+				float rlength = glm::length(r);
+				float  U, A, d;
+				A = (unit->GetTag() == 1) ? 4000.0f : 3000.0f;
+				d = rlength / GetRadius();
+				U = -A / (d*d);
+				resultant += r / rlength * U;
+			}
+
+			if (resultant.x != 0.0f || resultant.z != 0.0f)
+			{
+				resultant.y = 0.0f;
+				m_orient[2] = glm::vec4(glm::normalize(glm::vec3(m_orient[2]) + resultant*0.006f), 0.0f);
+				m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
+				m_orient[0] = glm::vec4(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2])), 0.0f);
+				posChanged = true;
+			}
+
+			m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f * m_walkspeed; posChanged = true;
+			if (m_a_snoise)
+				m_a_snoise->setPosition(irrklang::vec3df(m_position.x, m_position.y, m_position.z));
+			
 		}
-		//if (distsqWithNearestPeople == 0.0f) distsqWithNearestPeople = distsq;
-		if (distsqWithNearestPeople != 0 &&  distsqWithNearestPeople <= distsq)
+		else if (IsAttacking())
 		{
-			resultant -= fa;
+			if (m_attackunit->GetTag() == 1)
+			if (m_animation.time / m_model->GetAnimationDuration(m_animation.set) >= 0.7f && m_reattack)
+			{
+				m_attacked = true;
+				m_reattack = false;
+			}
+
+			if (end) m_reattack = true;
+
+			if (m_attackunit->GetHealthStatus() <= 0
+				|| (glm::dot(this->GetBoundCenter() - m_attackunit->GetBoundCenter(), this->GetBoundCenter() - m_attackunit->GetBoundCenter()) > 1470.0f)
+				)
+				Walk();
 		}
 
-		if (resultant.x == 0.0f && resultant.z == 0.0f)
-		{
-
-		}
-		else
-		{
-			resultant.y = 0.0f;
-			m_orient[2] = glm::vec4(glm::normalize(glm::vec3(m_orient[2]) + resultant*0.06f), 0.0f);
-			m_orient[1] = glm::vec4(glm::vec3(0.0f, 1.0f, 0.0f), 0.0f);
-			m_orient[0] = (glm::vec4(glm::normalize(glm::cross(glm::vec3(m_orient[1]), glm::vec3(m_orient[2]))), 0.0f));
-			posChanged = true;
-		}
-
-		if (distsqWithNearestPeople != 0 && distsqWithNearestPeople < 4000.0f)
-		{
-			m_isAttakcingPlayer = false;
-			if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
-		}
-
-		else if (distsq < 1600.0f)
-		{
-			if (this->IsAttacking() == false && this->m_state != ZOMBIE_FLINCH) this->Attack();
-			m_isAttakcingPlayer = true;
-
-		}	
-		
-		else if (this->IsWalking() == false && this->m_state != ZOMBIE_FLINCH) this->Walk();
+		if (posChanged) UpdateBoundVolume();
 	}
-	switch (m_state)
-	{
-	case ZOMBIE_WALK:
-		m_position += (glm::vec3)m_orient[2] * (float)deltaTime * 20.0f * m_walkspeed; posChanged = true;
-		if (m_a_snoise)
-		{
-			m_a_snoise->setPosition(irrklang::vec3df(m_position.x, m_position.y, m_position.z));
-		}
-		break;
-	}
-
-	if (posChanged) UpdateBoundVolume();
 
 	
 	if (m_state == ZOMBIE_DEATH && !end) return;
 
-	//m_isstruck = false;
 	UnitCollections collisions;
 	m_scene->GetPotentialCollisions(this, collisions);
 	for (unsigned int i = 0; i < collisions.size(); ++i)
@@ -213,11 +209,9 @@ void Zombie::Update(double deltaTime)
 		if (other != this)
 		{
 			if (other->IsLiveUnit())
-			{
-				if (Collide((LiveUnit*)other)) m_isstruck = true;
-			}
+				Collide((LiveUnit*)other);
 			else
-				if (Collide(other)) m_isstruck = true;
+				Collide(other);
 		}
 	}
 
@@ -239,9 +233,14 @@ void Zombie::Die()
 	m_state = ZOMBIE_DEATH;
 
 	m_boundVolume.parent = m_boundVolume.children[4];
+	m_boundVolume.radius = glm::length(m_boundVolume.parent.GetExtents());
 	m_aabb.SetCenter(m_boundVolume.parent.GetCenter());
-	m_aabb.SetExtents(glm::vec3(glm::length(m_boundVolume.parent.GetExtents())));
+	m_aabb.SetExtents(glm::vec3(m_boundVolume.radius));
 	m_rect = m_aabb.GetRect();
+
+	m_ignoreChildren.push_back(0);
+	m_ignoreChildren.push_back(1);
+	m_ignoreChildren.push_back(2);
 }
 void Zombie::Walk()
 {
@@ -263,6 +262,7 @@ void Zombie::Flinch()
 
 void Zombie::Attack()
 {
+	m_reattack = true;
 	m_model->Transition(m_animation, ZOMBIE_ATTACK1, 0.08);
 	m_state = ZOMBIE_ATTACK1;
 }
@@ -287,7 +287,7 @@ bool Zombie::IsDead()
 	return m_state == ZOMBIE_DEATH;
 }
 
-bool Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
+bool Zombie::TakeHit(int hitposition, glm::vec3 hitdirection, Unit * player)
 {
 	if (m_state != ZOMBIE_DEATH && (hitposition == 0 || hitposition == 1 || hitposition == 2))
 	{
@@ -327,6 +327,8 @@ bool Zombie::TakeHit(int hitposition, glm::vec3 hitdirection)
 			}
 			//m_position -= glm::normalize(hitdirection - GetBoundCenter()) * 20.0f;
 			Flinch();
+
+			if (m_chaseUnits.find(player) == m_chaseUnits.end()) m_chaseUnits.insert(player);
 		}
 		else
 		{

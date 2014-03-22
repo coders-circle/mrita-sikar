@@ -8,21 +8,21 @@ private:
 	ModelAnimation m_animation;
 	int m_state;
 	irrklang::ISound *m_a_snoise, *m_a_madness, *m_a_pain;
-	glm::vec3 m_destination;
 	float m_walkspeed;
 	float m_attackspeed;
 	bool m_avoidingObstacle;
-	bool m_isstruck;
-	bool m_attacked;
-	bool m_isAttakcingPlayer;
+	bool m_attacked, m_reattack;
+
+	std::unordered_set<Unit*> m_chaseUnits;
+	LiveUnit * m_attackunit;
+
 public:
 	Zombie();
 	void Update(double timeDelta);
 	void Draw();
 	void InitAudio();
-	void SetDestination(glm::vec3);
 	void Die();
-	bool TakeHit(int hitposition, glm::vec3 hitdirection);
+	bool TakeHit(int hitposition, glm::vec3 hitdirection, Unit * player);
 	void Walk();
 	void Idle();
 	void Attack();
