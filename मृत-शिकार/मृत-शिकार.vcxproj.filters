@@ -207,6 +207,9 @@
     <ClInclude Include="scene\Radar.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="scene\UI.h">
+      <Filter>Header Files\scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Mesh.cpp">

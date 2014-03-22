@@ -123,6 +123,7 @@
     <ClInclude Include="scene\Radar.h" />
     <ClInclude Include="scene\Scene.h" />
     <ClInclude Include="scene\TPCamera.h" />
+    <ClInclude Include="scene\UI.h" />
     <ClInclude Include="scene\Unit.h" />
     <ClInclude Include="scene\Unit2d.h" />
     <ClInclude Include="scene\WorldMap.h" />
