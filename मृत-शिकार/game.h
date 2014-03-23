@@ -41,8 +41,10 @@ private:
 	Sprite m_radarspr;
 	Radar m_radar;
 
-#define MAX_ZOMBIES 25
+#define MAX_ZOMBIES 5
 	Zombie m_zombies[MAX_ZOMBIES];
+	//int m_numZombies;
+	//std::vector<Zombie> m_zombies;
 
 	Sprite m_crossspr;
 	Unit2d m_cross;
@@ -50,8 +52,9 @@ private:
 	Model m_groundmodel;
 	Ground m_ground;
 
-	Model m_people1model;
-	People m_people1;
+	//Model m_people1model;
+	//People m_people1;
+	//std::vector<People> m_people;
 	int m_numpeople;
 	int m_deadpeople;
 
@@ -66,8 +69,8 @@ public:
 	Game(Renderer * renderer, Window * window) :m_renderer(renderer), m_window(window),
 		m_scene(renderer), m_humanmodel(renderer), m_zombiemodel(renderer),
 		m_bloodspr(renderer), m_bloodsplashspr(renderer), m_radarspr(renderer),
-		m_crossspr(renderer), m_groundmodel(renderer), m_people1model(renderer),
-		m_justDown(false), m_deadZombies(0), m_state(GAME_PLAYING), m_level(1), m_numpeople(1), m_deadpeople(0)
+		m_crossspr(renderer), m_groundmodel(renderer), //m_people1model(renderer),
+		m_justDown(false), m_deadZombies(0), m_state(GAME_PLAYING), m_level(1), m_deadpeople(0)
 	{
 	}
 

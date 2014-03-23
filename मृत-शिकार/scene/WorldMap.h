@@ -1,6 +1,7 @@
 #pragma once
 
 #include "WorldObject.h"
+#include "People.h"
 
 #include <fstream>
 #include <sstream>
@@ -10,6 +11,9 @@ class WorldMap
 private:
 	std::vector<WorldObject> m_worldobjects;
 	std::vector<Model> m_worldmodels;
+
+	Model m_peoplemodel;
+	std::vector<People> m_people;
 
 	int m_numLevels;
 
@@ -40,6 +44,10 @@ public:
 		m_worldmodels[9].LoadModel("building9.mdl");
 		for (int i = 0; i < 10; ++i)
 			m_worldmodels[i].SetScale(0.3f);
+
+		m_peoplemodel.SetRenderer(renderer);
+		m_peoplemodel.LoadModel("people1.mdl");
+		m_peoplemodel.SetScale(0.28f);
 
 		int i = 0;
 		while (true)
@@ -85,6 +93,18 @@ public:
 				break;
 			}
 		}
+
+		is >> n;
+		m_people.resize(n);
+
+		for (int i = 0; i < n; i++)
+		{
+			float fx = 0.0f, fy = 0.0f, fz = 0.0f;
+			is >> fx >> fy >> fz;
+			m_people[i].Initialize(&m_peoplemodel, glm::vec3(fx, fy, fz));
+			scene->AddUnit(&m_people[i]);
+		}
+
 		is.close();
 
 	}
@@ -94,18 +114,24 @@ public:
 		for (unsigned i = 0; i < m_worldobjects.size(); ++i)
 			m_worldobjects[i].CleanUp();
 		m_worldobjects.clear();
+		for (unsigned i = 0; i < m_people.size(); ++i)
+			m_people[i].CleanUp();
+		m_people.clear();
 	}
 
 	void CleanUp()
 	{
 		Reset();
-		for (unsigned int i = 0; i < m_worldmodels.size(); ++i)
-			m_worldmodels[i].CleanUp();
-		m_worldmodels.clear();
+		m_peoplemodel.CleanUp();
 	}
 
 	int GetNumLevels()
 	{
 		return m_numLevels;
+	}
+
+	unsigned int GetPeopleCount()
+	{
+		return m_people.size();
 	}
 };

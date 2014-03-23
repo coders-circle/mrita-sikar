@@ -6,10 +6,11 @@ void Game::Reset()
 	m_player.SetPosition(glm::vec3(-5.0f, -45.0f, 200.0f));
 	m_player.Reset();
 	m_camera.Reset();
-	m_people1.Reset();
+	//m_people1.Reset();
 
 	m_scene.Reset();
 	float x = 200.0f, z = -400.0f;
+	
 	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
 	{
 		m_zombies[i].SetPosition(glm::vec3(x, -45.0f, z));
@@ -28,13 +29,14 @@ void Game::Reset()
 	std::stringstream sl;
 	sl << "level" << m_level << ".map";
 	m_testmap.LoadMap(sl.str(), &m_scene);
+	m_numpeople = m_testmap.GetPeopleCount();
 
 	m_scene.AddUnit(&m_player);
 	m_scene.AddUnit(&m_ground);
 	m_scene.AddUnit(&m_blood);
 	m_scene.AddUnit(&m_bloodsplash);
 	m_scene.AddUnit(&m_cross);
-	m_scene.AddUnit(&m_people1);
+	//m_scene.AddUnit(&m_people1);
 	m_scene.AddUnit(&m_radar);
 
 	m_deadZombies = 0;
@@ -71,9 +73,9 @@ void Game::Initialize()
 	m_player.Initialize(&m_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
 	m_player.SetCamera(&m_camera);
 	
-	m_people1model.LoadModel("people1.mdl");
-	m_people1model.SetScale(0.28f);
-	m_people1.Initialize(&m_people1model, glm::vec3(-5.0f, -45.0f, 250.0f));
+	//m_people1model.LoadModel("people1.mdl");
+	//m_people1model.SetScale(0.28f);
+	//m_people1.Initialize(&m_people1model, glm::vec3(-5.0f, -45.0f, 250.0f));
 
 	m_testmap.Initialize(m_renderer);
 	//m_testmap.Initialize("testmap.map", m_renderer, &m_scene);
@@ -155,7 +157,7 @@ void Game::Update(double totalTime, double deltaTime)
 								{
 									++m_deadZombies;
 									std::stringstream str;
-									str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed - " << m_deadpeople << "/" << m_numpeople << " People Killed";
+									str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed\n" << m_deadpeople << "/" << m_numpeople << " People Killed";
 									m_scene.ChangeText(0, str.str());	
 
 									if (m_deadZombies == MAX_ZOMBIES)
@@ -319,7 +321,7 @@ void Game::Update(double totalTime, double deltaTime)
 void Game::CleanUp()
 {
 
-	m_people1model.CleanUp();
+	//m_people1model.CleanUp();
 	m_humanmodel.CleanUp();
 	m_zombiemodel.CleanUp();
 	m_groundmodel.CleanUp();
@@ -327,7 +329,7 @@ void Game::CleanUp()
 	m_player.CleanUp();
 	for (unsigned int i = 0; i < MAX_ZOMBIES; ++i)
 		m_zombies[i].CleanUp();
-	m_people1.CleanUp();
+	//m_people1.CleanUp();
 	m_ground.CleanUp();
 
 	m_crossspr.CleanUp();
