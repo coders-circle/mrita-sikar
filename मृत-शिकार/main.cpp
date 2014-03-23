@@ -5,7 +5,7 @@
 #pragma comment (lib, "libs\\SOIL")
 #endif
 
-#include "game.h"
+#include "main.h"
 #include <ctime>
 
 int main(int argc, char* argv[])

@@ -47,5 +47,8 @@ public:
 	void GetMousePos(int &x, int &y) { POINT pt; GetCursorPos(&pt); x = pt.x, y = pt.y; }
 	void SetMousePos(int x, int y) { SetCursorPos(x, y); }
 	void ShowMouseCursor(bool show) { ShowCursor(show); }
+
+	void ResetTimer();
+	void Quit() { PostQuitMessage(0); }
 };
 

@@ -57,6 +57,7 @@ public:
         m_framesPerSecond = 0;
         m_framesThisSecond = 0;
         m_secondCounter = 0;
+		m_totalTicks = 0;
     }
 
 	void Tick(void(*update)(double, double))

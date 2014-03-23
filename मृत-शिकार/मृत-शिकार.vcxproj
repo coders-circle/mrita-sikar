@@ -96,7 +96,8 @@
     <ClInclude Include="audio\irrKlang.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\QuadTree.h" />
-    <ClInclude Include="game.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="graphics\Animation.h" />
     <ClInclude Include="graphics\graphics.h" />
     <ClInclude Include="graphics\Mesh.h" />
@@ -133,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="audio\audio.cpp" />
     <ClCompile Include="collision\Collision.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="graphics\glew\glew.c" />
     <ClCompile Include="graphics\Mesh.cpp" />
     <ClCompile Include="graphics\Model.cpp" />

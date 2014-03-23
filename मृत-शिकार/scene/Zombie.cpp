@@ -95,7 +95,7 @@ void Zombie::Update(double deltaTime)
 							float  U, B, d;
 							B = 4200.0f;
 							d = rlength / GetRadius();
-							U = B / ((units[i]->GetTag() == 2) ? d*d*d : d*d);
+							U = B / ((units[i]->GetTag() == 2) ? d*d*d : glm::pow(d,2.3f));
 							resultant += r / rlength * U;
 						}
 					}

@@ -15,8 +15,8 @@ public:
 	void Set(Scene* s, float x, float y, std::string text)
 	{
 		m_scene = s;
-		m_normalTextIndex = s->AddText(Text(text, x, y, 1.0f, false));
-		float ss = 16.0f*text.length();
+		m_normalTextIndex = s->AddText(Text(text, x, y, 1.0f, true));
+		float ss = 11.4f*text.length();
 		m_hoveredTextIndex = s->AddText(Text(text, x - ss*0.2f, y - 16.0f*0.2f, 1.2f, false));
 		m_x1 = x; m_y1 = y;
 		m_x2 = m_x1 + ss*2.0f; m_y2 = m_y1 + 32.0f;
@@ -54,7 +54,7 @@ public:
 	}
 	int Check(float mx, float my, bool mlbuttondown)
 	{
-		for (int i = 0; i < m_items.size(); i++)
+		for (unsigned int i = 0; i < m_items.size(); i++)
 		{
 			if (m_items[i].Check(mx, my) && mlbuttondown)
 				return i;
