@@ -13,14 +13,21 @@ enum ZombieStates{
 	ZOMBIE_DEATH,
 };
 
-Zombie::Zombie() : m_state(ZOMBIE_IDLE)
+Zombie::Zombie()
+{
+	Reset();
+}
+
+void Zombie::Reset()
 {
 	m_tag = 2;
 	m_avoidingObstacle = false;
 	m_attacked = false;
-	m_ignoreChildren.push_back(3);	//ignore attack collision box
-	m_ignoreChildren.push_back(4);	//ignore dead collision box
 	m_attackunit = NULL;
+	m_state = ZOMBIE_IDLE;
+	m_ignoreChildren.clear();
+	m_ignoreChildren.push_back(3);
+	m_ignoreChildren.push_back(4);
 }
 
 irrklang::ISoundSource* g_a_noise;

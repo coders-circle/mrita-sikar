@@ -7,6 +7,8 @@ private:
 public:
 	Blood(const glm::vec3& position = glm::vec3()) : Billboard(position), m_draw(false) {}
 
+	void Reset() { m_draw = false; }
+
 	void Start(const glm::vec3& position) {
 		m_draw = true; 
 		m_position = position; 

@@ -1,5 +1,28 @@
 #include "Game.h"
 
+void Game::Reset()
+{
+	m_player.Reset();
+	m_player.SetPosition(glm::vec3(-5.0f, -45.0f, 200.0f));
+	m_camera.Reset();
+	m_people1.Reset();
+
+	float x = 200.0f, z = -400.0f;
+	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
+	{
+		m_zombies[i].Reset();
+		m_zombies[i].SetPosition(glm::vec3(x, -45.0f, z));
+		float activeness = 1.4f + 1.0f*rand() / RAND_MAX;
+		m_zombies[i].SetSpeed(activeness, activeness / 1.4f);
+		x += 500.0f;
+		if (x >= 1300.0f){
+			z += 200.0f; x = -200.0f;
+		}
+	}
+	m_bloodsplash.Reset();
+
+}
+
 void Game::Initialize()
 {
 	m_scene.Initialize(Rect(-5000, -5000, 10000, 10000));	// quadtree needs limits of the world, send it through scene

@@ -18,6 +18,7 @@ private:
 
 public:
 	Zombie();
+	void Reset();
 	void Update(double timeDelta);
 	void Draw();
 	void InitAudio();

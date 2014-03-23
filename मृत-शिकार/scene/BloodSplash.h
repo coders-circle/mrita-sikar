@@ -12,6 +12,7 @@ private:
 	};
 	std::vector<Splash> m_splashes;
 public:
+	void Reset() { m_splashes.clear(); }
 	void CleanUp() { m_splashes.clear(); }
 
 	void Update(double deltaTime) 

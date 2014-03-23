@@ -65,6 +65,7 @@ public:
 	{}
 
 	void Initialize();
+	void Reset();
 	void Update(double totalTime, double deltaTime);
 	void Resize(int width, int height)
 	{
