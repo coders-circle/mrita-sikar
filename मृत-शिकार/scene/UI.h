@@ -37,16 +37,37 @@ public:
 		OnMouseLeave();
 		return false;
 	}
+	void Hide()
+	{
+		m_scene->SetTextVisible(m_hoveredTextIndex, false);
+		m_scene->SetTextVisible(m_normalTextIndex, false);
+	}
+	void Show()
+	{
+		m_scene->SetTextVisible(m_normalTextIndex, true);
+	}
 };
+
+enum MenuOrientation{Horizontal, Vertical};
 
 class Menu
 {
 private:
 	std::vector<MenuItem> m_items;
 	Scene* m_scene;
+	Sprite m_background;
+	float m_sx, m_sy;
+	float m_offset;
+	int m_orientation;
 public:
-	Menu(){}
+	Menu() :m_orientation(Vertical), m_offset(50.0f)
+	{}
 	void SetScene(Scene* scene){ m_scene = scene; }
+	void Initialize(Scene* scene, std::string backgroundImage)
+	{
+		SetScene(scene);
+		m_background.LoadSprite(backgroundImage, 1366.0f, 768.0f);
+	}
 	void AddItem(std::string menuText, float x, float y)
 	{
 		m_items.resize(m_items.size() + 1);
@@ -60,5 +81,20 @@ public:
 				return i;
 		}
 		return -1;
+	}
+};
+
+class UI
+{
+private:
+	Menu m_mainMenu;
+	Scene* scene;
+public:
+	UI()
+	{
+	}
+	void Initialize(Scene* scene)
+	{
+
 	}
 };
