@@ -41,5 +41,13 @@ public:
 	bool CheckPotentialCollision(const Unit * unit1, const Unit * unit2) const;
 	void GetPotentialCollisions(Unit * unit, UnitCollections &unitCollections) const
 	{ m_quadTree.GetPotentialCollisions(unit, unitCollections); }
+
+	void Reset()
+	{
+		m_texts.clear();
+		//m_units.clear();
+		//m_unit2ds.clear();
+		//m_billboards.clear();
+	}
 };
 

@@ -27,6 +27,7 @@ void Zombie::Reset()
 	m_ignoreChildren.clear();
 	m_ignoreChildren.push_back(3);
 	m_ignoreChildren.push_back(4);
+	m_orient = glm::mat4();
 
 	m_chaseUnits.clear();
 }
