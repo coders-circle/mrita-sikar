@@ -2,6 +2,7 @@
 
 void Game::Reset()
 {
+	m_state = GAME_PLAYING;
 	m_player.SetPosition(glm::vec3(-5.0f, -45.0f, 200.0f));
 	m_player.Reset();
 	m_camera.Reset();
@@ -24,7 +25,9 @@ void Game::Reset()
 	m_bloodsplash.Reset();
 
 	m_testmap.Reset();
-	m_testmap.LoadMap("testmap.map", &m_scene);
+	std::stringstream sl;
+	sl << "level" << m_level << ".map";
+	m_testmap.LoadMap(sl.str(), &m_scene);
 
 	m_scene.AddUnit(&m_player);
 	m_scene.AddUnit(&m_ground);
@@ -34,16 +37,17 @@ void Game::Reset()
 	m_scene.AddUnit(&m_people1);
 	m_scene.AddUnit(&m_radar);
 
-
 	m_deadZombies = 0;
+	m_deadpeople = 0;
 	
 	std::stringstream ss;
-	ss << "0/" << MAX_ZOMBIES << " Zombies Killed";
+	ss << "0/" << MAX_ZOMBIES << " Zombies Killed\n0/" << m_numpeople << " People Killed";
 	m_scene.AddText(Text(ss.str(), 20, 680, 0.85f));
 	m_scene.AddText(Text(m_player.GetPlayerHealthString(), 1000, 40));
 	m_scene.AddText(Text(m_player.GetAmmoStatusString(), 1000, 680));
-	m_scene.AddText(Text("Reload", 550, 220, 1.5f));
-	m_scene.SetTextVisible(3, false);
+	m_scene.AddText(Text("Reload", 550, 220, 1.5f, false));
+	m_scene.AddText(Text("LEVEL COMPLETED", 530, 220 - 60, 0.7f, false));
+	m_scene.AddText(Text("GAME WON", 590, 220 - 60, 1.0f, false));
 }
 
 void Game::Initialize()
@@ -107,6 +111,19 @@ void Game::Initialize()
 
 void Game::Update(double totalTime, double deltaTime)
 {
+	if (m_state >= GAME_TOWIN)
+	{
+		m_timeend += deltaTime;
+		if (m_timeend > 2)
+		{
+			switch (m_state)
+			{
+			case GAME_TOWIN: m_state = GAME_WIN; break;
+			case GAME_TOLOSE: m_state = GAME_LOSE; break;
+			case GAME_LEVELNEXT: ++m_level; Reset(); break;
+			}
+		}
+	}
 	if (!m_player.IsDead())
 	{
 		if ((m_window->CheckMButton(MOUSE_LEFT) || m_window->CheckKey(' ')) && totalTime > 3)
@@ -138,8 +155,24 @@ void Game::Update(double totalTime, double deltaTime)
 								{
 									++m_deadZombies;
 									std::stringstream str;
-									str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed";
-									m_scene.ChangeText(0, str.str());	// 0 is the index of the only text added
+									str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed - " << m_deadpeople << "/" << m_numpeople << " People Killed";
+									m_scene.ChangeText(0, str.str());	
+
+									if (m_deadZombies == MAX_ZOMBIES)
+									{
+										if (m_level == m_testmap.GetNumLevels())
+										{
+											m_scene.ChangeText(5, "GAME WON");
+											m_scene.SetTextVisible(5, true);
+											m_state = GAME_TOWIN;
+										}
+										else
+										{
+											m_scene.SetTextVisible(4, true);
+											m_state = GAME_LEVELNEXT;
+										}
+										m_timeend = 0.0;
+									}
 								}
 							}
 						}
@@ -151,6 +184,18 @@ void Game::Update(double totalTime, double deltaTime)
 							{
 								people->Die();	// kill it
 								m_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);	// show blood as well
+								++m_deadpeople;
+
+								std::stringstream str;
+								str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed\n" << m_deadpeople << "/" << m_numpeople << " People Killed";
+								m_scene.ChangeText(0, str.str());
+
+								if (m_deadpeople == m_numpeople)
+								{
+									m_scene.ChangeText(5, "GAME LOST");
+									m_scene.SetTextVisible(5, true);
+									m_state = GAME_TOLOSE;
+								}
 							}
 						}
 					}
@@ -227,6 +272,7 @@ void Game::Update(double totalTime, double deltaTime)
 				}
 				else if (hitunit->GetTag() == 10)
 				{
+					if (static_cast<People*>(hitunit)->IsDead()) continue;
 					static_cast<People*>(hitunit)->Die();
 					glm::vec3 dir = hitunit->GetPosition() - m_zombies[i].GetPosition();
 					dir.y = 0.5f;
@@ -235,6 +281,20 @@ void Game::Update(double totalTime, double deltaTime)
 					float tmin;
 					ray.IntersectBox(hitunit->GetBoundParent(), tmin);
 					m_blood.Start(ray.GetOrigin() + ray.GetDirection() * tmin);
+
+					++m_deadpeople;
+
+					std::stringstream str;
+					str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed\n" << m_deadpeople << "/" << m_numpeople << " People Killed";
+					m_scene.ChangeText(0, str.str());
+
+					if (m_deadpeople == m_numpeople)
+					{
+						m_scene.ChangeText(5, "GAME LOST");
+						m_scene.SetTextVisible(5, true);
+						m_state = GAME_TOLOSE;
+						m_timeend = 0.0;
+					}
 				}
 			}
 		}

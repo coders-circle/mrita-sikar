@@ -13,6 +13,7 @@ void People::Reset()
 	m_health = 100;
 	m_oncedead = false;
 	m_orient = glm::mat4();
+	if (m_model) UpdateBoundVolume();
 }
 
 void People::Update(double deltaTime)

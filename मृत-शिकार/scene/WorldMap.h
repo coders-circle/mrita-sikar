@@ -2,14 +2,22 @@
 
 #include "WorldObject.h"
 
-
 #include <fstream>
+#include <sstream>
 
 class WorldMap
 {
 private:
 	std::vector<WorldObject> m_worldobjects;
 	std::vector<Model> m_worldmodels;
+
+	int m_numLevels;
+
+	bool FileExist(std::string filename)
+	{
+		std::ifstream infile(filename);
+		return infile.good();
+	}
 public:
 	WorldMap()
 	{
@@ -33,12 +41,22 @@ public:
 		for (int i = 0; i < 10; ++i)
 			m_worldmodels[i].SetScale(0.3f);
 
+		int i = 0;
+		while (true)
+		{
+			std::stringstream sl;
+			sl << "levels\\level" << i+1 << ".map";
+			if (!FileExist(sl.str())) break;
+			++i;
+		}
+		m_numLevels = i;
+		std::cout << "Level count: " << m_numLevels;
 	}
 
 	void LoadMap(std::string filename, GameScene * scene)
 	{
 		std::ifstream is;
-		is.open(filename, std::ios::in);
+		is.open("levels\\"+filename, std::ios::in);
 		if (is.fail())
 		{
 			std::cout << "Error reading map file: " << filename;
@@ -84,5 +102,10 @@ public:
 		for (unsigned int i = 0; i < m_worldmodels.size(); ++i)
 			m_worldmodels[i].CleanUp();
 		m_worldmodels.clear();
+	}
+
+	int GetNumLevels()
+	{
+		return m_numLevels;
 	}
 };

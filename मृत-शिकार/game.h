@@ -52,15 +52,22 @@ private:
 
 	Model m_people1model;
 	People m_people1;
+	int m_numpeople;
+	int m_deadpeople;
 
 	bool m_justDown;
 	int m_deadZombies;
+	
+	int m_level;
+	int m_state;
+	double m_timeend;
 public:
+	enum GameState{ GAME_WIN, GAME_LOSE, GAME_PLAYING, GAME_TOWIN, GAME_TOLOSE, GAME_LEVELNEXT };
 	Game(Renderer * renderer, Window * window) :m_renderer(renderer), m_window(window),
 		m_scene(renderer), m_humanmodel(renderer), m_zombiemodel(renderer),
 		m_bloodspr(renderer), m_bloodsplashspr(renderer), m_radarspr(renderer),
 		m_crossspr(renderer), m_groundmodel(renderer), m_people1model(renderer),
-		m_justDown(false), m_deadZombies(0)
+		m_justDown(false), m_deadZombies(0), m_state(GAME_PLAYING), m_level(1), m_numpeople(1), m_deadpeople(0)
 	{
 	}
 
@@ -74,5 +81,8 @@ public:
 	}
 	void Render() { m_scene.Draw(); }
 	void CleanUp();
+
+	int GetState() { return m_state; }
+	void SetLevel(int level) { m_level = level; }
 };
 
