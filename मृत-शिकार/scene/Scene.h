@@ -57,7 +57,7 @@ public:
 		m_font.LoadSprite("font1.png", 32, 32, 0, 0, 16, 16);
 	}
 
-	virtual void Resize(float width, float height) {}
+	virtual void Resize(float width, float height) { m_renderer->Resize(width, height, glm::mat4()); }
 	virtual void Update(double deltaTime) {
 		for (unsigned i = 0; i < m_unit2ds.size(); ++i)
 			m_unit2ds[i]->Update(deltaTime);

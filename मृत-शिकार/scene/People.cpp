@@ -2,6 +2,11 @@
 
 People::People()
 {
+	Reset();
+}
+
+void People::Reset()
+{
 	m_dead = false;
 	m_tag = 10;
 	m_deadrotation = 0.0;

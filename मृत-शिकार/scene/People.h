@@ -9,6 +9,7 @@ private:
 public:
 
 	People();
+	void Reset();
 	void Update(double deltaTime);
 	void Draw();
 

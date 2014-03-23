@@ -41,6 +41,7 @@ private:
 	void ReloadComplete();
 public:
 	Player();
+	void Reset();
 	void SetCamera(TPCamera * camera) { m_camera = camera; }
 	void Update(double deltaTime);
 	void Draw();

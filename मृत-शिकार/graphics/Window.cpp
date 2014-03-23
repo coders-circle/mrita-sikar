@@ -95,7 +95,7 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 		if (m_resize) m_resize(width, height);
 		break;
 	}
-	case WM_KEYDOWN:
+		/*case WM_KEYDOWN:
 		switch (wParam)
 		{
 		case VK_ESCAPE:
@@ -103,7 +103,7 @@ LRESULT CALLBACK Window::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPar
 			break;
 		}
 		break;
-		/*case WM_KEYUP:
+		case WM_KEYUP:
 		switch (wParam)
 		{
 		}
@@ -194,4 +194,9 @@ void Window::DestroyOpengl()
 	wglMakeCurrent(m_hDC, NULL);
 	wglDeleteContext(m_hRC);
 	m_opengl = false;
+}
+
+void Window::ResetTimer()
+{
+	s_timer.Reset();
 }

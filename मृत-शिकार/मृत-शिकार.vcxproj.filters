@@ -96,9 +96,6 @@
     <ClInclude Include="scene\Zombie.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
-    <ClInclude Include="game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="scene\TPCamera.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
@@ -210,6 +207,12 @@
     <ClInclude Include="scene\UI.h">
       <Filter>Header Files\scene</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="graphics\Mesh.cpp">
@@ -277,6 +280,9 @@
     </ClCompile>
     <ClCompile Include="scene\Radar.cpp">
       <Filter>Source Files\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

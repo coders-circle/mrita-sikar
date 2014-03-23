@@ -63,12 +63,17 @@ public:
 		else if (m_totalYRot < -40.0f) { m_totalYRot = -40.0f; }
 	}
 
-	void Initialize(LiveUnit * target, float distance)
+	void Reset()
 	{
 		m_isdead = false;
 		m_totalYRot = 0.0f;
 		m_isShaking = false;
 		RotateY(10.0f);
+	}
+
+	void Initialize(LiveUnit * target, float distance)
+	{
+		Reset();
 		m_target = target; m_distance = distance;
 	}
 

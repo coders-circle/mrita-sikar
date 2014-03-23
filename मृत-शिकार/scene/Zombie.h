@@ -10,7 +10,6 @@ private:
 	irrklang::ISound *m_a_snoise, *m_a_madness, *m_a_pain;
 	float m_walkspeed;
 	float m_attackspeed;
-	bool m_avoidingObstacle;
 	bool m_attacked, m_reattack;
 
 	std::unordered_set<Unit*> m_chaseUnits;
@@ -18,6 +17,7 @@ private:
 
 public:
 	Zombie();
+	void Reset();
 	void Update(double timeDelta);
 	void Draw();
 	void InitAudio();

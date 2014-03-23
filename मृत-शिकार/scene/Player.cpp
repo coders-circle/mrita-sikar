@@ -60,13 +60,21 @@ inline void Player::ChangeState(int x)
 		m_inTransition = false;
 }
 
-Player::Player() : m_state(PLAYER_IDLE), m_inTransition(false), m_camera(NULL), m_isdead(false)
+Player::Player() : m_camera(NULL)
+{
+	m_tag = 1;
+	Reset();
+}
+
+void Player::Reset()
 {
 	m_orient = glm::rotate(glm::mat4(), 175.0f, glm::vec3(0.0f, 1.0f, 0.0f));
-	m_tag = 1;
 	m_totalAmmo = 35;
 	m_currentAmmo = 7;
 	m_ammoCapacity = 7;
+	m_state = PLAYER_IDLE;
+	m_isdead = false;
+	m_inTransition = false;
 }
 
 void Player::InitAudio()
