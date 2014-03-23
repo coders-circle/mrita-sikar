@@ -66,6 +66,7 @@ public:
 	void Reset()
 	{
 		m_isdead = false;
+		m_orient = glm::mat4();
 		m_totalYRot = 0.0f;
 		m_isShaking = false;
 		RotateY(10.0f);

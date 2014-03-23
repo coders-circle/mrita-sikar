@@ -6,6 +6,7 @@ private:
 	ModelAnimation m_animation;
 	bool m_dead;
 	float m_deadrotation;
+	bool m_oncedead, m_once;
 public:
 
 	People();

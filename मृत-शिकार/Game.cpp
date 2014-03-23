@@ -7,6 +7,7 @@ void Game::Reset()
 	m_camera.Reset();
 	m_people1.Reset();
 
+	m_scene.Reset();
 	float x = 200.0f, z = -400.0f;
 	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
 	{
@@ -21,6 +22,15 @@ void Game::Reset()
 	}
 	m_bloodsplash.Reset();
 
+	m_deadZombies = 0;
+	
+	std::stringstream ss;
+	ss << "0/" << MAX_ZOMBIES << " Zombies Killed";
+	m_scene.AddText(Text(ss.str(), 20, 680, 0.85f));
+	m_scene.AddText(Text(m_player.GetPlayerHealthString(), 1000, 40));
+	m_scene.AddText(Text(m_player.GetAmmoStatusString(), 1000, 680));
+	m_scene.AddText(Text("Reload", 550, 220, 1.5f));
+	m_scene.SetTextVisible(3, false);
 }
 
 void Game::Initialize()
@@ -43,6 +53,7 @@ void Game::Initialize()
 	m_humanmodel.LoadModel("human.mdl");
 	m_player.Initialize(&m_humanmodel, glm::vec3(-5.0f, -45.0f, 200.0f));
 	m_player.SetCamera(&m_camera);
+
 	m_testmap.Initialize("testmap.map", m_renderer, &m_scene);
 
 	m_people1model.LoadModel("people1.mdl");
@@ -70,6 +81,7 @@ void Game::Initialize()
 
 	m_crossspr.LoadSprite("cross.png", 100.0f, 100.0f);
 	m_cross.Initialize(&m_crossspr, glm::vec2(m_width / 2.0f, m_height / 2.0f));
+
 	m_scene.AddUnit(&m_player);
 	m_scene.AddUnit(&m_ground);
 	m_scene.AddUnit(&m_blood);
@@ -90,7 +102,9 @@ void Game::Initialize()
 		m_zombies[i].InitAudio();
 	}
 
-	m_scene.AddText(Text("Zombies Killed: 0", 20, 680, 0.85f));
+	std::stringstream ss;
+	ss << "0/" << MAX_ZOMBIES << " Zombies Killed";
+	m_scene.AddText(Text(ss.str(), 20, 680, 0.85f));
 	m_scene.AddText(Text(m_player.GetPlayerHealthString(), 1000, 40));
 	m_scene.AddText(Text(m_player.GetAmmoStatusString(), 1000, 680));
 	m_scene.AddText(Text("Reload", 550, 220, 1.5f));
@@ -131,7 +145,7 @@ void Game::Update(double totalTime, double deltaTime)
 								{
 									++m_deadZombies;
 									std::stringstream str;
-									str << "Dead Zombies: " << m_deadZombies;
+									str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed";
 									m_scene.ChangeText(0, str.str());	// 0 is the index of the only text added
 								}
 							}
