@@ -53,7 +53,6 @@ private:
 	Model m_people1model;
 	People m_people1;
 
-
 	bool m_justDown;
 	int m_deadZombies;
 public:
@@ -62,7 +61,8 @@ public:
 		m_bloodspr(renderer), m_bloodsplashspr(renderer), m_radarspr(renderer),
 		m_crossspr(renderer), m_groundmodel(renderer), m_people1model(renderer),
 		m_justDown(false), m_deadZombies(0)
-	{}
+	{
+	}
 
 	void Initialize();
 	void Reset();

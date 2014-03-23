@@ -14,31 +14,37 @@ public:
 	WorldMap()
 	{
 	}
-	void Initialize(std::string mapfilename, Renderer* renderer, GameScene* scene)
+	void Initialize(Renderer* renderer)
 	{
-		
+		m_worldmodels.resize(10);
+		for (unsigned int i = 0; i < m_worldmodels.size(); ++i)
+			m_worldmodels[i].SetRenderer(renderer);
+
+		m_worldmodels[0].LoadModel("building1.mdl");
+		m_worldmodels[1].LoadModel("building2.mdl");
+		m_worldmodels[2].LoadModel("building12.mdl");
+		m_worldmodels[3].LoadModel("building13.mdl");
+		m_worldmodels[4].LoadModel("building3.mdl");
+		m_worldmodels[5].LoadModel("building5.mdl");
+		m_worldmodels[6].LoadModel("building6.mdl");
+		m_worldmodels[7].LoadModel("building7.mdl");
+		m_worldmodels[8].LoadModel("building8.mdl");
+		m_worldmodels[9].LoadModel("building9.mdl");
+		for (int i = 0; i < 10; ++i)
+			m_worldmodels[i].SetScale(0.3f);
+
+	}
+
+	void LoadMap(std::string filename, GameScene * scene)
+	{
 		std::ifstream is;
-		is.open(mapfilename, std::ios::in);
+		is.open(filename, std::ios::in);
 		if (is.fail())
 		{
-			std::cout << "Error reading map file: " << mapfilename;
+			std::cout << "Error reading map file: " << filename;
 			return;
 		}
 		int n = 0;
-		is >> n;
-
-		m_worldmodels.resize(n);
-		for (int i = 0; i < n; i++)
-		{
-			std::string mdlfilename;
-			is >> mdlfilename;
-			float scale = 1.0f;
-			is >> scale;
-			m_worldmodels[i].SetRenderer(renderer);
-			m_worldmodels[i].LoadModel(mdlfilename);
-			m_worldmodels[i].SetScale(scale);
-		}
-
 		is >> n;
 		m_worldobjects.resize(n);
 
@@ -62,5 +68,21 @@ public:
 			}
 		}
 		is.close();
+
+	}
+
+	void Reset()
+	{
+		for (unsigned i = 0; i < m_worldobjects.size(); ++i)
+			m_worldobjects[i].CleanUp();
+		m_worldobjects.clear();
+	}
+
+	void CleanUp()
+	{
+		Reset();
+		for (unsigned int i = 0; i < m_worldmodels.size(); ++i)
+			m_worldmodels[i].CleanUp();
+		m_worldmodels.clear();
 	}
 };

@@ -72,9 +72,11 @@ void Player::Reset()
 	m_totalAmmo = 35;
 	m_currentAmmo = 7;
 	m_ammoCapacity = 7;
+	m_health = 100;
 	m_state = PLAYER_IDLE;
 	m_isdead = false;
 	m_inTransition = false;
+	if (m_model) UpdateBoundVolume();
 }
 
 void Player::InitAudio()
