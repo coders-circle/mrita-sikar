@@ -10,8 +10,9 @@ private:
 	int m_hoveredTextIndex;
 	Scene* m_scene;
 	float m_x1, m_y1, m_x2, m_y2;
+	bool m_enabled;
 public:
-	MenuItem():m_normalTextIndex (-1), m_hoveredTextIndex(-1){ m_scene = 0; }
+	MenuItem() :m_normalTextIndex(-1), m_hoveredTextIndex(-1), m_enabled(true){ m_scene = 0; }
 	void Set(Scene* s, float x, float y, std::string text)
 	{
 		m_scene = s;
@@ -33,6 +34,7 @@ public:
 	}
 	bool Check(float mx, float my)
 	{
+		if (!m_enabled){ return false; }
 		if (mx > m_x1 && mx < m_x2 && my > m_y1 && my < m_y2){ OnMouseHover(); return true; }
 		OnMouseLeave();
 		return false;
@@ -45,6 +47,12 @@ public:
 	void Show()
 	{
 		m_scene->SetTextVisible(m_normalTextIndex, true);
+	}
+	void Enable(bool enable = true)
+	{
+		m_enabled = enable; 
+		if (m_enabled) Show();
+		else Hide();
 	}
 };
 
@@ -62,6 +70,13 @@ private:
 public:
 	Menu() :m_orientation(Vertical), m_offset(50.0f)
 	{}
+	void EnableItem(unsigned int index, bool enable = true)
+	{
+		if (index < m_items.size())
+		{
+			m_items[index].Enable(enable);
+		}
+	}
 	void SetScene(Scene* scene){ m_scene = scene; }
 	void Initialize(Scene* scene, std::string backgroundImage)
 	{

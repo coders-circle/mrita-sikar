@@ -33,9 +33,9 @@ void SkyBox::Initialize()
 	};
 
 	m_texture = LoadCubeMap(
-		"textures\\skybox_zn.jpg", "textures\\skybox_zp.jpg",
-		"textures\\skybox_yp.jpg", "textures\\skybox_yn.jpg",
-		"textures\\skybox_xn.jpg", "textures\\skybox_xp.jpg"
+		"textures\\skybox_zn.tga", "textures\\skybox_zp.tga",
+		"textures\\skybox_yp.tga", "textures\\skybox_yn.tga",
+		"textures\\skybox_xn.tga", "textures\\skybox_xp.tga"
 		);
 
 	glGenVertexArrays(1, &m_vao);

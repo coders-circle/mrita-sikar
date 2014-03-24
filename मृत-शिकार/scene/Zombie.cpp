@@ -32,6 +32,9 @@ void Zombie::Reset()
 
 	m_chaseUnits.clear();
 
+
+	m_animation.set = ZOMBIE_IDLE; m_animation.time = 0.0; m_animation.transition = NULL;
+
 	if (m_model) UpdateBoundVolume();
 }
 
@@ -119,7 +122,7 @@ void Zombie::Update(double deltaTime)
 						if (m_chaseUnits.find(units[i]) == m_chaseUnits.end())
 						{
 							if (static_cast<LiveUnit*>(units[i])->GetHealthStatus() > 0)
-							if (CanSee(130.0f, 1000.0f, units[i]))
+							if ((units[i]->GetTag() == 10) ? (CanSee(130.0f, 1000.0f, units[i])) :(distsqr<1000.0f*1000.0f))
 								m_chaseUnits.insert(units[i]);
 						}
 						else

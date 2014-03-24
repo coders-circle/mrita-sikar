@@ -12,15 +12,27 @@ int g_height = 650;
 
 
 Scene g_menuscene(&g_renderer);
+Scene g_loadingscene(&g_renderer);
 Menu g_menu;
 Game g_game(&g_renderer, &g_window);
 
-// Uncomment following for background
-//Sprite g_menubackspr(&g_renderer);
-//Unit2d g_menuback;
+Sprite g_menubackspr(&g_renderer);
+Unit2d g_menuback;
 
+Sprite g_splashscreen(&g_renderer);
+Unit2d g_splash;
 
 irrklang::ISoundEngine* g_audioengine = 0;
+
+#include <process.h>
+
+volatile bool loadingFinished = false;
+
+void AsyncLoader(void* pData)
+{
+	g_game.Initialize();
+	loadingFinished = true;
+}
 
 void Initialize()
 {
@@ -29,27 +41,42 @@ void Initialize()
 	g_menuscene.Initialize();
 	g_menu.SetScene(&g_menuscene);
 	
-	//g_menubackspr.Initialize(...);
-	//g_menuback.Initialize(...);
-	//g_menuscene.AddUnit(g_menuback);
+	g_menubackspr.LoadSprite("menuback.jpg", g_width, g_height);
+	g_menuback.Initialize(&g_menubackspr);;
+	g_menuscene.AddUnit(&g_menuback);
 
-	std::string items[] = { "NEW GAME", "CONTINUE GAME", "CREDITS", "EXIT" };
+	std::string items[] = { "CONTINUE GAME", "NEW GAME", "CREDITS", "EXIT" };
 	for (int i = 0; i < 4; ++i)
 		g_menu.AddItem(items[i], g_width / 2.0f - (items[i].length()*11.4f), 240 + 60.0f*i);
 
 
+	g_menu.EnableItem(0, false);
+	g_loadingscene.Initialize();
+	g_splashscreen.LoadSprite("Splash.jpg", g_width, g_height);
+	g_splash.Initialize(&g_splashscreen);
 	g_audioengine = irrklang::createIrrKlangDevice();
-	g_game.Initialize();	// perhaps do this asynchronously while displaying a splash screen
+
+	g_loadingscene.Resize(g_width, g_height);
+	g_loadingscene.Update(0.1f);
+	g_loadingscene.AddUnit(&g_splash);
+
+	g_loadingscene.Draw();
+	g_game.Initialize();
+	//_beginthread(AsyncLoader, 500, 0);
 }
 
 void CleanUp()
 {
 	g_game.CleanUp();
 
-	//g_menubackspr.CleanUp();
-	//g_menuback.CleanUp();
+	g_menubackspr.CleanUp();
+	g_menuback.CleanUp();
+
+	g_splashscreen.CleanUp();
+	g_splash.CleanUp();
 
 	g_menuscene.CleanUp();
+	g_loadingscene.CleanUp();
 	g_renderer.CleanUp();
 }
 
@@ -78,10 +105,10 @@ void Update(double totalTime, double deltaTime)
 		int menuitem = g_menu.Check(static_cast<float>(mx), static_cast<float>(my), g_window.CheckMButton(MOUSE_LEFT));
 		switch (menuitem)
 		{
-		case 0:
+		case 1:
 			g_game.SetLevel(1);
 			g_game.Reset();
-		case 1:
+		case 0:
 			g_globalState = GAME;
 			g_window.SetMousePos(g_width / 2, g_height / 2);
 			Resize(g_width, g_height);
@@ -104,6 +131,7 @@ void Update(double totalTime, double deltaTime)
 			Resize(g_width, g_height);
 			g_window.ResetTimer();
 			g_window.ShowMouseCursor(true);
+			g_menu.EnableItem(0, true);
 		}
 	}
 }
