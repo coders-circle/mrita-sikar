@@ -123,7 +123,7 @@ void Zombie::Update(double deltaTime)
 								m_chaseUnits.insert(units[i]);
 						}
 						else
-						if (distsqr > 25000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
+						if (distsqr > 81000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
 							m_chaseUnits.erase(units[i]);
 
 						if (distsqr <= 1470.0f)

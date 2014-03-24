@@ -41,7 +41,7 @@ private:
 	Sprite m_radarspr;
 	Radar m_radar;
 
-#define MAX_ZOMBIES 25
+#define MAX_ZOMBIES 5
 	Zombie m_zombies[MAX_ZOMBIES];
 	//int m_numZombies;
 	//std::vector<Zombie> m_zombies;

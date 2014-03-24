@@ -73,27 +73,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="audio\audio.h" />
-    <ClInclude Include="audio\ik_ESoundEngineOptions.h" />
-    <ClInclude Include="audio\ik_ESoundOutputDrivers.h" />
-    <ClInclude Include="audio\ik_EStreamModes.h" />
-    <ClInclude Include="audio\ik_IAudioRecorder.h" />
-    <ClInclude Include="audio\ik_IAudioStream.h" />
-    <ClInclude Include="audio\ik_IAudioStreamLoader.h" />
-    <ClInclude Include="audio\ik_IFileFactory.h" />
-    <ClInclude Include="audio\ik_IFileReader.h" />
-    <ClInclude Include="audio\ik_IRefCounted.h" />
-    <ClInclude Include="audio\ik_irrKlangTypes.h" />
-    <ClInclude Include="audio\ik_ISound.h" />
-    <ClInclude Include="audio\ik_ISoundDeviceList.h" />
-    <ClInclude Include="audio\ik_ISoundEffectControl.h" />
-    <ClInclude Include="audio\ik_ISoundEngine.h" />
-    <ClInclude Include="audio\ik_ISoundMixedOutputReceiver.h" />
-    <ClInclude Include="audio\ik_ISoundSource.h" />
-    <ClInclude Include="audio\ik_ISoundStopEventReceiver.h" />
-    <ClInclude Include="audio\ik_IVirtualRefCounted.h" />
-    <ClInclude Include="audio\ik_SAudioStreamFormat.h" />
-    <ClInclude Include="audio\ik_vec3d.h" />
-    <ClInclude Include="audio\irrKlang.h" />
     <ClInclude Include="collision\Collision.h" />
     <ClInclude Include="collision\QuadTree.h" />
     <ClInclude Include="Game.h" />
@@ -157,6 +136,7 @@
     <ClCompile Include="scene\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="shaders\fs_normal3d.glsl" />
     <None Include="shaders\fs_depthmap.glsl" />
     <None Include="shaders\fs_sky.glsl" />
