@@ -436,6 +436,11 @@ void Player::Update(double deltaTime)
 		m_position -= orient3x3[2] * (float)deltaTime * deltaPos*posboost; posChanged = true;
 	}
 
+	if (m_position.x < -3000.0f) m_position.x = -3000.0f;
+	if (m_position.x > 3000.0f) m_position.x = 3000.0f;
+	if (m_position.z < -3000.0f) m_position.z = -3000.0f;
+	if (m_position.z > 3000.0f) m_position.z = 3000.0f;
+
 	if (posChanged)
 	{
 		UpdateBoundVolume();
