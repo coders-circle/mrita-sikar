@@ -25,11 +25,11 @@ void Game::Reset()
 	}
 	m_bloodsplash.Reset();
 
-	m_testmap.Reset();
+	m_map.Reset();
 	std::stringstream sl;
 	sl << "level" << m_level << ".map";
-	m_testmap.LoadMap(sl.str(), &m_scene);
-	m_numpeople = m_testmap.GetPeopleCount();
+	m_map.LoadMap(sl.str(), &m_scene);
+	m_numpeople = m_map.GetPeopleCount();
 
 	m_scene.AddUnit(&m_player);
 	m_scene.AddUnit(&m_ground);
@@ -77,8 +77,8 @@ void Game::Initialize()
 	//m_people1model.SetScale(0.28f);
 	//m_people1.Initialize(&m_people1model, glm::vec3(-5.0f, -45.0f, 250.0f));
 
-	m_testmap.Initialize(m_renderer);
-	//m_testmap.Initialize("testmap.map", m_renderer, &m_scene);
+	m_map.Initialize(m_renderer);
+	//m_map.Initialize("testmap.map", m_renderer, &m_scene);
 
 	m_zombiemodel.LoadModel("zombie.mdl");
 	float x = 200.0f, z = -400.0f;
@@ -162,7 +162,7 @@ void Game::Update(double totalTime, double deltaTime)
 
 									if (m_deadZombies == MAX_ZOMBIES)
 									{
-										if (m_level == m_testmap.GetNumLevels())
+										if (m_level == m_map.GetNumLevels())
 										{
 											m_scene.ChangeText(5, "GAME WON");
 											m_scene.SetTextVisible(5, true);
@@ -350,7 +350,7 @@ void Game::CleanUp()
 	m_radarspr.CleanUp();
 	m_radar.CleanUp();
 
-	m_testmap.CleanUp();
+	m_map.CleanUp();
 
 	m_scene.CleanUp();
 }

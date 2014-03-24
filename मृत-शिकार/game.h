@@ -30,7 +30,7 @@ private:
 	TPCamera m_camera;
 	Model m_humanmodel, m_zombiemodel;
 	Player m_player;
-	WorldMap m_testmap;
+	WorldMap m_map;
 
 	Sprite m_bloodspr;
 	Blood m_blood;

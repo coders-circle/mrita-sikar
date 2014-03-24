@@ -3,7 +3,7 @@
   <Class Name="Game" Collapsed="true">
     <Position X="23" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CASBAEAAgIABBYABAAQUAAAABAgAAiCDABICA0lAAAQ=</HashCode>
+      <HashCode>CASBAGAAgIABBYABAAQUAAAABAgAAiCCABICA0lAAAQ=</HashCode>
       <FileName>Game.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -129,7 +129,7 @@
   <Class Name="Scene" Collapsed="true">
     <Position X="10.5" Y="12.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAAAAAIAACAwABgAIAAAAAAQAAACAQEAAAA0EACIA=</HashCode>
+      <HashCode>AAQAAAAAIAACAwABgAIAAACABQAAACAQEAAAA0FACIA=</HashCode>
       <FileName>scene\Scene.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -143,21 +143,14 @@
   <Class Name="MenuItem" Collapsed="true">
     <Position X="23" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAgIAoAABBAAMAAAAAAAAAAECAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AACAAAgIAoCABBAAMAAADAAAAAAFCAAAAAAAAAAAAAA=</HashCode>
       <FileName>scene\UI.h</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Menu" Collapsed="true">
     <Position X="21.25" Y="1.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AACAAAgAQAAAAQAAAAAAAAAAgAAIcAAAAACAAAAQAAA=</HashCode>
-      <FileName>scene\UI.h</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="UI" Collapsed="true">
-    <Position X="24.75" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAIAAAAAAQAAAAAAAIAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <HashCode>AACAAAgAQACgAQAAAAAABAAAgAAIcAAAAACAAAAQAAA=</HashCode>
       <FileName>scene\UI.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -171,7 +164,7 @@
   <Class Name="Unit2d" Collapsed="true">
     <Position X="6.75" Y="10.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAQAACAAACAIEwAAEABABAQgAIAQAgCAAAAAAEAAAAA=</HashCode>
+      <HashCode>AAQAACAAACCIEwAAEABABAQgAIAQAgCAAAAAAEAAAAA=</HashCode>
       <FileName>scene\Unit2d.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -395,7 +388,7 @@
   <Struct Name="Text" Collapsed="true">
     <Position X="19.5" Y="8.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAIAABgCAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAIAABgCAAAAAA=</HashCode>
       <FileName>scene\Scene.h</FileName>
     </TypeIdentifier>
   </Struct>
@@ -444,7 +437,7 @@
   <Enum Name="GlobalGameStates" Collapsed="true">
     <Position X="19.5" Y="11.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAIAAA=</HashCode>
       <FileName>main.h</FileName>
     </TypeIdentifier>
   </Enum>
