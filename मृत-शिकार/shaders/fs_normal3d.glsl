@@ -34,7 +34,7 @@ void main()
 	vec4 fTexColor = texture2D(texture_sample, fTexCoord);
 
 	vec3 dir = normalize(vec3(-1.0, -1.0, 0.0));
-    float fDiffuseIntensity = max(0, dot(normalize(fNormal), - dir ));
+    float fDiffuseIntensity = max(0, dot(normalize(fNormal), - dir ))*0.8;
 	
 	float visibility = 1.0;
 	// the loop takes care of neighbouring samples as well
@@ -48,5 +48,6 @@ void main()
 			(fShadowCoord.z) / fShadowCoord.w)));
 	}
 
-    fColor = vec4(vec3(0.4+fDiffuseIntensity*visibility), 1.0) * fTexColor;
+    fColor = vec4(vec3(0.1+fDiffuseIntensity*visibility), 1.0) * fTexColor;
+	fColor.r = min(1.0, fColor.r*1.4);
 }
