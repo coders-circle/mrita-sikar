@@ -38,7 +38,7 @@ void GameScene::Draw()
 	m_firstPass = true;
 	glm::mat4 camInverse = glm::inverse(m_camera->GetView());
 	glm::vec3 target = glm::vec3(camInverse[3]);// -camInverse[2]);
-	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 5000, 5000, -500, 50000000);
+	m_renderer->SetupLightMatrix(glm::normalize(glm::vec3(-1.0f, -1.0f, 0.0f)), target, 10000, 5000, -10000, 10000000);
 
 
 	m_renderer->BeginRender(Renderer::SHADOW_PASS);

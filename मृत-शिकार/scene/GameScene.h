@@ -45,9 +45,10 @@ public:
 	void Reset()
 	{
 		m_texts.clear();
-		//m_units.clear();
-		//m_unit2ds.clear();
-		//m_billboards.clear();
+		m_units.clear();
+		m_unit2ds.clear();
+		m_billboards.clear();
+		m_quadTree.Reset();
 	}
 };
 

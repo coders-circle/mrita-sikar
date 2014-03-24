@@ -1,6 +1,6 @@
 #include "Game.h"
 
-enum GLOBAL_GAME_STATES {MAINMENU, GAME};
+enum GlobalGameStates {MAINMENU, GAME};
 
 Window g_window;
 Renderer g_renderer(&g_window);
@@ -79,6 +79,7 @@ void Update(double totalTime, double deltaTime)
 		switch (menuitem)
 		{
 		case 0:
+			g_game.SetLevel(1);
 			g_game.Reset();
 		case 1:
 			g_globalState = GAME;
@@ -96,7 +97,8 @@ void Update(double totalTime, double deltaTime)
 	else if (g_globalState == GAME)
 	{
 		g_game.Update(totalTime, deltaTime);
-		if (g_window.CheckKey(VK_ESCAPE))
+		if ((g_game.GetState() == Game::GAME_WIN || g_game.GetState() == Game::GAME_LOSE)
+			|| (g_window.CheckKey(VK_ESCAPE)))
 		{
 			g_globalState = MAINMENU;
 			Resize(g_width, g_height);

@@ -32,6 +32,11 @@ public:
 	void Initialize(unsigned char depth, const Rect &rect) {
 		m_depth = depth; m_rect = rect;
 	}
+
+	void Reset()
+	{
+		Clear();
+	}
 	
 	void Split()
 	{

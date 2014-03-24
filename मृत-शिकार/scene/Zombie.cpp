@@ -28,8 +28,11 @@ void Zombie::Reset()
 	m_ignoreChildren.push_back(3);
 	m_ignoreChildren.push_back(4);
 	m_orient = glm::mat4();
+	m_health = 100;
 
 	m_chaseUnits.clear();
+
+	if (m_model) UpdateBoundVolume();
 }
 
 irrklang::ISoundSource* g_a_noise;
@@ -104,7 +107,7 @@ void Zombie::Update(double deltaTime)
 							float  U, B, d;
 							B = 4200.0f;
 							d = rlength / GetRadius();
-							U = B / ((units[i]->GetTag() == 2) ? d*d*d : glm::pow(d,2.3f));
+							U = B / ((units[i]->GetTag() == 2) ? d*d*d : d*d);
 							resultant += r / rlength * U;
 						}
 					}
@@ -130,6 +133,27 @@ void Zombie::Update(double deltaTime)
 							m_attackunit = static_cast<LiveUnit*>(units[i]);
 						}
 					}
+				}
+			}
+
+			float zmin = -2000, zmax = 2200, xmin = -2000, xmax = 2600;
+			glm::vec3 limits[] = { 
+				glm::vec3(GetBoundCenter().x, GetBoundCenter().y, zmin),
+				glm::vec3(GetBoundCenter().x, GetBoundCenter().y, zmax),
+				glm::vec3(xmin, GetBoundCenter().y, GetBoundCenter().z),
+				glm::vec3(xmax, GetBoundCenter().y, GetBoundCenter().z), };
+
+			for (int i = 0; i < 4; ++i)
+			{
+				glm::vec3 r = GetBoundCenter() - limits[i];
+				if (glm::dot(r, r) < 160000)
+				{
+					float  U, B, d;
+					B = 10000.0f;
+					float rlength = glm::length(r);
+					d = rlength / GetRadius();
+					U = B / (d*d);
+					resultant += r / rlength * U;
 				}
 			}
 
