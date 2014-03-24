@@ -298,10 +298,10 @@ void Game::Update(double totalTime, double deltaTime)
 
 					if (m_deadpeople == m_numpeople)
 					{
-						/*m_scene.ChangeText(5, "GAME LOST");
+						m_scene.ChangeText(5, "GAME LOST");
 						m_scene.SetTextVisible(5, true);
 						m_state = GAME_TOLOSE;
-						m_timeend = 0.0;*/
+						m_timeend = 0.0;
 					}
 				}
 			}

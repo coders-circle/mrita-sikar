@@ -30,7 +30,8 @@ void Renderer::Initialize()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 
-	glClearColor(0.396f, 0.612f, 0.937f, 1.0f);
+	//glClearColor(0.396f, 0.612f, 0.937f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 	InitShaders();
 

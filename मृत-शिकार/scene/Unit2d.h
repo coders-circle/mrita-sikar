@@ -1,14 +1,16 @@
 #pragma once
 #include "../graphics/graphics.h"
 
+
+struct FadeEffect
+{
+	double time;
+	double elapsedtime;
+	bool out;
+};
 class Unit2d
 {
 protected:
-	struct FadeEffect
-	{
-		double time; 
-		double elapsedtime;
-	};
 
 	Sprite * m_sprite;
 	SpriteAnimation m_sprAnim;
@@ -31,7 +33,7 @@ public:
 		if (m_fade)
 		{
 			m_fade->elapsedtime += deltaTime;
-			if (m_fade->elapsedtime >= m_fade->time) { delete m_fade; m_fade = NULL; }
+			if (m_fade->elapsedtime >= m_fade->time) { if (m_fade->out)m_visible = false; delete m_fade; m_fade = NULL; }
 		}
 		if (m_animate) m_sprite->Animate(m_sprAnim, deltaTime); 
 	}
@@ -39,7 +41,12 @@ public:
 	{
 		if (!m_visible) return;
 		if (m_fade)
-			m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y, 1.0f, 1.0f - static_cast<float>(m_fade->elapsedtime/m_fade->time));
+		{
+			if (m_fade->out)
+				m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y, 1.0f, 1.0f - static_cast<float>(m_fade->elapsedtime / m_fade->time));
+			else
+				m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y, 1.0f, static_cast<float>(m_fade->elapsedtime / m_fade->time));
+		}
 		else
 			m_sprite->DrawSprite(m_sprAnim, m_position.x, m_position.y);
 	}
@@ -50,9 +57,19 @@ public:
 	void SetVisible(bool visible) { m_visible = visible; }
 	void Fade(double time)
 	{
+		if (m_fade) delete m_fade;
 		m_fade = new FadeEffect;
 		m_fade->elapsedtime = 0.0;
 		m_fade->time = time;
+		m_fade->out = true;
+	}
+	void FadeIn(double time)
+	{
+		if (m_fade) delete m_fade;
+		m_fade = new FadeEffect;
+		m_fade->elapsedtime = 0.0;
+		m_fade->time = time;
+		m_fade->out = false;
 	}
 	bool IsFading() { return (m_fade!=NULL); }
 };
