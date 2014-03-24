@@ -316,5 +316,6 @@
     <None Include="shaders\vs_sky.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>
