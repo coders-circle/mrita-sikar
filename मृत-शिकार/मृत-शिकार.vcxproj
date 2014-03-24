@@ -112,6 +112,7 @@
     <ClInclude Include="graphics\timer.h" />
     <ClInclude Include="graphics\utils.h" />
     <ClInclude Include="graphics\Window.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="scene\Billboard.h" />
     <ClInclude Include="scene\Blood.h" />
     <ClInclude Include="scene\BloodSplash.h" />
@@ -168,6 +169,12 @@
     <None Include="shaders\vs_skin.glsl" />
     <None Include="shaders\vs_sky.glsl" />
     <None Include="shaders\vs_sprite.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="मृत-शिकार.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="gameicon.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
