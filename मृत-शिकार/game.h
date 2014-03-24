@@ -30,7 +30,7 @@ private:
 	TPCamera m_camera;
 	Model m_humanmodel, m_zombiemodel;
 	Player m_player;
-	WorldMap m_testmap;
+	WorldMap m_map;
 
 	Sprite m_bloodspr;
 	Blood m_blood;
@@ -41,7 +41,7 @@ private:
 	Sprite m_radarspr;
 	Radar m_radar;
 
-#define MAX_ZOMBIES 25
+#define MAX_ZOMBIES 10
 	Zombie m_zombies[MAX_ZOMBIES];
 	//int m_numZombies;
 	//std::vector<Zombie> m_zombies;

@@ -108,69 +108,6 @@
     <ClInclude Include="collision\QuadTree.h">
       <Filter>Header Files\collision</Filter>
     </ClInclude>
-    <ClInclude Include="audio\ik_ESoundEngineOptions.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ESoundOutputDrivers.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_EStreamModes.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IAudioRecorder.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IAudioStream.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IAudioStreamLoader.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IFileFactory.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IFileReader.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IRefCounted.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_irrKlangTypes.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISound.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISoundDeviceList.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISoundEffectControl.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISoundEngine.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISoundMixedOutputReceiver.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISoundSource.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_ISoundStopEventReceiver.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_IVirtualRefCounted.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_SAudioStreamFormat.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\ik_vec3d.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
-    <ClInclude Include="audio\irrKlang.h">
-      <Filter>Header Files\audio</Filter>
-    </ClInclude>
     <ClInclude Include="audio\audio.h">
       <Filter>Header Files\audio</Filter>
     </ClInclude>

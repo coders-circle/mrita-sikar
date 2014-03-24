@@ -126,7 +126,7 @@ void Zombie::Update(double deltaTime)
 								m_chaseUnits.insert(units[i]);
 						}
 						else
-						if (distsqr > 25000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
+						if (distsqr > 4000000.0f || static_cast<LiveUnit*>(units[i])->GetHealthStatus() <= 0)
 							m_chaseUnits.erase(units[i]);
 
 						if (distsqr <= 1470.0f)
@@ -168,7 +168,7 @@ void Zombie::Update(double deltaTime)
 				float  U, A, d;
 				A = (unit->GetTag() == 1) ? 4000.0f : 3000.0f;
 				d = rlength / GetRadius();
-				U = -A / (d*d);
+				U = -A / (d);
 				resultant += r / rlength * U;
 			}
 

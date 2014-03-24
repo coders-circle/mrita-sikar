@@ -54,6 +54,17 @@ public:
 		if (m_enabled) Show();
 		else Hide();
 	}
+
+	void Fade(double time)
+	{
+		m_scene->FadeText(m_normalTextIndex, time);
+		m_scene->FadeText(m_hoveredTextIndex, time);
+	}
+	void FadeIn(double time)
+	{
+		m_scene->FadeInText(m_normalTextIndex, time);
+		m_scene->FadeInText(m_hoveredTextIndex, time);
+	}
 };
 
 enum MenuOrientation{Horizontal, Vertical};
@@ -97,19 +108,15 @@ public:
 		}
 		return -1;
 	}
-};
 
-class UI
-{
-private:
-	Menu m_mainMenu;
-	Scene* scene;
-public:
-	UI()
+	void Fade(double time)
 	{
+		for (unsigned int i = 0; i < m_items.size(); i++)
+			m_items[i].Fade(time);
 	}
-	void Initialize(Scene* scene)
+	void FadeIn(double time)
 	{
-
+		for (unsigned int i = 0; i < m_items.size(); i++)
+			m_items[i].FadeIn(time);
 	}
 };
