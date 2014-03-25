@@ -9,16 +9,16 @@ void Game::Reset()
 	//m_people1.Reset();
 
 	m_scene.Reset();
-	float x = 200.0f, z = -400.0f;
+	float x = 1300.0f, z = -400.0f;
 	
 	for (unsigned i = 0; i < MAX_ZOMBIES; ++i)
 	{
 		m_zombies[i].SetPosition(glm::vec3(x, -45.0f, z));
 		float activeness = 1.4f + 1.0f*rand() / RAND_MAX;
 		m_zombies[i].SetSpeed(activeness, activeness / 1.4f);
-		x += 500.0f;
-		if (x >= 1300.0f){
-			z += 200.0f; x = -200.0f;
+		z += 100.0f;
+		if (z >= 100.0f){
+			x += 100.0f; z = -400.0f;
 		}
 		m_zombies[i].Reset();
 		m_scene.AddUnit(&m_zombies[i]);
@@ -65,7 +65,7 @@ void Game::Initialize()
 
 	m_radarspr.LoadSprite("radar.png", 200, 200);
 	m_radar.Initialize(&m_radarspr, glm::vec2(20, 10));
-	m_radar.SetRadarRadius(1000.0f);
+	m_radar.SetRadarRadius(1200.0f);
 	m_radar.SetPlayer(&m_player);
 	m_radar.SetScene(&m_scene);
 
