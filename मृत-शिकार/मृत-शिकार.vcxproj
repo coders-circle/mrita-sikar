@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EDAF95F5-F510-4736-AF28-C15F39C716ED}</ProjectGuid>
+    <RootNamespace>मृतशिकार</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <BrowseInformation>true</BrowseInformation>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="audio\audio.h" />
+    <ClInclude Include="collision\Collision.h" />
+    <ClInclude Include="collision\QuadTree.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="main.h" />
+    <ClInclude Include="graphics\Animation.h" />
+    <ClInclude Include="graphics\graphics.h" />
+    <ClInclude Include="graphics\Mesh.h" />
+    <ClInclude Include="graphics\Model.h" />
+    <ClInclude Include="graphics\Renderer.h" />
+    <ClInclude Include="graphics\SkyBox.h" />
+    <ClInclude Include="graphics\SOIL.h" />
+    <ClInclude Include="graphics\Sprite.h" />
+    <ClInclude Include="graphics\stdinc.h" />
+    <ClInclude Include="graphics\Techniques.h" />
+    <ClInclude Include="graphics\TextureLoader.h" />
+    <ClInclude Include="graphics\timer.h" />
+    <ClInclude Include="graphics\utils.h" />
+    <ClInclude Include="graphics\Window.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="scene\Billboard.h" />
+    <ClInclude Include="scene\Blood.h" />
+    <ClInclude Include="scene\BloodSplash.h" />
+    <ClInclude Include="scene\Camera.h" />
+    <ClInclude Include="scene\GameScene.h" />
+    <ClInclude Include="scene\Ground.h" />
+    <ClInclude Include="scene\LiveUnit.h" />
+    <ClInclude Include="scene\People.h" />
+    <ClInclude Include="scene\Player.h" />
+    <ClInclude Include="scene\Radar.h" />
+    <ClInclude Include="scene\Scene.h" />
+    <ClInclude Include="scene\TPCamera.h" />
+    <ClInclude Include="scene\UI.h" />
+    <ClInclude Include="scene\Unit.h" />
+    <ClInclude Include="scene\Unit2d.h" />
+    <ClInclude Include="scene\WorldMap.h" />
+    <ClInclude Include="scene\WorldObject.h" />
+    <ClInclude Include="scene\Zombie.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="audio\audio.cpp" />
+    <ClCompile Include="collision\Collision.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="graphics\glew\glew.c" />
+    <ClCompile Include="graphics\Mesh.cpp" />
+    <ClCompile Include="graphics\Model.cpp" />
+    <ClCompile Include="graphics\Renderer.cpp" />
+    <ClCompile Include="graphics\SkyBox.cpp" />
+    <ClCompile Include="graphics\Sprite.cpp" />
+    <ClCompile Include="graphics\utils.cpp" />
+    <ClCompile Include="graphics\Window.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="scene\Billboard.cpp" />
+    <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="scene\Ground.cpp" />
+    <ClCompile Include="scene\LiveUnit.cpp" />
+    <ClCompile Include="scene\People.cpp" />
+    <ClCompile Include="scene\Player.cpp" />
+    <ClCompile Include="scene\Radar.cpp" />
+    <ClCompile Include="scene\Scene.cpp" />
+    <ClCompile Include="scene\Unit.cpp" />
+    <ClCompile Include="scene\Unit2d.cpp" />
+    <ClCompile Include="scene\Zombie.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram11.cd" />
+    <None Include="shaders\fs_normal3d.glsl" />
+    <None Include="shaders\fs_depthmap.glsl" />
+    <None Include="shaders\fs_sky.glsl" />
+    <None Include="shaders\fs_sprite.glsl" />
+    <None Include="shaders\vs_normal3d.glsl" />
+    <None Include="shaders\vs_depthmap_normal.glsl" />
+    <None Include="shaders\vs_depthmap_skin.glsl" />
+    <None Include="shaders\vs_skin.glsl" />
+    <None Include="shaders\vs_sky.glsl" />
+    <None Include="shaders\vs_sprite.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="मृत-शिकार.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="gameicon.ico" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

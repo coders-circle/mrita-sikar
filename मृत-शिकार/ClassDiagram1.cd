@@ -1,0 +1,494 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Game" Collapsed="true">
+    <Position X="23" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CASBAGAAgIABBYABAAQUAAAABAgAAiCCABICA0lAAAQ=</HashCode>
+      <FileName>Game.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Mesh" Collapsed="true">
+    <Position X="24.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgQwCQAASAgBAAAAAAACAACAAAAAAAUAAAUABAAA=</HashCode>
+      <FileName>graphics\Mesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model" Collapsed="true">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAIIAACAmAAAEVIAAUAACBAEAAABAwAA0QAAAA=</HashCode>
+      <FileName>graphics\Model.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Renderer" Collapsed="true">
+    <Position X="24.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAACgUAICAAAAQBBACAMABAkAABAAICAAASAEEEAIA0=</HashCode>
+      <FileName>graphics\Renderer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkyBox" Collapsed="true">
+    <Position X="26.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQwAAACCAwAAAAAAAAAAAAAAAAAAAEAAAUAAAAA=</HashCode>
+      <FileName>graphics\SkyBox.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Sprite" Collapsed="true">
+    <Position X="21.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEQgAAEACAgABAAAAAAREAAAAAACQAGgAAcAAAAA=</HashCode>
+      <FileName>graphics\Sprite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Timer" Collapsed="true">
+    <Position X="23" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQAQAQAAQESBABTMAAAIAAAAABQAAAACCgBAAAEQAA=</HashCode>
+      <FileName>graphics\timer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Window" Collapsed="true">
+    <Position X="26.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABIAABQAYAAoCEAAAAhAAAAFBhIAIAIIAASBCAKQA=</HashCode>
+      <FileName>graphics\Window.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Billboard" Collapsed="true">
+    <Position X="0.5" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAACAAAwAAAABAAAQgAAAQAgAAAAAAAEAAAAA=</HashCode>
+      <FileName>scene\Billboard.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Blood" Collapsed="true">
+    <Position X="0.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAABgAAAAAAAAAAAAACAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>scene\Blood.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BloodSplash" Collapsed="true">
+    <Position X="7.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQQAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAEAABAA=</HashCode>
+      <FileName>scene\BloodSplash.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Camera" Collapsed="true">
+    <Position X="10.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAACAAAAAAACCAAAAQAAAAAAAAAAABABABAQI=</HashCode>
+      <FileName>scene\Camera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameScene" Collapsed="true">
+    <Position X="10.5" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAAAAAAAmB4ABABACAAACAYIIAAQAACAYAEEAAAA=</HashCode>
+      <FileName>scene\GameScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ground" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>scene\Ground.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LiveUnit" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UAQAAAAEACAAAwAAQgAAAQSAAABAAkwAAAAEAEAAAAA=</HashCode>
+      <FileName>scene\LiveUnit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="People" Collapsed="true">
+    <Position X="3" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AASAAAAABIAABgAgAAAAEAAAEAAAAAAACAAgAAAAAAA=</HashCode>
+      <FileName>scene\People.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Player" Collapsed="true">
+    <Position X="5.25" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AiQBkAoECDgJBoAgxABCWQaCIBAAYIAAGAUgIwlAAJI=</HashCode>
+      <FileName>scene\Player.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Radar" Collapsed="true">
+    <Position X="5.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BASAAAAAAAAIAxAAAAAEAAAAAAgAAAAIAACAAEAAAAA=</HashCode>
+      <FileName>scene\Radar.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Scene" Collapsed="true">
+    <Position X="10.5" Y="12.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAIAACAwABgAIAAACABQAAACAQEAAAA0FACIA=</HashCode>
+      <FileName>scene\Scene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TPCamera" Collapsed="true">
+    <Position X="10.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACQBAACAABQAgACAAAQABABAAAQAEAAACAAACCAg=</HashCode>
+      <FileName>scene\TPCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MenuItem" Collapsed="true">
+    <Position X="23" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAgIAoCABBAAMAAADAAAAAAFCAAAAAAAAAAAAAA=</HashCode>
+      <FileName>scene\UI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Menu" Collapsed="true">
+    <Position X="21.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAgAQACgAQAAAAAABAAAgAAIcAAAAACAAAAQAAA=</HashCode>
+      <FileName>scene\UI.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Unit" Collapsed="true">
+    <Position X="5.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ohSAeAAAACAIBwDA8BBAAEAAAABAAAIAAISEAEoCAAA=</HashCode>
+      <FileName>scene\Unit.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Unit2d" Collapsed="true">
+    <Position X="6.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAACCIEwAAEABABAQgAIAQAgCAAAAAAEAAAAA=</HashCode>
+      <FileName>scene\Unit2d.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WorldMap" Collapsed="true">
+    <Position X="19.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIACAAAAAAAABQAAAEAAAAEAMAAAAgQAQAAAAEAAAAA=</HashCode>
+      <FileName>scene\WorldMap.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="WorldObject" Collapsed="true">
+    <Position X="9.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAAAAAAAAAAAAAAAIBAAAAAAAAAAAAgA=</HashCode>
+      <FileName>scene\WorldObject.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Zombie" Collapsed="true">
+    <Position X="7.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAABIEAgBBgAgAgAEMBAAIIAIJgAAEAAgAABhBAA=</HashCode>
+      <FileName>scene\Zombie.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Box" Collapsed="true">
+    <Position X="19.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ASAAIAAAAAAAAAAEAACAAAIAIAIAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>collision\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Ray" Collapsed="true">
+    <Position X="23" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAABAICAAIAICAAAAAAAIAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>collision\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Plane" Collapsed="true">
+    <Position X="19.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAgAACAABAIAgAAEAAIAAEAAAAA=</HashCode>
+      <FileName>collision\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Frustum" Collapsed="true">
+    <Position X="21.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAACAAAAIAAAACAAACAAACAwEAAIAAAgABBEAAA=</HashCode>
+      <FileName>collision\Collision.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuadTree" Collapsed="true">
+    <Position X="21.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAQAAEAAAAAABQARABAABAAAAAAAAgAUAAQQAADAAAA=</HashCode>
+      <FileName>collision\QuadTree.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SoundSource" Collapsed="true">
+    <Position X="19.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAEAAACAACQAAAABAIAAAAAAAAgAAgAAAAAAAQAA=</HashCode>
+      <FileName>audio\audio.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Node" Collapsed="true">
+    <Position X="26.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAQAAAAAAAAAAAAEAAACAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="VecKey" Collapsed="true">
+    <Position X="23" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="RotKey" Collapsed="true">
+    <Position X="24.75" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="NodeAnim" Collapsed="true">
+    <Position X="19.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Animation" Collapsed="true">
+    <Position X="19.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAAAAAAAAQAAAAAAACAAAAA=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Bone" Collapsed="true">
+    <Position X="21.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="WeightInfo" Collapsed="true">
+    <Position X="26.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAEAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Animation.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Vertex" Collapsed="true">
+    <Position X="24.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAgAAAAAAgAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Mesh.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SkinVertex" Collapsed="true">
+    <Position X="23" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAgAAAAAQgAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Mesh.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="TransitionState" Collapsed="true">
+    <Position X="21.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAACAAAAAEAAAAAAAAAAEAA=</HashCode>
+      <FileName>graphics\Model.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ModelAnimation" Collapsed="true">
+    <Position X="24.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAQAAAAEAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Model.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="SpriteAnimation" Collapsed="true">
+    <Position X="24.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>graphics\Sprite.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique_DepthMapNormal" Collapsed="true">
+    <Position X="3.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAI=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique_DepthMapSkin" Collapsed="true">
+    <Position X="5.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAI=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique_Skin3D" Collapsed="true">
+    <Position X="7.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAQAAAAAEAAAAAAAAAAAAAAEAAAACAAAIAAI=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique_3D" Collapsed="true">
+    <Position X="10" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAEAAAAAAAAAAAAAAEAAAACAAAIAAI=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique_Sprite" Collapsed="true">
+    <Position X="12.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAACAAAAACAAAAAgI=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Technique_Sky" Collapsed="true">
+    <Position X="1" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAI=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Techniques" Collapsed="true">
+    <Position X="26.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAQAAAAAAEBAAAQAABAAAABAAAAA=</HashCode>
+      <FileName>graphics\Techniques.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ShaderInfo" Collapsed="true">
+    <Position X="19.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\utils.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="ProgramInfo" Collapsed="true">
+    <Position X="21.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAE=</HashCode>
+      <FileName>graphics\utils.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Text" Collapsed="true">
+    <Position X="19.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAAAAAAAAQAAAAIAABgCAAAAAA=</HashCode>
+      <FileName>scene\Scene.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Rect" Collapsed="true">
+    <Position X="23" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAQAAAAAAAACAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>collision\Collision.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="BoundVolume" Collapsed="true">
+    <Position X="23" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAACAAAAARAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>collision\Collision.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Typedef Name="UnitCollections" Collapsed="true">
+    <Position X="26.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>collision\QuadTree.h</FileName>
+    </TypeIdentifier>
+  </Typedef>
+  <Enum Name="PlayerStates" Collapsed="true">
+    <Position X="26.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EFCAgAIAAAAAAAAIAAABAAAACAAAEACEAQoQIAAAAAA=</HashCode>
+      <FileName>scene\Player.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PlayerSounds" Collapsed="true">
+    <Position X="24.75" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgAAAAAEAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>scene\Player.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZombieStates" Collapsed="true">
+    <Position X="19.5" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAQAAAAAAAIAAABAAACAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>scene\Zombie.cpp</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="GlobalGameStates" Collapsed="true">
+    <Position X="19.5" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAIAAA=</HashCode>
+      <FileName>main.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_000c_1" Collapsed="true">
+    <Position X="19.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAEAAAAAAAIAAAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\SOIL.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_000c_2" Collapsed="true">
+    <Position X="21.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\SOIL.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_000c_3" Collapsed="true">
+    <Position X="23" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgEwACAAAAAAAAACAAQAAACAQAAAEAA=</HashCode>
+      <FileName>graphics\SOIL.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_000c_4" Collapsed="true">
+    <Position X="24.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAgABAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\SOIL.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="__unnamed_enum_000c_5" Collapsed="true">
+    <Position X="26.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEAAAACBAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\SOIL.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MouseButtons" Collapsed="true">
+    <Position X="23" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>graphics\Window.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="MenuOrientation" Collapsed="true">
+    <Position X="21.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>scene\UI.h</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
