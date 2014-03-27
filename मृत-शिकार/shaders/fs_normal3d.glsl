@@ -33,7 +33,7 @@ void main()
 {
 	vec4 fTexColor = texture2D(texture_sample, fTexCoord);
 
-	vec3 dir = normalize(vec3(-1.0, -1.0, 1.0));
+	vec3 dir = normalize(vec3(-1.0, -1.0, 0.0));
     float fDiffuseIntensity = max(0, dot(normalize(fNormal), - dir ))*0.8;
 	
 	float visibility = 1.0;

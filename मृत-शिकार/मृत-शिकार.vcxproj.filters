@@ -257,6 +257,7 @@
       <Filter>shaders</Filter>
     </None>
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram11.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="मृत-शिकार.rc">

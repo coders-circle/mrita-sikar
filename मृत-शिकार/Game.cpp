@@ -182,24 +182,24 @@ void Game::Update(double totalTime, double deltaTime)
 						else if (ClickedUnit->GetTag() == 10)
 						{
 							People * people = static_cast<People*>(ClickedUnit);
-							//if (!people->IsDead())	
-							//{
-							//	people->Die();
-							//	m_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);	// show blood as well
-							//	++m_deadpeople;
+							if (!people->IsDead())	
+							{
+								people->Die();
+								m_blood.Start(pickRay.GetOrigin() + pickRay.GetDirection() * tmin);	// show blood as well
+								++m_deadpeople;
 
-							//	std::stringstream str;
-							//	str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed\n" << m_deadpeople << "/" << m_numpeople << " People Killed";
-							//	m_scene.ChangeText(0, str.str());
+								std::stringstream str;
+								str << m_deadZombies << "/" << MAX_ZOMBIES << " Zombies Killed\n" << m_deadpeople << "/" << m_numpeople << " People Killed";
+								m_scene.ChangeText(0, str.str());
 
-							//	if (m_deadpeople == m_numpeople)
-							//	{
-							//		m_scene.ChangeText(5, "GAME LOST");
-							//		m_scene.SetTextVisible(5, true);
-							//		m_state = GAME_TOLOSE;
-							//		m_timeend = 0.0;
-							//	}
-							//}
+								if (m_deadpeople == m_numpeople)
+								{
+									m_scene.ChangeText(5, "GAME LOST");
+									m_scene.SetTextVisible(5, true);
+									m_state = GAME_TOLOSE;
+									m_timeend = 0.0;
+								}
+							}
 						}
 					}
 				}
