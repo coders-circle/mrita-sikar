@@ -50,5 +50,9 @@ public:
 
 	void ResetTimer();
 	void Quit() { PostQuitMessage(0); }
+	bool IsActive()
+	{
+		return (GetActiveWindow() == m_hwnd);
+	}
 };
 

@@ -44,16 +44,12 @@ irrklang::ISoundSource* g_a_zombiepain2;
 irrklang::ISoundSource* g_a_zombiepain3;
 irrklang::ISoundSource* g_a_zombiepain4;
 irrklang::ISoundSource* g_a_zombiepain5;
-irrklang::ISoundSource* g_a_zombiemadness1;
-irrklang::ISoundSource* g_a_zombienoise;
 
 void InitZombieSounds()
 {
 	static bool initialized = false;
 	if (!initialized)
 	{
-		g_a_zombienoise = g_audioengine->addSoundSourceFromFile("sound/zombie/zombie_noise.mp3", irrklang::ESM_AUTO_DETECT, true);
-		g_a_zombiemadness1 = g_audioengine->addSoundSourceFromFile("sound/zombie/zombie_madness1.mp3", irrklang::ESM_AUTO_DETECT, true);
 		g_a_zombiepain1 = g_audioengine->addSoundSourceFromFile("sound/zombie/zombie_pain1.mp3", irrklang::ESM_AUTO_DETECT, true);
 		g_a_zombiepain2 = g_audioengine->addSoundSourceFromFile("sound/zombie/zombie_pain2.mp3", irrklang::ESM_AUTO_DETECT, true);
 		g_a_zombiepain3 = g_audioengine->addSoundSourceFromFile("sound/zombie/zombie_pain3.mp3", irrklang::ESM_AUTO_DETECT, true);
@@ -314,10 +310,6 @@ bool Zombie::TakeHit(int hitposition, glm::vec3 hitdirection, Unit * player)
 
 		if (m_health > 0)
 		{
-			if (g_audioengine->isCurrentlyPlaying(g_a_zombiemadness1) == true)
-			{
-				m_a_madness->stop();
-			}
 			switch (GetRand(5))
 			{
 			case 0: m_a_pain = g_audioengine->play3D(g_a_zombiepain1, irrklang::vec3df(m_position.x, m_position.y, m_position.z), false, false, true); break;

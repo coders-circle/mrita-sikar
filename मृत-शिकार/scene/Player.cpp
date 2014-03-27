@@ -78,6 +78,7 @@ void Player::Reset()
 	m_inTransition = false;
 	m_animation.set = PLAYER_IDLE; m_animation.time = 0.0; m_animation.transition = NULL;
 	if (m_model) UpdateBoundVolume();
+	if (m_a_running) m_a_running->stop();
 }
 
 void Player::InitAudio()
