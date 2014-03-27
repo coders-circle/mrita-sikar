@@ -108,6 +108,7 @@ void Update(double totalTime, double deltaTime)
 	{
 		if (!g_splash.IsFading())
 		{
+			if (g_audioengine) g_audioengine->stopAllSounds();
 			g_menuback.FadeIn(2);
 			g_menu.FadeIn(2);
 			g_globalState = MAINMENU;
@@ -119,7 +120,7 @@ void Update(double totalTime, double deltaTime)
 	}
 	else if (g_globalState == MAINMENU)
 	{
-		g_audioengine->stopAllSounds();
+		
 		int mx, my;
 		g_window.GetMousePos(mx, my);
 		if (!g_menutransition)
@@ -166,7 +167,7 @@ void Update(double totalTime, double deltaTime)
 	{
 		g_game.Update(totalTime, deltaTime);
 		if ((g_game.GetState() == Game::GAME_WIN || g_game.GetState() == Game::GAME_LOSE)
-			|| (g_window.CheckKey(VK_ESCAPE)))
+			|| (g_window.CheckKey(VK_ESCAPE)) || (g_window.IsActive() == false))
 		{
 			g_globalState = MAINMENU;
 			Resize(g_width, g_height);

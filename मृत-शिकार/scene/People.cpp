@@ -13,7 +13,7 @@ void People::Reset()
 	m_health = 100;
 	m_oncedead = false;
 	int i = rand() % 4;
-	m_orient = glm::rotate(glm::mat4(), 90.0f*i, glm::vec3(0.0f, 1.0f, 0.0f));
+	m_orient = m_initialorient = glm::rotate(glm::mat4(), 90.0f*i, glm::vec3(0.0f, 1.0f, 0.0f));
 	if (m_model) UpdateBoundVolume();
 }
 
@@ -27,8 +27,8 @@ void People::Update(double deltaTime)
 	if (m_dead)
 	{
 		m_deadrotation += float(deltaTime) * 105.0f;
-		if (m_deadrotation > 85.0f) { m_oncedead = true;  m_orient = glm::rotate(glm::mat4(), 85.0f, glm::vec3(-m_orient[0])); UpdateBoundVolume(); return; }
-		m_orient = glm::rotate(glm::mat4(), m_deadrotation, glm::vec3(-m_orient[0]));
+		if (m_deadrotation > 85.0f) { m_oncedead = true;  m_orient = glm::rotate(glm::mat4(), 85.0f, glm::vec3(-m_orient[0])) * m_initialorient; UpdateBoundVolume(); return; }
+		m_orient = glm::rotate(glm::mat4(), m_deadrotation, glm::vec3(-m_orient[0])) * m_initialorient;
 		UpdateBoundVolume();
 	}
 }

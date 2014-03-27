@@ -7,6 +7,7 @@ private:
 	bool m_dead;
 	float m_deadrotation;
 	bool m_oncedead, m_once;
+	glm::mat4 m_initialorient;
 public:
 
 	People();

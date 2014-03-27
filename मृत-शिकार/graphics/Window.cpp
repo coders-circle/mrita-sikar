@@ -28,7 +28,7 @@ Window::Window() : m_resize(NULL), m_update(Update), m_render(Render), m_opengl(
 int Window::InitWindow(const wchar_t* title, int &width, int &height, char** argv, int showCmd)
 {
 	if (!InitializeWindow(title, GetModuleHandle(NULL), showCmd, width, height))
-		return -1;
+		throw 2;
 	
 	RECT rc;
 	GetWindowRect(m_hwnd, &rc);
@@ -185,6 +185,11 @@ void Window::SetupOpengl()
 	m_hRC = wglCreateContext(m_hDC);
 	wglMakeCurrent(m_hDC, m_hRC);
 	glewInit();
+	if (!GLEW_VERSION_3_3) {
+		wglMakeCurrent(m_hDC, NULL);
+		wglDeleteContext(m_hRC); 
+		throw 1;
+	}
 
 	m_opengl = true;
 }
