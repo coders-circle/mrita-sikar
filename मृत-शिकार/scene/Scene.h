@@ -91,7 +91,7 @@ public:
 			m_texts[i].fade->elapsedtime += deltaTime;
 			if (m_texts[i].fade->elapsedtime >= m_texts[i].fade->time) 
 			{
-				if (m_texts[i].fade->out)m_texts[i].visible = false; delete m_texts[i].fade; m_texts[i].fade = NULL;
+				if (m_texts[i].fade->out) m_texts[i].visible = false; delete m_texts[i].fade; m_texts[i].fade = NULL;
 			}
 		}
 	}

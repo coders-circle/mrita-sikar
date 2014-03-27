@@ -1,6 +1,6 @@
 #include "Game.h"
 
-enum GlobalGameStates {MAINMENU, GAME, SPLASH};
+enum GlobalGameStates {MAINMENU, GAME, SPLASH, CREDITS};
 
 Window g_window;
 Renderer g_renderer(&g_window);
@@ -15,6 +15,10 @@ Scene g_menuscene(&g_renderer);
 Scene g_loadingscene(&g_renderer);
 Menu g_menu;
 Game g_game(&g_renderer, &g_window);
+
+Scene g_creditscene(&g_renderer);
+Sprite g_creditspr(&g_renderer);
+Unit2d g_credit;
 
 Sprite g_menubackspr(&g_renderer);
 Unit2d g_menuback;
@@ -52,6 +56,12 @@ void Initialize()
 	g_loadingscene.AddUnit(&g_splash);
 
 	g_loadingscene.Draw();
+
+	g_creditscene.Initialize();
+	g_creditspr.LoadSprite("credits.jpg", static_cast<float>(g_width), static_cast<float>(g_height));
+	g_credit.Initialize(&g_creditspr);
+	g_creditscene.AddUnit(&g_credit);
+
 	g_game.Initialize();
 
 	g_splash.Fade(2);
@@ -67,6 +77,10 @@ void CleanUp()
 	g_splashscreen.CleanUp();
 	g_splash.CleanUp();
 
+	g_creditspr.CleanUp();
+	g_credit.CleanUp();
+	g_creditscene.CleanUp();
+
 	g_menuscene.CleanUp();
 	g_loadingscene.CleanUp();
 	g_renderer.CleanUp();
@@ -77,6 +91,8 @@ void Resize(int width, int height)
 	g_width = width; g_height = height;
 	if (g_globalState == MAINMENU)
 		g_menuscene.Resize(static_cast<float>(width), static_cast<float>(height));
+	if (g_globalState == CREDITS)
+		g_creditscene.Resize(static_cast<float>(width), static_cast<float>(height));
 	else if (g_globalState == GAME)
 		g_game.Resize(width, height);
 	if (g_globalState == SPLASH)
@@ -85,6 +101,7 @@ void Resize(int width, int height)
 
 int g_menuitem;
 bool g_menutransition = false;
+bool g_credittransition = false;
 void Update(double totalTime, double deltaTime)
 {
 	if (g_globalState == SPLASH)
@@ -102,6 +119,7 @@ void Update(double totalTime, double deltaTime)
 	}
 	else if (g_globalState == MAINMENU)
 	{
+		g_audioengine->stopAllSounds();
 		int mx, my;
 		g_window.GetMousePos(mx, my);
 		if (!g_menutransition)
@@ -131,7 +149,11 @@ void Update(double totalTime, double deltaTime)
 				g_window.ShowMouseCursor(false);
 				break;
 			case 2:
-				// Go to credits scene
+				g_globalState = CREDITS;
+				g_window.SetMousePos(g_width / 2, g_height / 2);
+				Resize(g_width, g_height);
+				g_window.ResetTimer();
+				g_credit.FadeIn(2);
 				break;
 			case 3:
 				g_window.Quit();
@@ -156,6 +178,25 @@ void Update(double totalTime, double deltaTime)
 			if (g_game.GetState()== Game::GAME_PLAYING) g_menu.EnableItem(0, true);
 		}
 	}
+	else if (g_globalState == CREDITS)
+	{
+		if (g_window.CheckKey(VK_ESCAPE))
+		{
+			g_credit.Fade(2);
+			g_credittransition = true;
+		}
+		if (g_credittransition && !g_credit.IsFading())
+		{
+			g_globalState = MAINMENU;
+			Resize(g_width, g_height);
+			g_window.ResetTimer();
+			g_menutransition = false;
+			g_menuback.FadeIn(2);
+			g_menu.FadeIn(2);
+			g_credittransition = false;
+		}
+		g_creditscene.Update(deltaTime);
+	}
 }
 
 void Render()
@@ -164,6 +205,8 @@ void Render()
 		g_menuscene.Draw();
 	if (g_globalState == SPLASH)
 		g_loadingscene.Draw();
+	if (g_globalState == CREDITS)
+		g_creditscene.Draw();
 	else if (g_globalState == GAME)
 		g_game.Render();
 }

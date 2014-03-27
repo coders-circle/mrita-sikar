@@ -12,7 +12,8 @@ void People::Reset()
 	m_deadrotation = 0.0;
 	m_health = 100;
 	m_oncedead = false;
-	m_orient = glm::mat4();
+	int i = rand() % 4;
+	m_orient = glm::rotate(glm::mat4(), 90.0f*i, glm::vec3(0.0f, 1.0f, 0.0f));
 	if (m_model) UpdateBoundVolume();
 }
 

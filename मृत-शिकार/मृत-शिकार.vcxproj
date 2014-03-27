@@ -137,7 +137,6 @@
     <ClCompile Include="scene\Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram1.cd" />
     <None Include="shaders\fs_normal3d.glsl" />
     <None Include="shaders\fs_depthmap.glsl" />
     <None Include="shaders\fs_sky.glsl" />

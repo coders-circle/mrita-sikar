@@ -33,7 +33,7 @@ public:
 		if (m_fade)
 		{
 			m_fade->elapsedtime += deltaTime;
-			if (m_fade->elapsedtime >= m_fade->time) { if (m_fade->out)m_visible = false; delete m_fade; m_fade = NULL; }
+			if (m_fade->elapsedtime >= m_fade->time) { if (m_fade->out) m_visible = false; delete m_fade; m_fade = NULL; }
 		}
 		if (m_animate) m_sprite->Animate(m_sprAnim, deltaTime); 
 	}
@@ -70,6 +70,7 @@ public:
 		m_fade->elapsedtime = 0.0;
 		m_fade->time = time;
 		m_fade->out = false;
+		m_visible = true;
 	}
 	bool IsFading() { return (m_fade!=NULL); }
 };

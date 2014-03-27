@@ -19,7 +19,7 @@ void Radar::Draw()
 		glm::vec3 vector = unit->GetBoundCenter() - m_player->GetBoundCenter();
 		if (glm::dot(vector, vector) > (m_radius * m_radius)) continue;
 
-		float ratio = m_sprite->GetWidth() / 2.0f / m_radius;
+		float ratio = (m_sprite->GetWidth()-16) / 2.0f / m_radius;
 		
 		vector = vector * glm::mat3(m_player->GetOrient());
 		glm::vec2 pos(m_sprite->GetWidth() / 2.0f - vector.x*ratio + m_position.x,
