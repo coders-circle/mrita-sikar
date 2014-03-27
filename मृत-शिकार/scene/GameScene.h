@@ -25,7 +25,6 @@ public:
 	void Update(double deltaTime);
 	void Draw();
 	void CleanUp();
-
 	bool IsFirstPass() { return m_firstPass; }
 	void SetCamera(Camera * camera) { m_camera = camera; }
 	void AddUnit(Unit * unit) { m_units.push_back(unit); unit->SetScene(this);  m_quadTree.Insert(unit); }

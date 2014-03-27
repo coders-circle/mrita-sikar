@@ -45,11 +45,12 @@ void Game::Reset()
 	std::stringstream ss;
 	ss << "0/" << MAX_ZOMBIES << " Zombies Killed\n0/" << m_numpeople << " People Killed";
 	m_scene.AddText(Text(ss.str(), 20, 680, 0.85f));
-	m_scene.AddText(Text(m_player.GetPlayerHealthString(), 1000, 40));
-	m_scene.AddText(Text(m_player.GetAmmoStatusString(), 1000, 680));
-	m_scene.AddText(Text("Reload", 550, 220, 1.5f, false));
-	m_scene.AddText(Text("LEVEL COMPLETED", 530, 220 - 60, 0.7f, false));
-	m_scene.AddText(Text("GAME WON", 590, 220 - 60, 1.0f, false));
+	m_scene.AddText(Text(m_player.GetPlayerHealthString(), m_renderer->GetWidth()-12.0f*32.0f, 40));
+	m_scene.AddText(Text(m_player.GetAmmoStatusString(), m_renderer->GetWidth() - 11.0f*32.0f, m_renderer->GetHeight() - 100.0f));
+	m_scene.AddText(Text("Reload", m_renderer->GetWidth() / 2 - 3 * 32.0f, m_renderer->GetHeight() / 3.0f, 1.5f, false));
+	m_scene.AddText(Text("LEVEL COMPLETED", m_renderer->GetWidth() / 2 - 7.5f * 32.0f, m_renderer->GetHeight() / 3.0f, false));
+	m_scene.AddText(Text("GAME WON", m_renderer->GetWidth() / 2 - 4 * 32.0f, m_renderer->GetHeight() / 3.0f, 1.0f, false));
+	//std::cout << std::endl << m_renderer->GetWidth() << ", " << m_renderer->GetHeight() << std::endl;
 }
 
 void Game::Initialize()
