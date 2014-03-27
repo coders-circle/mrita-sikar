@@ -69,5 +69,7 @@ public:
 
 	void DisableDepth() { glDisable(GL_DEPTH_TEST); }
 	void EnableDepth() { glEnable(GL_DEPTH_TEST); }
+	float GetHeight(){ return m_height; }
+	float GetWidth(){ return m_width; }
 };
 
